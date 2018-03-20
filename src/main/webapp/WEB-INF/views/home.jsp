@@ -11,6 +11,6 @@
 
 <P>  The time on the server is ${serverTime}. </P>
 <P>  Salam dari kelompok 4 Miniproject Bootcamp 137</P>
-<P>  MANTAP!</P>
+<P>  MANTAP JIWA!</P>
 </body>
 </html>
