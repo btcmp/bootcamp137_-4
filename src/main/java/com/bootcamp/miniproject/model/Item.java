@@ -10,81 +10,128 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="mp_mst_category")
-public class Category {
-
+@Table(name = "mp_mst_item")
+public class Item {
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private long id;
-	@NotNull
-	private String name;
-	@Column(name="created_by")
-	private long createdBy;
-	@Column (name="created_on")
-	private Date createdOn;
-	@Column (name="modified_by")
-	private long modifiedBy;
-	@Column(name="modified_on")
-	private Date modifiedOn;
-	@NotNull
-	private Boolean active;
 	
-	@OneToMany(fetch= FetchType.LAZY, mappedBy="category", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Item> listItem;
+	private String name;
+	
+	@Column(name = "created_by")
+	private long createdBy;
+	
+	@Column(name = "created_on")
+	private Date createdOn;
+	
+	@Column(name = "modified_by")
+	private long modifiedBy;
+	
+	@Column(name = "modified_on")
+	private Date modifiedOn;
+	
+	@NotNull
+	private boolean active;
+	
+	@ManyToOne
+	private Category category;
+	
+	@OneToMany(fetch= FetchType.LAZY, mappedBy="item", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemVariant> listVariant;
+	
 	
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+//	public long getCategoryId() {
+//		return categoryId;
+//	}
+//
+//	public void setCategoryId(long categoryId) {
+//		this.categoryId = categoryId;
+//	}
+
 	public long getCreatedBy() {
 		return createdBy;
 	}
+
 	public void setCreatedBy(long createdBy) {
 		this.createdBy = createdBy;
 	}
+
 	public Date getCreatedOn() {
 		return createdOn;
 	}
+
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
+
 	public long getModifiedBy() {
 		return modifiedBy;
 	}
+
 	public void setModifiedBy(long modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
 	public Date getModifiedOn() {
 		return modifiedOn;
 	}
+
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-	public Boolean getActive() {
+
+	public boolean isStatus() {
 		return active;
 	}
-	public void setActive(Boolean active) {
+
+	public void setStatus(boolean active) {
 		this.active = active;
 	}
-	public List<Item> getListItem() {
-		return listItem;
+
+	public boolean isActive() {
+		return active;
 	}
-	public void setListItem(List<Item> listItem) {
-		this.listItem = listItem;
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public List<ItemVariant> getListVariant() {
+		return listVariant;
+	}
+
+	public void setListVariant(List<ItemVariant> listVariant) {
+		this.listVariant = listVariant;
 	}
 	
 	
