@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.sun.istack.NotNull;
 
@@ -22,16 +24,24 @@ public class Category {
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
+	
 	@NotNull
 	private String name;
+	
 	@Column(name="created_by")
 	private long createdBy;
+	
+	@Temporal(TemporalType.DATE)
 	@Column (name="created_on")
 	private Date createdOn;
+	
 	@Column (name="modified_by")
 	private long modifiedBy;
+	
+	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
 	private Date modifiedOn;
+	
 	@NotNull
 	private boolean active;
 	

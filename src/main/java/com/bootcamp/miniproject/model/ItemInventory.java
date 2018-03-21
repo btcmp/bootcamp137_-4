@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "mp_mst_item_inventory")
@@ -40,12 +42,14 @@ public class ItemInventory {
 	@Column(name = "created_by")
 	private long createdBy;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "created_on")
 	private Date createdOn;
 	
 	@Column(name = "modified_by")
 	private long modifiedBy;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "modified_on")
 	private Date modifiedOn;
 	

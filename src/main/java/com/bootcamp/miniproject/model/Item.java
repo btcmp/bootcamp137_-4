@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -27,12 +29,14 @@ public class Item {
 	@Column(name = "created_by")
 	private long createdBy;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "created_on")
 	private Date createdOn;
 	
 	@Column(name = "modified_by")
 	private long modifiedBy;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "modified_on")
 	private Date modifiedOn;
 	
