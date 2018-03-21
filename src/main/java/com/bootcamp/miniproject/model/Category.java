@@ -33,7 +33,7 @@ public class Category {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	@NotNull
-	private Boolean active;
+	private boolean active;
 	
 	@OneToMany(fetch= FetchType.LAZY, mappedBy="category", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Item> listItem;
@@ -74,10 +74,10 @@ public class Category {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-	public Boolean getActive() {
+	public boolean getActive() {
 		return active;
 	}
-	public void setActive(Boolean active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 	public List<Item> getListItem() {

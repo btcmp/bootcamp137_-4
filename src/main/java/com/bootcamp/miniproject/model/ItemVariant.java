@@ -27,7 +27,7 @@ public class ItemVariant {
 	@NotNull
 	private String sku;
 	@NotNull
-	private double price;
+	private float price;
 	
 	@Column(name = "category_id")
 	private long categoryId;
@@ -78,11 +78,11 @@ public class ItemVariant {
 		this.sku = sku;
 	}
 
-	public double getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 
