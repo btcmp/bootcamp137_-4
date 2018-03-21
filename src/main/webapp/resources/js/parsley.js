@@ -28,7 +28,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   var Utils = {
     // Parsley DOM-API
-    // returns object from dom attributes and values
+    // returns object from dm attributes and values
     attr: function attr(element, namespace, obj) {
       var i;
       var attribute;
