@@ -154,5 +154,5 @@ public class ItemVariant {
 		this.listItemInventory = listItemInventory;
 	}
 	
-	
+	//updated
 }

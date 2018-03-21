@@ -1,55 +1,61 @@
 package com.bootcamp.miniproject.model;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+
+import com.sun.istack.NotNull;
 
 @Entity
-@Table(name = "mp_mst_item")
-public class Item {
+@Table(name="mp_mst_employee")
+public class Employee {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
 	
-	private String name;
+	@NotNull
+	@Column(name="first_name")
+	private String firstName;
 	
-	@Column(name = "created_by")
+	@NotNull
+	@Column(name="last_name")
+	private String lastName;
+	
+	@Email
+	private String email;
+	private String title;
+	
+	@NotNull
+	@Column(name="have_account")
+	private boolean haveAccount;
+	
+	@Column(name="created_by")
 	private long createdBy;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "created_on")
+	@Column(name="created_on")
 	private Date createdOn;
 	
-	@Column(name = "modified_by")
+	@Column(name="modified_by")
 	private long modifiedBy;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "modified_on")
+	@Column(name="modified_on")
 	private Date modifiedOn;
 	
 	@NotNull
 	private boolean active;
-	
-	@ManyToOne
-	private Category category;
-	
-	@OneToMany(fetch= FetchType.LAZY, mappedBy="item", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ItemVariant> listVariant;
-	
-	
+
 	public long getId() {
 		return id;
 	}
@@ -58,21 +64,45 @@ public class Item {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-//	public long getCategoryId() {
-//		return categoryId;
-//	}
-//
-//	public void setCategoryId(long categoryId) {
-//		this.categoryId = categoryId;
-//	}
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public boolean isHaveAccount() {
+		return haveAccount;
+	}
+
+	public void setHaveAccount(boolean haveAccount) {
+		this.haveAccount = haveAccount;
+	}
 
 	public long getCreatedBy() {
 		return createdBy;
@@ -106,14 +136,6 @@ public class Item {
 		this.modifiedOn = modifiedOn;
 	}
 
-	public boolean isStatus() {
-		return active;
-	}
-
-	public void setStatus(boolean active) {
-		this.active = active;
-	}
-
 	public boolean isActive() {
 		return active;
 	}
@@ -121,22 +143,6 @@ public class Item {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
-	public List<ItemVariant> getListVariant() {
-		return listVariant;
-	}
-
-	public void setListVariant(List<ItemVariant> listVariant) {
-		this.listVariant = listVariant;
-	}
 	
-	//updated
+	
 }

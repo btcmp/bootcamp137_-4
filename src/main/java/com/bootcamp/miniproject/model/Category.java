@@ -20,7 +20,7 @@ import com.sun.istack.NotNull;
 @Entity
 @Table(name="mp_mst_category")
 public class Category {
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
@@ -97,5 +97,6 @@ public class Category {
 		this.listItem = listItem;
 	}
 	
+	//updated
 	
 }
