@@ -11,25 +11,14 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="MP_MST_SUPPLIER")
-public class Supplier {
+@Table(name="MP_MST_PROVINCE")
+public class Province {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private long id;
 	@NotNull
 	private String name;
-	private String address;
-	private String phone;
-	private String email;
-	@Column(name="province_id")
-	private long provinceId;
-	@Column(name="region_id")
-	private long regionId;
-	@Column(name="district_id")
-	private long districtId;
-	@Column(name="postal_code")
-	private String postalCode;
 	@Column(name="created_by")
 	private long createdBy;
 	@Column(name="created_on")
@@ -37,9 +26,10 @@ public class Supplier {
 	@Column(name="modified_by")
 	private long modifiedBy;
 	@Column(name="modified_on")
-	private Date modifiedOn;
+	private Date modifiefOn;
 	@NotNull
 	private Boolean active;
+	
 	public long getId() {
 		return id;
 	}
@@ -51,42 +41,6 @@ public class Supplier {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public long getProvinceId() {
-		return provinceId;
-	}
-	public void setProvinceId(long provinceId) {
-		this.provinceId = provinceId;
-	}
-	public long getRegionId() {
-		return regionId;
-	}
-	public void setRegionId(long regionId) {
-		this.regionId = regionId;
-	}
-	public long getDistrictId() {
-		return districtId;
-	}
-	public void setDistrictId(long districtId) {
-		this.districtId = districtId;
-	}
-	public String getPostalCode() {
-		return postalCode;
-	}
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
 	}
 	public long getCreatedBy() {
 		return createdBy;
@@ -106,11 +60,11 @@ public class Supplier {
 	public void setModifiedBy(long modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	public Date getModifiedOn() {
-		return modifiedOn;
+	public Date getModifiefOn() {
+		return modifiefOn;
 	}
-	public void setModifiedOn(Date modifiedOn) {
-		this.modifiedOn = modifiedOn;
+	public void setModifiefOn(Date modifiefOn) {
+		this.modifiefOn = modifiefOn;
 	}
 	public Boolean getActive() {
 		return active;
