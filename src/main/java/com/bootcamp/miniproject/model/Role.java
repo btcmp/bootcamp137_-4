@@ -15,33 +15,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.validator.constraints.Email;
-
 import com.sun.istack.NotNull;
 
 @Entity
-@Table(name="mp_mst_employee")
-public class Employee {
-
+@Table(name="mp_mst_role")
+public class Role {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
-	
-	@NotNull
-	@Column(name="first_name")
-	private String firstName;
-	
-	@NotNull
-	@Column(name="last_name")
-	private String lastName;
-	
-	@Email
-	private String email;
-	private String title;
-	
-	@NotNull
-	@Column(name="have_account")
-	private boolean haveAccount;
+	private String name;
+	private String description;
 	
 	@Column(name="created_by")
 	private long createdBy;
@@ -60,11 +44,10 @@ public class Employee {
 	@NotNull
 	private boolean active;
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
-	List<EmployeeOutlet> employeeOutlets;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="role", cascade=CascadeType.ALL, orphanRemoval=true)
 	List<User> users;
+	
+
 	
 	public List<User> getUsers() {
 		return users;
@@ -72,14 +55,6 @@ public class Employee {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
-	}
-
-	public List<EmployeeOutlet> getEmployeeOutlets() {
-		return employeeOutlets;
-	}
-
-	public void setEmployeeOutlets(List<EmployeeOutlet> employeeOutlets) {
-		this.employeeOutlets = employeeOutlets;
 	}
 
 	public long getId() {
@@ -90,44 +65,20 @@ public class Employee {
 		this.id = id;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public boolean isHaveAccount() {
-		return haveAccount;
-	}
-
-	public void setHaveAccount(boolean haveAccount) {
-		this.haveAccount = haveAccount;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public long getCreatedBy() {
@@ -169,6 +120,9 @@ public class Employee {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+	
+	
 	
 	
 }
