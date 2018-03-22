@@ -19,9 +19,6 @@ public class ItemInventory {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private long id;
 	
-	@Column(name = "outlet_id")
-	private long outletId;
-	
 	private int beginning;
 	
 	@Column(name = "purchase_Qty")
@@ -57,7 +54,9 @@ public class ItemInventory {
 	@ManyToOne
 	private ItemVariant itemVariant;
 	
-	
+	/* Relasi dengan Outlet */
+	@ManyToOne
+	private Outlet outlet;
 	
 	/*  Relasi dengan outlet */
 	public long getId() {
@@ -66,14 +65,6 @@ public class ItemInventory {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public long getOutletId() {
-		return outletId;
-	}
-
-	public void setOutletId(long outletId) {
-		this.outletId = outletId;
 	}
 
 	public int getBeginning() {
