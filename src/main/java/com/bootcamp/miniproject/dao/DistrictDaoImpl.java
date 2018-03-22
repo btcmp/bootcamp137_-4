@@ -54,4 +54,17 @@ public class DistrictDaoImpl implements DistrictDao{
 		session.delete(district);
 		session.flush();
 	}
+	
+	@Override
+	public List<District> getRegionByRegionId(long id) {
+		// TODO Auto-generated method stub
+		String hql = "from District dis where dis.region.id = :id";
+		Session session = sessionFactory.getCurrentSession();
+		List<District> districts = session.createQuery(hql).setParameter("id", id).list();
+		if (districts.isEmpty()) {
+			return null;
+		} else {
+			return districts;
+		}
+	}
 }

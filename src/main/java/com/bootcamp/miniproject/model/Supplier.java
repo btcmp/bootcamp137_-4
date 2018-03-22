@@ -7,12 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name="MP_MST_SUPPLIER")
 public class Supplier {
+	
+	public Supplier() {
+		this.createdOn = new Date();
+		this.modifiedOn = new Date();
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -21,13 +29,14 @@ public class Supplier {
 	private String name;
 	private String address;
 	private String phone;
+	@Email
 	private String email;
-	@Column(name="province_id")
-	private long provinceId;
-	@Column(name="region_id")
-	private long regionId;
-	@Column(name="district_id")
-	private long districtId;
+	@ManyToOne
+	private Province province;
+	@ManyToOne
+	private Region region;
+	@ManyToOne
+	private District district;
 	@Column(name="postal_code")
 	private String postalCode;
 	@Column(name="created_by")
@@ -64,23 +73,29 @@ public class Supplier {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public long getProvinceId() {
-		return provinceId;
+	public String getEmail() {
+		return email;
 	}
-	public void setProvinceId(long provinceId) {
-		this.provinceId = provinceId;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public long getRegionId() {
-		return regionId;
+	public Province getProvince() {
+		return province;
 	}
-	public void setRegionId(long regionId) {
-		this.regionId = regionId;
+	public void setProvince(Province province) {
+		this.province = province;
 	}
-	public long getDistrictId() {
-		return districtId;
+	public Region getRegion() {
+		return region;
 	}
-	public void setDistrictId(long districtId) {
-		this.districtId = districtId;
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+	public District getDistrict() {
+		return district;
+	}
+	public void setDistrict(District district) {
+		this.district = district;
 	}
 	public String getPostalCode() {
 		return postalCode;

@@ -17,4 +17,6 @@ public interface DistrictDao {
 	public void saveUpdate(District district);
 	
 	public void delete(District district);
+
+	public List<District> getRegionByRegionId(long id);
 }

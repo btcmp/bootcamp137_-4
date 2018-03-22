@@ -41,4 +41,9 @@ public class RegionService {
 		region.setId(id);
 		return regionDao.getOne(region);
 	}
+
+	public List<Region> getRegionByProvinceId(long id) {
+		// TODO Auto-generated method stub
+		return regionDao.getRegionByProvinceId(id)	;
+	}
 }

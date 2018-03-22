@@ -17,4 +17,6 @@ public interface RegionDao {
 	public void saveUpdate(Region region);
 	
 	public void delete(Region region);
+
+	public List<Region> getRegionByProvinceId(long id);
 }

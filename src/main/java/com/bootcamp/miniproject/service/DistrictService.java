@@ -3,10 +3,13 @@ package com.bootcamp.miniproject.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bootcamp.miniproject.dao.DistrictDao;
 import com.bootcamp.miniproject.model.District;
-
+@Service
+@Transactional
 public class DistrictService {
 
 	@Autowired
@@ -36,5 +39,10 @@ public class DistrictService {
 		District district = new District();
 		district.setId(id);
 		return districtDao.getOne(district);
+	}
+
+	public List<District> getDistrictByRegionId(long id) {
+		// TODO Auto-generated method stub
+		return districtDao.getRegionByRegionId(id)	;
 	}
 }
