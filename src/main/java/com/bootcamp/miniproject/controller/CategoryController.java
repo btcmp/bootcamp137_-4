@@ -20,7 +20,7 @@ import com.bootcamp.miniproject.service.CategoryService;
 @Controller
 @RequestMapping("master/category")
 public class CategoryController {
-
+//
 	@Autowired
 	CategoryService categoryService;
 	

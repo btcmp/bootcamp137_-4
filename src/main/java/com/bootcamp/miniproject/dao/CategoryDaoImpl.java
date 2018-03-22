@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bootcamp.miniproject.model.Category;
-import com.bootcamp.miniproject.model.Supplier;
 
+//
 @Repository
 public class CategoryDaoImpl implements CategoryDao {
 	

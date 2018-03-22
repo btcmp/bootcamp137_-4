@@ -13,3 +13,4 @@ public interface CategoryDao {
 	public void delete(Category category);
 	public List<Category> getCategoryBySearchName(String search);
 }
+//
