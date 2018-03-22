@@ -18,6 +18,12 @@ import com.sun.istack.NotNull;
 @Table(name="mp_mst_user")
 public class User {
 
+	public User() {
+		this.createdOn = new Date();
+		this.modifiedOn = new Date();
+	}
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;

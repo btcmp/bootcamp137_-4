@@ -15,6 +15,12 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "mp_mst_item_inventory")
 public class ItemInventory {
+	
+	public ItemInventory() {
+		this.createdOn = new Date();
+		this.modifiedOn = new Date();
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private long id;
@@ -58,7 +64,7 @@ public class ItemInventory {
 	@ManyToOne
 	private Outlet outlet;
 	
-	/*  Relasi dengan outlet */
+	
 	public long getId() {
 		return id;
 	}

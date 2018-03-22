@@ -21,6 +21,12 @@ import com.sun.istack.NotNull;
 @Table(name="mp_mst_category")
 public class Category {
 	
+	public Category() {     //konstruktor ini berfungsi untuk menyimpan Date pada database.
+		this.createdOn = new Date();
+		this.modifiedOn = new Date();
+	}
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;

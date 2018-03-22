@@ -20,6 +20,12 @@ import com.sun.istack.NotNull;
 @Table(name="mp_mst_customer")
 public class Customer {
 
+	public Customer() {
+		this.dob = new Date();
+		this.createdOn = new Date();
+		this.modifiedOn = new Date();
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;

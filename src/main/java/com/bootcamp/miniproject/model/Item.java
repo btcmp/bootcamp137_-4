@@ -20,6 +20,12 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "mp_mst_item")
 public class Item {
+	
+	public Item() {
+		this.createdOn = new Date();
+		this.modifiedOn = new Date();
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private long id;

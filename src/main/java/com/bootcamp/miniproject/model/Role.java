@@ -21,6 +21,11 @@ import com.sun.istack.NotNull;
 @Table(name="mp_mst_role")
 public class Role {
 	
+	public Role() {
+		this.createdOn = new Date();
+		this.modifiedOn =new Date();
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
