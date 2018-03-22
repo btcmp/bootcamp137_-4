@@ -18,7 +18,7 @@ import com.bootcamp.miniproject.model.ItemVariant;
 import com.bootcamp.miniproject.service.ItemVariantService;
 
 @Controller
-@RequestMapping(value = "/master/itemVariantVariant")
+@RequestMapping("/master/itemVariant")
 public class ItemVariantController {
 	@Autowired
 	ItemVariantService itemVariantService;

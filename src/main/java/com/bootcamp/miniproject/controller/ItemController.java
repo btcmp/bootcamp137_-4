@@ -18,7 +18,7 @@ import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.service.ItemService;
 
 @Controller
-@RequestMapping(value = "/master/item")
+@RequestMapping("/master/item")
 public class ItemController {
 	
 	@Autowired
