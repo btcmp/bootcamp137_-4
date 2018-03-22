@@ -60,6 +60,9 @@ public class ItemVariant {
 	@ManyToOne
 	private Item item;
 	
+//	@OneToMany(fetch= FetchType.LAZY, mappedBy="itemVariant", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<PurchaseRequestDetail> purchaseRequestDetail;
+//	
 	@OneToMany(fetch= FetchType.LAZY, mappedBy="itemVariant", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemInventory> listItemInventory;
 	
@@ -159,6 +162,15 @@ public class ItemVariant {
 	public void setListItemInventory(List<ItemInventory> listItemInventory) {
 		this.listItemInventory = listItemInventory;
 	}
-	
+
+//	public List<PurchaseRequestDetail> getPurchaseRequestDetail() {
+//		return purchaseRequestDetail;
+//	}
+//
+//	public void setPurchaseRequestDetail(List<PurchaseRequestDetail> purchaseRequestDetail) {
+//		this.purchaseRequestDetail = purchaseRequestDetail;
+//	}
+//	
+//	
 	//updated
 }
