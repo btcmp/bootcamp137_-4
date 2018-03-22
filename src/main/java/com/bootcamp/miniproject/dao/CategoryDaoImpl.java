@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bootcamp.miniproject.model.Category;
+import com.bootcamp.miniproject.model.Supplier;
 
 @Repository
 public class CategoryDaoImpl implements CategoryDao {
@@ -51,6 +52,20 @@ public class CategoryDaoImpl implements CategoryDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(category);
 		session.flush();
+	}
+
+	@Override
+	public List<Category> getCategoryBySearchName(String search) {
+		// TODO Auto-generated method stub
+		String hql = "from Category Cat where lower(Cat.name) like :search";
+		Session session = sessionFactory.getCurrentSession();
+		List<Category> categories = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
+		System.out.println(categories.size());
+		if (categories.isEmpty()) {
+			return null;
+		} else {
+			return categories;
+		}
 	}
 
 }

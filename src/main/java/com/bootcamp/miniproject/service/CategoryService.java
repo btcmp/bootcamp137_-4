@@ -31,10 +31,15 @@ public class CategoryService {
 	}
 	
 	public void update(Category category) {
-		categoryDao.delete(category);
+		categoryDao.update(category);
 	}
 	
 	public void delete(Category category) {
 		categoryDao.delete(category);
+	}
+
+	public List<Category> getCategoryBySearchName(String search) {
+		// TODO Auto-generated method stub
+		return categoryDao.getCategoryBySearchName(search);
 	}
 }

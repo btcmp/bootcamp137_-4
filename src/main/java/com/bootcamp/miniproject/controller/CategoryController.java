@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -17,7 +18,7 @@ import com.bootcamp.miniproject.model.Category;
 import com.bootcamp.miniproject.service.CategoryService;
 
 @Controller
-@RequestMapping("/category")
+@RequestMapping("master/category")
 public class CategoryController {
 
 	@Autowired
@@ -27,6 +28,13 @@ public class CategoryController {
 	public String index(Model model) {
 		List<Category> category = categoryService.selectAll();
 		model.addAttribute("categorys", category);
+		return "category";
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String indexMainSearch(Model model, @RequestParam(value="search", defaultValue="") String search) {
+		List<Category> categories = categoryService.getCategoryBySearchName(search);
+		model.addAttribute("categorys", categories);
 		return "category";
 	}
 	
@@ -43,13 +51,13 @@ public class CategoryController {
 		return categoryService.getOne(id);
 	}
 	
-	@RequestMapping(value="update", method=RequestMethod.PUT)
+	@RequestMapping(value="/update", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.CREATED)
 	public void update(@RequestBody Category category) {
 		categoryService.update(category);
 	}
 	
-	@RequestMapping(value="delete/{id}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
 	@ResponseBody
 	public String delete(@PathVariable long id) {
 		Category category = new Category();
