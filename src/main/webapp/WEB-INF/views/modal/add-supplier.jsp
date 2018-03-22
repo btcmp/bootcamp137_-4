@@ -57,7 +57,7 @@
 						</select>
 					</div>
 					<div class="checkbox">
-						<label for="add-active"><input id="add-active" type="checkbox"
+						<label id="add-active"><input id="active" type="checkbox"
 							value="true">Active</label>
 					</div>
 				</form>
