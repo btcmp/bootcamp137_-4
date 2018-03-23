@@ -57,6 +57,7 @@ public class PurchaseRequestController {
 	public void delete(@PathVariable long id) {
 		PurchaseRequest pr = prService.getOne(id);
 		prService.delete(pr);
+		
 	}
 	
 }
