@@ -56,9 +56,9 @@ public class SupplierDaoImpl implements SupplierDao{
 	
 	public List<Supplier> getSupplierBySearchName(String search) {
 		// TODO Auto-generated method stub
-		String hql = "from Supplier S where S.name like :search";
+		String hql = "from Supplier S where lower(S.name) like :search";
 		Session session = sessionFactory.getCurrentSession();
-		List<Supplier> suppliers = session.createQuery(hql).setParameter("search", "%"+search+"%").list();
+		List<Supplier> suppliers = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
 		if (suppliers.isEmpty()) {
 			return null;
 		} else {
