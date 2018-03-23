@@ -35,5 +35,9 @@ public class ItemInventoryService {
 	public void update(ItemInventory itemInventory) {
 		itemInventoryDao.update(itemInventory);
 	}
+	
+	public List<ItemInventory> searchItemInventoryByItemName(String search) {
+		return itemInventoryDao.searchItemInventoryByItemName(search);
+	}
 
 }

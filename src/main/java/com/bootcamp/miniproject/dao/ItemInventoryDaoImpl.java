@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.model.ItemInventory;
 
 @Repository
@@ -49,6 +50,18 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(itemInventory);
 		session.flush();
+	}
+
+	@Override
+	public List<ItemInventory> searchItemInventoryByItemName(String search) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemInventory in where lower(in.itemVarian.item.name) like :itemName";
+		List<ItemInventory> itemInventorys = session.createQuery(hql).setParameter("itemName", "%"+search.toLowerCase()+"%").list();
+		if (itemInventorys.isEmpty()) {
+			return null;
+		} else {
+			return itemInventorys;
+		}
 	}
 
 }
