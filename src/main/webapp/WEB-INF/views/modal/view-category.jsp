@@ -14,6 +14,7 @@
 			</div>
 			<div class="modal-body">
 				<form action="#">
+					<input type="hidden" name="edit-createdOn" id="edit-createdOn"/>
 					<input type="hidden" name="edit-id" id="edit-id"/>
 					<div class="form-group">
 						<label for="edit-name">Category Name</label> 

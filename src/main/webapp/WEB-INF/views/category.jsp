@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Entry Supplier</title>
+<title>Entry Category</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css"/>
@@ -32,8 +32,7 @@ $(document).ready(function(){
 	});
 
 	//EXECUTE CATEGORY
-	$('#btn-save').on('click', function(evt){
-		evt.preventDefault();
+	$('#btn-save').on('click', function(){
 		var category = {
 			name : $('#entry-category').val(),
 		}
@@ -60,20 +59,22 @@ $(document).ready(function(){
 		$.ajax({
 			url : '${pageContext.request.contextPath}/master/category/get-one/'+id,
 			type : 'GET',
+			dataType : 'json',
 			success : function(category){
 				setEditCategory(category);
-				$('#edit-category').modal();
+				$('#edit-category').modal();   //call modal
 			},
 			error : function(){
 				alert('failed getting data update');
-			},
-			dataType : 'json'
+			}
+			
 		});
 	});
 	//SET UP DATA UPDATE
 		function setEditCategory(category) {
 			$('#edit-id').val(category.id);
 			$('#edit-name').val(category.name);
+			$('#edit-createdOn').val(category.createdOn);
 /* 			$('#edit-item').val(category.id); */
 		}
 	
@@ -83,6 +84,7 @@ $(document).ready(function(){
 		var category = {
 			id : $('#edit-id').val(),
 			name : $('#edit-name').val(),	
+			createdOn : $('#edit-createdOn').val(),
 		}
 	
 		$.ajax({
@@ -104,9 +106,6 @@ $(document).ready(function(){
 	});
 //===============================	
 //DELETE
-
-		
-	
 	$('#btn-delete').on('click', function(){
 		var id = $('#edit-id').val(); 
 		
@@ -123,7 +122,9 @@ $(document).ready(function(){
 		}
 		});  		
 	}); 
-	//==================================
+	
+//==================================
+//SEARCH
 	$('#btn-search').click(function(){
 		var word = $('#search').val();
 		window.location = "${pageContext.request.contextPath}/master/category/search?search="+word;

@@ -2,6 +2,7 @@ package com.bootcamp.miniproject.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,20 +16,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bootcamp.miniproject.model.District;
+import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.model.Province;
 import com.bootcamp.miniproject.model.Region;
-import com.bootcamp.miniproject.model.Supplier;
 import com.bootcamp.miniproject.service.DistrictService;
+import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.ProvinceService;
 import com.bootcamp.miniproject.service.RegionService;
-import com.bootcamp.miniproject.service.SupplierService;
 
 @Controller
-@RequestMapping("/master/supplier")
-public class SupplierController {
+@RequestMapping("master/outlet")
+public class OutletController {
 
 	@Autowired
-	SupplierService supplierService;
+	OutletService outletService;
 	
 	@Autowired
 	ProvinceService provinceService;
@@ -41,54 +42,56 @@ public class SupplierController {
 	
 	@RequestMapping
 	public String index(Model model) {
-		List<Supplier> suppliers = supplierService.selectAll();
+		List<Outlet> outlets = outletService.selectAll();
 		List<Province> provinces = provinceService.selectAll();
 		List<Region> regions = regionService.selectAll();
 		List<District> districts = districtService.selectAll();
-		model.addAttribute("suppliers", suppliers);
+		model.addAttribute("outlets", outlets);
 		model.addAttribute("provinces", provinces);
 		model.addAttribute("regions", regions);
 		model.addAttribute("districts", districts);
-		return "supplier";
+		return "outlet";
 	}
 	
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String indexMainSearch(Model model, @RequestParam(value="search", defaultValue="") String search) {
-		List<Supplier> suppliers = supplierService.getSupplierBySearchName(search);
+	@RequestMapping(value="/search", method = RequestMethod.GET)
+	public String indexMainSearch(Model model, @RequestParam(value="search", defaultValue="")String search) {
+		List<Outlet> outlets = outletService.getOutletBySearchName(search);
 		List<Province> provinces = provinceService.selectAll();
 		List<Region> regions = regionService.selectAll();
 		List<District> districts = districtService.selectAll();
-		model.addAttribute("suppliers", suppliers);
+		model.addAttribute("outlets",outlets);
 		model.addAttribute("provinces", provinces);
 		model.addAttribute("regions", regions);
 		model.addAttribute("districts", districts);
-		return "supplier";
+		return "outlet";
 	}
 	
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public void saveSupplier(@RequestBody Supplier supplier) {
-		supplierService.save(supplier);
+	public void save(@RequestBody Outlet outlet) {
+		outletService.save(outlet);
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	@ResponseStatus(HttpStatus.OK)
-	public void updateSupplier(@RequestBody Supplier supplier) {
-		supplierService.saveUpdate(supplier);
-	}
-	
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.OK)
-	public void deleteSupplier(@PathVariable long id) {
-		Supplier supplier = new Supplier();
-		supplier.setId(id);
-		supplierService.delete(supplier);
-	}
-	
-	@RequestMapping(value = "/get-one/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/get-one/{id}")
 	@ResponseBody
-	public Supplier getOneSupplier(@PathVariable long id) {
-		Supplier supplier = supplierService.getOne(id);
-		return supplier;
+	public Outlet getOne(@PathVariable long id) {
+		return outletService.getOne(id);
 	}
+	
+	@RequestMapping(value="/update", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.CREATED)
+	public void update(@RequestBody Outlet outlet) {
+		outletService.update(outlet);
+	}
+	
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
+	@ResponseBody
+	public String delete(@PathVariable long id) {
+		Outlet outlet = new Outlet();
+		outlet.setId(id);
+		outletService.delete(outlet);
+		return "redirect:/outlet";
+	}
+	
+	
 }
