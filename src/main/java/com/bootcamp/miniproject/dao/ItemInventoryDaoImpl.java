@@ -24,7 +24,7 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		Query query = session.createQuery(hql);
 		return query.list();
 	}
-
+//
 	@Override
 	public void save(ItemInventory itemInventory) {
 		Session session = sessionFactory.getCurrentSession();

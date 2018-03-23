@@ -17,5 +17,5 @@ public interface ItemInventoryDao {
 	void update(ItemInventory itemInventory);
 
 	List<ItemInventory> searchItemInventoryByItemName(String search);
-
+//
 }

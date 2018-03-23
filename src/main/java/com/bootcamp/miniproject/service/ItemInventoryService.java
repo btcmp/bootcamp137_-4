@@ -23,7 +23,7 @@ public class ItemInventoryService {
 	public void save(ItemInventory itemInventory) {
 		itemInventoryDao.save(itemInventory);
 	}
-
+//
 	public ItemInventory getOne(long id) {
 		return itemInventoryDao.getOne(id);
 	}
