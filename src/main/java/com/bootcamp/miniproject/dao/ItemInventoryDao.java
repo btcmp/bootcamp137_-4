@@ -6,16 +6,16 @@ import com.bootcamp.miniproject.model.ItemInventory;
 
 public interface ItemInventoryDao {
 
-	List<ItemInventory> getAll();
+	public List<ItemInventory> getAll();
 
-	void save(ItemInventory itemInventory);
+	public void save(ItemInventory itemInventory);
 
-	ItemInventory getOne(long id);
+	public ItemInventory getOne(long id);
 
-	void delete(ItemInventory itemInventory);
+	public void delete(ItemInventory itemInventory);
 
-	void update(ItemInventory itemInventory);
+	public void update(ItemInventory itemInventory);
 
-	List<ItemInventory> searchItemInventoryByItemName(String search);
+	public List<ItemInventory> searchItemInventoryByItemName(String search);
 //
 }
