@@ -19,7 +19,6 @@ import com.bootcamp.miniproject.service.PurchaseRequestService;
 @Controller
 @RequestMapping("/transaction/purchaseRequest")
 public class PurchaseRequestController {
-	
 	@Autowired
 	PurchaseRequestService prService;
 	

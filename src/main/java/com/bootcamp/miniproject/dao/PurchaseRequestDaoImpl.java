@@ -50,4 +50,5 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 		session.delete(pr);
 		session.flush();
 	}
+	
 }
