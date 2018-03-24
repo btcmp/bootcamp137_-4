@@ -18,12 +18,13 @@ import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.model.TransferStock;
+import com.bootcamp.miniproject.model.TransferStockDetail;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.TransferStockService;
 
 @Controller
-@RequestMapping("/transaction/transfer")
+@RequestMapping("/transaction/transfer-stock")
 public class TransferStockController {
 
 	@Autowired
@@ -73,10 +74,14 @@ public class TransferStockController {
 		return transferStock;
 	}
 	
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String indexMainSearch(Model model, @RequestParam(value="search", defaultValue="") String search) {
+	@RequestMapping(value = "/search-outlet", method = RequestMethod.GET)
+	public String indexMainSearch(Model model, @RequestParam(value="search", defaultValue="") long search) {
 		List<TransferStock> transferStocks = transferStockService.getTransferStockByOutletId(search);
+		List<Outlet> outlets = outletService.selectAll();
+		List<ItemInventory> itemsInventorys= itemInventoryService.getAll();
 		model.addAttribute("transferStocks", transferStocks);
+		model.addAttribute("outlets", outlets);
+		model.addAttribute("itemInventorys", itemsInventorys);
 		return "transferStock";
 	}
 	
@@ -84,7 +89,6 @@ public class TransferStockController {
 	@ResponseBody
 	public List<ItemInventory> searchItem(@RequestParam(value="search", defaultValue="") String search) {
 		List<ItemInventory> itemsInventory = itemInventoryService.searchItemInventoryByItemName(search);
-		System.out.println(itemsInventory);
 		return itemsInventory;
 	}
 	
@@ -93,5 +97,12 @@ public class TransferStockController {
 	public ItemInventory getOneItem(@PathVariable long id) {
 		ItemInventory itemInventory = itemInventoryService.getOne(id);
 		return itemInventory;
+	}
+	
+	@RequestMapping(value = "/search-transfer-stock-detail", method = RequestMethod.GET)
+	@ResponseBody
+	public List<TransferStockDetail> searchTSDByTSID(@RequestParam(value="search", defaultValue="") long search) {
+		List<TransferStockDetail> transferStockDetails = transferStockService.getTransferStockDetailsByTransferStockId(search);
+		return transferStockDetails;
 	}
 }

@@ -5,15 +5,13 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add New Supplier</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Add New Transfer Stock</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-
-
 				<form class="form-all">
 					<div class="form-group">
 						<label for="add-from-outlet">From Outlet</label> <select
@@ -48,7 +46,8 @@
 						</table>
 					</div>
 				</form>
-			</div><div class="modal-footer">
+			</div>
+			<div class="modal-footer">
 				<button type="button" id="btn-add-transfer-item" class="form-control btn btn-primary">Add Transfer Item</button>
 			</div>
 			<div class="modal-footer">

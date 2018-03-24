@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Entry Supplier</title>
+<title>Entry Transfer Stock</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css"/>
@@ -23,12 +23,17 @@
 </head>
 <body>
 <div class="container">
-<h3>Supplier</h3>
-	<div style="margin-left: 30px; margin-top: 30px;" id="search-box" class="row"> 
-		<div clas="col-sm-4"><input  class="form-control" type="text" id="search" placeholder="search transferStock"/></div>
-		<div clas="col-sm-4"><a id="btn-search" class="btn btn-primary">Search</a></div>
+<h3>Transfer Stock</h3>
+	<div class="form-group">
+		<select
+			class="form-control col-sm-4" name="outlet-search" id="outlet-search">
+			<option value="kosong">Search Outlet</option>
+			<c:forEach var="outlet" items="${outlets }">
+				<option value="${outlet.id }">${outlet.name }</option>
+			</c:forEach>
+			<option value="all">All Outlet</option>
+		</select>
 	</div>
-	</br>
 	<table id="transferStock-tbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
 		<thead>
 			<th>Transfer Date</th>
@@ -45,8 +50,7 @@
 					<td>${transferStock.toOutlet.name }</td>
 					<td>${transferStock.status }</td>
 					<td>
-						<a id="${transferStock.id }" class="update btn btn-primary">Update</a> |
-						<a id="${transferStock.id }" class="delete btn btn-danger">Delete</a>
+						<a id="${transferStock.id }" class="view btn btn-primary">View</a>
 					</td>
 				</tr>
 			</c:forEach>
@@ -55,10 +59,12 @@
 	
 	<button id="create" class="btn btn-block btn-success btn-lg">Create</button>
 </div>
-	<%@ include file="modal/edit-transfer-stock.jsp" %>
+<div>
+	<%@ include file="modal/view-transfer-stock.jsp" %>
 	<%@ include file="modal/add-transfer-stock.jsp" %>
 	<%@ include file="modal/add-transfer-item.jsp" %>
-	<%@ include file="modal/del-transfer-stock.html" %>
+</div>
+	
 </body>
 <script>
 $(document).ready(function(){
@@ -71,52 +77,36 @@ $(document).ready(function(){
 	var addedQty = [];
 	$('.btn-added-item').hide();
 	
-	$('.delete').click(function(){
-		var id = $(this).attr('id');
-		$('#delete-id').val(id);
-		$('#delete-transferStock').modal();
-	})
-	
-	$('#btn-delete').click(function(){
-		var id = $('#delete-id').val()
-		$.ajax({
-			url : '${pageContext.request.contextPath}/transaction/transfer/delete/'+id,
-			type : 'DELETE',
-			success : function(){
-				alert('delete successfully');
-				window.location='${pageContext.request.contextPath}/transaction/transfer';
-			}, error : function(){
-			alert('delete failed');
-				}
-		})
-	})
-	
-	$('.update').click(function(){
+	$('.view').click(function(){
 		var id = $(this).attr('id');
 		$.ajax({
 			type : 'GET',
-			url : '${pageContext.request.contextPath}/transaction/transfer/get-one/'+id,
+			url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one/'+id,
 			dataType: 'json',
 			success : function(data){
-				$('#update-id').val(data.id);
-				$('#update-name').val(data.name);
-				$('#update-address').val(data.address);
-				$('#update-postal-code').val(data.postalCode);
-				$('#update-phone').val(data.phone);
-				$('#update-email').val(data.email);
-				$('#update-created-on').val(data.createdOn);
-				var active = data.active;
-				if (active==true) {
-					$('#update-active').prop('checked', true);
-				} else {
-					$('#update-active').prop('checked', false);
-				}
-				$('#update-province').val(data.province.id);
-				$('#update-region').val(data.region.id);
-				$('#update-district').val(data.district.id);
+				$('#view-from-outlet').val(data.fromOutlet.name);
+				$('#view-to-outlet').val(data.toOutlet.name);
+				$('#view-notes').val(data.notes);
+				$('#view-transferStock-tbl').empty();
+				$.ajax({
+					url : '${pageContext.request.contextPath }/transaction/transfer-stock/search-transfer-stock-detail?search='+data.id,
+					type : 'GET',
+					dataType: 'json',
+					success : function(data2){
+						//console.log(data2);
+						$.each(data2, function(key, val) {
+						$('#view-transferStock-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
+								+ val.instock +'</td><td>'+ val.transferQty +'</td></tr>');
+						});
+						//call modal
+						$('#modal-view-transferStock').modal();
+					}, error : function(){
+						alert('get transfer stock detail failed');
+					}
+					
+				})
 				
-				//call modal
-				$('#modal-update-transferStock').modal();
+				
 				
 			}, 
 			error : function(){
@@ -125,46 +115,6 @@ $(document).ready(function(){
 		})
 	})
 	
-	$('#btn-update').click(function(){
-		var active = "false";
-		$('#update-active input:checked').each(function(){
-			active = $(this).val()
-		})
-		var transferStock={
-				id : $('#update-id').val(),
-				name : $('#update-name').val(),
-				address : $('#update-address').val(),
-				postalCode : $('#update-postal-code').val(),
-				phone : $('#update-phone').val(),
-				email : $('#update-email').val(),
-				province : {
-					id : $('#update-province').val()
-				},
-				region : {
-					id : $('#update-region').val()
-				},
-				district : {
-					id : $('#update-district').val()
-				},
-				createdOn : $('#update-created-on').val(),
-				active : active
-			}
-			$.ajax({
-				url : '${pageContext.request.contextPath}/transaction/transfer/update',
-				type : 'PUT',
-				data : JSON.stringify(transferStock),
-				contentType : 'application/json',
-				success : function(){
-					alert('update successfully');
-					window.location='${pageContext.request.contextPath}/transaction/transfer';
-				}, error : function(){
-					alert('update failed');
-				}
-				
-			})
-		})
-	
-	//add
 	$('#create').click(function(){
 		$('#modal-add-transferStock').modal();
 		document.getElementById("btn-save").disabled = true;
@@ -201,13 +151,13 @@ $(document).ready(function(){
 		};
 		console.log(transferStock);
 		$.ajax({
-			url : '${pageContext.request.contextPath }/transaction/transfer/save',
+			url : '${pageContext.request.contextPath }/transaction/transfer-stock/save',
 			type : 'POST',
 			data : JSON.stringify(transferStock),
 			contentType : 'application/json',
 			success : function(){
 				alert('save successfully');
-				window.location='${pageContext.request.contextPath}/transaction/transfer';
+				window.location='${pageContext.request.contextPath}/transaction/transfer-stock';
 			}, error : function(){
 				alert('save failed');
 			}
@@ -215,97 +165,13 @@ $(document).ready(function(){
 		})
 	})
 	
-	$('#add-province').change(function(){
-		var id = $(this).val();
-		if (id!=="") {
-			$.ajax({
-				url : '${pageContext.request.contextPath }/additional/region/get-region?id='+id,
-				type : 'GET',
-				success : function(data){
-					var region = [];
-					var reg = "<option value=\"\">Choose Region</option>";
-					region.push(reg);
-					$(data).each(function(index, data2){
-					reg = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
-					region.push(reg);
-					})
-					$('#add-region').html(region);
-				}, error : function(){
-					alert('get failed');
-				}
-			})
+	$('#outlet-search').change(function(){
+		var word = $(this).val();
+		if (word=="all") {
+			window.location = "${pageContext.request.contextPath}/transaction/transfer-stock";
+		} else if (word!=="kosong") {
+			window.location = "${pageContext.request.contextPath}/transaction/transfer-stock/search-outlet?search="+word;
 		}
-	});
-	
-	$('#add-region').change(function(){
-		var id = $(this).val();
-		if (id!=="") {
-			$.ajax({
-				url : '${pageContext.request.contextPath }/additional/district/get-district?id='+id,
-				type : 'GET',
-				success : function(data){
-					var district = [];
-					var dis = "<option value=\"\">Choose District</option>";
-					district.push(dis);
-					$(data).each(function(index, data2){
-					dis = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
-					district.push(dis);
-					})
-					$('#add-district').html(district);
-				}, error : function(){
-					alert('get failed');
-				}
-			})
-		}
-	});
-	
-	$('#update-province').change(function(){
-		var id = $('#update-province').val();
-		if (id!=="") {
-			$.ajax({
-				url : '${pageContext.request.contextPath }/additional/region/get-region?id='+id,
-				type : 'GET',
-				success : function(data){
-					var region = [];
-					var reg = "<option value=\"\">Choose Region</option>";
-					region.push(reg);
-					$(data).each(function(index, data2){
-					reg = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
-					region.push(reg);
-					})
-					$('#update-region').html(region);
-				}, error : function(){
-					alert('get failed');
-				}
-			})
-		}
-	});
-	
-	$('#update-region').change(function(){
-		var id = $('#update-region').val();
-		if (id!=="") {
-			$.ajax({
-				url : '${pageContext.request.contextPath }/additional/district/get-district?id='+id,
-				type : 'GET',
-				success : function(data){
-					var district = [];
-					var dis = "<option value=\"\">Choose District</option>";
-					district.push(dis);
-					$(data).each(function(index, data2){
-					dis = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
-					district.push(dis);
-					})
-					$('#update-district').html(district);
-				}, error : function(){
-					alert('get failed');
-				}
-			})
-		}
-	});
-	
-	$('#btn-search').click(function(){
-		var word = $('#search').val();
-		window.location = "${pageContext.request.contextPath}/transaction/transfer/search?search="+word;
 	})
 	
 	$('body').on('click', 'button.btn-add-item', function(){
@@ -319,7 +185,7 @@ $(document).ready(function(){
 		document.getElementById("btn-save").disabled = false;
 		$.ajax({
 			type : 'GET',
-			url : '${pageContext.request.contextPath}/transaction/transfer/get-one-item/'+id,
+			url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one-item/'+id,
 			dataType: 'json',
 			success : function(data){
 				$('#add-transferStock-tbl').append('<tr id="tr-transferStock'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>'
@@ -352,7 +218,7 @@ $(document).ready(function(){
 		var word = $(this).val();
 		$.ajax({
 			type : 'GET',
-			url : '${pageContext.request.contextPath}/transaction/transfer/search-item?search='+word,
+			url : '${pageContext.request.contextPath}/transaction/transfer-stock/search-item?search='+word,
 			dataType: 'json',
 			success : function(data){
 				$('#add-item-transfer-tbl').empty();

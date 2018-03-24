@@ -55,11 +55,11 @@ public class TransferStockDaoImpl implements TransferStockDao{
 		session.flush();
 	}
 	
-	public List<TransferStock> getTransferStockByOutletId(String search) {
+	public List<TransferStock> getTransferStockByOutletId(long search) {
 		// TODO Auto-generated method stub
-		String hql = "from TransferStock TS where TS.fromOutlet = :search";
+		String hql = "from TransferStock TS where TS.toOutlet.id = :search";
 		Session session = sessionFactory.getCurrentSession();
-		List<TransferStock> transferStocks = session.createQuery(hql).setParameter("search", "%"+search+"%").list();
+		List<TransferStock> transferStocks = session.createQuery(hql).setParameter("search", search).list();
 		if (transferStocks.isEmpty()) {
 			return null;
 		} else {

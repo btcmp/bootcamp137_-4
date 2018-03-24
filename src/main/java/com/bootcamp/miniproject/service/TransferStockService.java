@@ -65,8 +65,12 @@ public class TransferStockService {
 		return transferStockDao.getOne(transferStock);
 	}
 
-	public List<TransferStock> getTransferStockByOutletId(String search) {
+	public List<TransferStock> getTransferStockByOutletId(long search) {
 		// TODO Auto-generated method stub
 		return transferStockDao.getTransferStockByOutletId(search);
+	}
+	
+	public List<TransferStockDetail> getTransferStockDetailsByTransferStockId(long search){
+		return transferStockDetailDao.getTransferStockByTransferStockId(search);
 	}
 }

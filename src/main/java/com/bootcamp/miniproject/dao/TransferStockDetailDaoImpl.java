@@ -53,4 +53,17 @@ public class TransferStockDetailDaoImpl implements TransferStockDetailDao{
 		session.delete(transferStockDetail);
 		session.flush();
 	}
+
+	@Override
+	public List<TransferStockDetail> getTransferStockByTransferStockId(long search) {
+		// TODO Auto-generated method stub
+		String hql = "from TransferStockDetail TSD where TSD.transferStock.id = :search";
+		Session session = sessionFactory.getCurrentSession();
+		List<TransferStockDetail> transferStockDetails = session.createQuery(hql).setParameter("search", search).list();
+		if (transferStockDetails.isEmpty()) {
+			return null;
+		} else {
+			return transferStockDetails;
+		}
+	}
 }

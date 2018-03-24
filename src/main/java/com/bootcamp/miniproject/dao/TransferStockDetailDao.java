@@ -17,4 +17,6 @@ public interface TransferStockDetailDao {
 	public void saveUpdate(TransferStockDetail transferStockDetail);
 	
 	public void delete(TransferStockDetail transferStockDetail);
+	
+	public List<TransferStockDetail> getTransferStockByTransferStockId(long search);
 }
