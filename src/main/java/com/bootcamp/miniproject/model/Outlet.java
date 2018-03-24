@@ -25,7 +25,7 @@ import com.sun.istack.NotNull;
 public class Outlet {
 	
 	public Outlet() {
-		this.createOn = new Date();
+		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
 	
@@ -51,12 +51,12 @@ public class Outlet {
 	@Column(name="postal_code")
 	private String postalCode;
 	
-	@Column(name="create_by")
+	@Column(name="created_by")
 	private long createdBy;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="cretae_on")
-	private Date createOn;
+	@Column(name="created_on")
+	private Date createdOn;
 	
 	@Column(name="modified_by")
 	private long modifiedBy;
@@ -141,11 +141,11 @@ public class Outlet {
 	public void setCreatedBy(long createdBy) {
 		this.createdBy = createdBy;
 	}
-	public Date getCreateOn() {
-		return createOn;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 	public long getModifiedBy() {
 		return modifiedBy;

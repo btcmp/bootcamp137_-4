@@ -41,7 +41,8 @@ public class CategoryDaoImpl implements CategoryDao {
 	@Override
 	public void update(Category category) {
 		// TODO Auto-generated method stub
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession()
+				;
 		session.update(category);
 		session.flush();
 	}
@@ -60,6 +61,20 @@ public class CategoryDaoImpl implements CategoryDao {
 		String hql = "from Category Cat where lower(Cat.name) like :search";
 		Session session = sessionFactory.getCurrentSession();
 		List<Category> categories = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
+		System.out.println(categories.size());
+		if (categories.isEmpty()) {
+			return null;
+		} else {
+			return categories;
+		}
+	}
+
+	@Override
+	public List<Category> selectStatusActive() {
+		// TODO Auto-generated method stub
+		String hql = "from Category Cat where Cat.active = 0";
+		Session session = sessionFactory.getCurrentSession();
+		List<Category> categories = session.createQuery(hql).list();
 		System.out.println(categories.size());
 		if (categories.isEmpty()) {
 			return null;

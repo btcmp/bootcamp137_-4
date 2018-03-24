@@ -42,4 +42,9 @@ public class CategoryService {
 		// TODO Auto-generated method stub
 		return categoryDao.getCategoryBySearchName(search);
 	}
+
+	public List<Category> selectStatusActive() {
+		// TODO Auto-generated method stub
+		return categoryDao.selectStatusActive();
+	}
 }

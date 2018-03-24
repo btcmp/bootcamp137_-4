@@ -12,5 +12,6 @@ public interface CategoryDao {
 	public void update(Category category);
 	public void delete(Category category);
 	public List<Category> getCategoryBySearchName(String search);
+	public List<Category> selectStatusActive();
 }
 //

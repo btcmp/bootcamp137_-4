@@ -26,7 +26,7 @@ public class CategoryController {
 	
 	@RequestMapping
 	public String index(Model model) {
-		List<Category> category = categoryService.selectAll();
+		List<Category> category = categoryService.selectStatusActive();
 		model.addAttribute("categorys", category);
 		return "category";
 	}

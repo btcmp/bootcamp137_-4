@@ -31,10 +31,11 @@ $(document).ready(function(){
 		$('#save-category').modal();
 	});
 
-	//EXECUTE CATEGORY
+	//EXECUTE
 	$('#btn-save').on('click', function(){
 		var category = {
 			name : $('#entry-category').val(),
+			active : 0
 		}
 
 		$.ajax({
@@ -105,11 +106,9 @@ $(document).ready(function(){
 		
 	});
 //===============================	
-//DELETE
-	$('#btn-delete').on('click', function(){
-		var id = $('#edit-id').val(); 
-		
-		console.log(id);
+//DELETE IN TABLE and DATABASE
+/*  	$('#btn-delete').on('click', function(){
+		var	id = $('#edit-id').val();
 	
 		$.ajax({ 
 		url : '${pageContext.request.contextPath}/master/category/delete/'+id,
@@ -121,7 +120,43 @@ $(document).ready(function(){
 			alert('delete failed');
 		}
 		});  		
-	}); 
+	});  */
+	
+	
+//Delete di Table. Data pada Database masih dan Mengubah Status Active-nya menjadi 1 (0 = active. 1 = tidak active);
+	$('#btn-delete').on('click', function(){
+		var category = {
+			id : $('#edit-id').val(),
+			name : $('#edit-name').val(),	
+			createdOn : $('#edit-createdOn').val(),
+			active : 1
+		}
+	
+		$.ajax({
+			url : '${pageContext.request.contextPath}/master/category/update',
+			type : 'PUT',
+			data : JSON.stringify(category),
+			contentType : 'application/json',
+			
+			success : function(data){
+				alert('delete successfully!')
+				window.location = '${pageContext.request.contextPath}/master/category';
+			},
+			error : function () {
+				alert('delete failed')
+			}
+		
+		});
+		
+	});
+//==================================
+//RESET FORM
+	$('#btn-reset').on('click', function(){
+		$('#edit-name').val('');
+	})
+
+
+
 	
 //==================================
 //SEARCH

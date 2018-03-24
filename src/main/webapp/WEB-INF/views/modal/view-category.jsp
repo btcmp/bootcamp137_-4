@@ -16,7 +16,7 @@
 				<form action="#">
 					<input type="hidden" name="edit-createdOn" id="edit-createdOn"/>
 					<input type="hidden" name="edit-id" id="edit-id"/>
-					<div class="form-group">
+					<div class="form-group" id="form-categoryName">
 						<label for="edit-name">Category Name</label> 
 						<input type="text" class="form-control" id="edit-name"  placeholder="Category Name" />
 					</div>
@@ -24,7 +24,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" id="btn-delete" class="btn btn-danger" >Delete</button> 
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" id="btn-reset" class="btn btn-secondary">Close</button>
 				<button type="button" id="btn-update" class="btn btn-primary">Save</button>
 			</div>
 		</div>

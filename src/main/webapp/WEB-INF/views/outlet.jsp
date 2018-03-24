@@ -145,7 +145,7 @@
 		$('#edit-region').val(outlet.region.id);
 		$('#edit-district').val(outlet.district.id);
 		$('#edit-postalCode').val(outlet.postalCode);
-		$('#edit-createOn').val(outlet.createOn);
+		$('#edit-createdOn').val(outlet.createdOn);
 		var active = outlet.active;
 		if(active==true){
 			$('#edit-active').prop('checked', true);
@@ -177,7 +177,7 @@
 				id : $('#edit-district').val()
 			},
 			postalCode : $('#edit-postalCode').val(),
-			createOn : $('#edit-createOn').val(),
+			createdOn : $('#edit-createdOn').val(),
 			active : active
 		}
 		
