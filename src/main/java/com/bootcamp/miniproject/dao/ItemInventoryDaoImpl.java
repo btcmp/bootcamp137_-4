@@ -54,7 +54,7 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 	@Override
 	public List<ItemInventory> searchItemInventoryByItemName(String search) {
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from ItemInventory i where lower(i.itemVariant.item.name) like :itemName";
+		String hql = "from ItemInventory i where lower(i.itemVariant.item.name) like :itemName or lower(i.itemVariant.name) like :itemName";
 		List<ItemInventory> itemInventorys = session.createQuery(hql).setParameter("itemName", "%"+search.toLowerCase()+"%").list();
 		if (itemInventorys.isEmpty()) {
 			return null;

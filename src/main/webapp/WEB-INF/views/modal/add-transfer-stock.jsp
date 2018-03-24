@@ -36,25 +36,14 @@
 							class="form-control" id="add-notes" placeholder="input notes">
 					</div>
 					<div>
-						<table id="transferStock-tbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
+						<table class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
 								<th>Item</th>
 								<th>In Stock</th>
 								<th>Trans. Qty</th>
 								<th>Action</th>
 							</thead>
-							<tbody>
-								<c:forEach items="${transferStocks }" var="transferStock">
-									<tr>
-										<td>${transferStock.modifiedOn }</td>
-										<td>${transferStock.fromOutlet }</td>
-										<td>${transferStock.toOutlet }</td>
-										<td>
-											<a id="${transferStock.id }" class="update btn btn-primary">Update</a> |
-											<a id="${transferStock.id }" class="delete btn btn-danger">Delete</a>
-										</td>
-									</tr>
-								</c:forEach>
+							<tbody id="add-transferStock-tbl">
 							</tbody>
 						</table>
 					</div>
@@ -64,7 +53,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" id="btn-add" class="btn btn-primary">Save & Submit</button>
+				<button type="button" id="btn-save" class="btn btn-primary">Save & Submit</button>
 			</div>
 		</div>
 	</div>

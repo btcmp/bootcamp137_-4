@@ -6,7 +6,7 @@ import com.bootcamp.miniproject.model.TransferStock;
 
 public interface TransferStockDao {
 
-public void save(TransferStock transferStock);
+	public void save(TransferStock transferStock);
 	
 	public List<TransferStock> selectAll();
 	

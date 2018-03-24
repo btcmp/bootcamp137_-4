@@ -20,18 +20,25 @@
 							class="form-control" id="search-item-varian" placeholder="search items...">
 					</div>
 					<div>
-						<table id="transferStock-tbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
+						<table class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
 								<th>Item</th>
 								<th>In Stock</th>
 								<th>Trans. Qty</th>
+								<th>Action</th>
 							</thead>
-							<tbody>
-								<c:forEach items="${transferStocks }" var="transferStock">
+							<tbody id="add-item-transfer-tbl">
+								<c:forEach items="${itemInventorys }" var="itemInventory">
 									<tr>
-										<td>${transferStock.modifiedOn }</td>
-										<td>${transferStock.fromOutlet }</td>
-										<td>${transferStock.toOutlet }</td>
+										<td>${itemInventory.itemVariant.item.name }-${itemInventory.itemVariant.name }</td>
+										<td>${itemInventory.endingQty }</td>
+										<td id="td-qty${itemInventory.id}">
+											<input class="add-transfer-stock-qty${itemInventory.id}" value="0"/>
+										</td>
+										<td>
+											<button type="button" id="${itemInventory.id}" class="btn-add-item${itemInventory.id} btn-add-item btn btn-primary">Add</button>
+											<button type="button" id="${itemInventory.id}" class="btn-added-item${itemInventory.id} btn-added-item btn">Added</button>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -40,7 +47,6 @@
 				</form>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" id="btn-add-item" class="btn btn-primary">Add</button>
 			</div>
 		</div>
 	</div>

@@ -39,8 +39,10 @@ public class TransferStockController {
 	public String index(Model model) {
 		List<TransferStock> transferStocks = transferStockService.selectAll();
 		List<Outlet> outlets = outletService.selectAll();
+		List<ItemInventory> itemsInventorys= itemInventoryService.getAll();
 		model.addAttribute("transferStocks", transferStocks);
 		model.addAttribute("outlets", outlets);
+		model.addAttribute("itemInventorys", itemsInventorys);
 		return "transferStock";
 	}
 	
@@ -84,5 +86,12 @@ public class TransferStockController {
 		List<ItemInventory> itemsInventory = itemInventoryService.searchItemInventoryByItemName(search);
 		System.out.println(itemsInventory);
 		return itemsInventory;
+	}
+	
+	@RequestMapping(value = "/get-one-item/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ItemInventory getOneItem(@PathVariable long id) {
+		ItemInventory itemInventory = itemInventoryService.getOne(id);
+		return itemInventory;
 	}
 }

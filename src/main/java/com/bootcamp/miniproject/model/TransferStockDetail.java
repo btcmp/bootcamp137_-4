@@ -1,43 +1,41 @@
 package com.bootcamp.miniproject.model;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="MP_T_TRANSFER_STOCK")
-public class TransferStock {
-
-	public TransferStock() {
+@Table(name="MP_T_TRANSFER_STOCK_DETAIL")
+public class TransferStockDetail {
+	
+	public TransferStockDetail() {
 		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private long id;
+	//@NotNull
+	@ManyToOne
+	@JoinColumn(name="transfer_stock")
+	private TransferStock transferStock;
+	private int instock;
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="from_outlet")
-	private Outlet fromOutlet;
+	@JoinColumn(name="item_variant")
+	private ItemVariant itemVariant;
 	@NotNull
-	@ManyToOne
-	@JoinColumn(name="to_outlet")
-	private Outlet toOutlet;
-	private String notes;
-	@NotNull
-	private String status;
+	@Column(name="transfer_qty")
+	private int transferQty;
 	@Column(name="created_by")
 	private long createdBy;
 	@Column(name="created_on")
@@ -46,44 +44,36 @@ public class TransferStock {
 	private long modifiedBy;
 	@Column(name="modified_on")
 	private Date modifiedOn;
-	@OneToMany(mappedBy="transferStock", fetch=FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval=true)
-	private List<TransferStockDetail> transferStockDetail;
 	
-	public List<TransferStockDetail> getTransferStockDetail() {
-		return transferStockDetail;
-	}
-	public void setTransferStockDetail(List<TransferStockDetail> transferStockDetail) {
-		this.transferStockDetail = transferStockDetail;
-	}
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Outlet getFromOutlet() {
-		return fromOutlet;
+	public TransferStock getTransferStock() {
+		return transferStock;
 	}
-	public void setFromOutlet(Outlet fromOutlet) {
-		this.fromOutlet = fromOutlet;
+	public void setTransferStock(TransferStock transferStock) {
+		this.transferStock = transferStock;
 	}
-	public Outlet getToOutlet() {
-		return toOutlet;
+	public int getInstock() {
+		return instock;
 	}
-	public void setToOutlet(Outlet toOutlet) {
-		this.toOutlet = toOutlet;
+	public void setInstock(int instock) {
+		this.instock = instock;
 	}
-	public String getNotes() {
-		return notes;
+	public ItemVariant getItemVariant() {
+		return itemVariant;
 	}
-	public void setNotes(String notes) {
-		this.notes = notes;
+	public void setItemVariant(ItemVariant itemVariant) {
+		this.itemVariant = itemVariant;
 	}
-	public String getStatus() {
-		return status;
+	public int getTransferQty() {
+		return transferQty;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setTransferQty(int transferQty) {
+		this.transferQty = transferQty;
 	}
 	public long getCreatedBy() {
 		return createdBy;
@@ -109,6 +99,5 @@ public class TransferStock {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-	
 	
 }

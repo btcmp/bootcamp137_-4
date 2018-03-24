@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bootcamp.miniproject.dao.TransferStockDao;
+import com.bootcamp.miniproject.dao.TransferStockDetailDao;
+import com.bootcamp.miniproject.model.ItemVariant;
 import com.bootcamp.miniproject.model.TransferStock;
+import com.bootcamp.miniproject.model.TransferStockDetail;
 
 @Service
 @Transactional
@@ -15,8 +18,29 @@ public class TransferStockService {
 	@Autowired
 	TransferStockDao transferStockDao;
 	
+	@Autowired
+	TransferStockDetailDao transferStockDetailDao;
+	
 	public void save(TransferStock transferStock) {
-		transferStockDao.save(transferStock);
+		//transferStockDao.save(transferStock);
+		
+		TransferStock trans = new TransferStock();
+		trans.setFromOutlet(transferStock.getFromOutlet());
+		trans.setToOutlet(transferStock.getToOutlet());
+		trans.setNotes(transferStock.getNotes());
+		trans.setStatus(transferStock.getStatus());
+		transferStockDao.save(trans);
+		
+		for(TransferStockDetail tsd : transferStock.getTransferStockDetail()) {
+			ItemVariant itemVariant = new ItemVariant();
+			itemVariant.setId(tsd.getItemVariant().getId());
+			TransferStockDetail transDetail = new TransferStockDetail();
+			transDetail.setItemVariant(itemVariant);
+			transDetail.setInstock(tsd.getInstock());
+			transDetail.setTransferQty(tsd.getTransferQty());
+			transDetail.setTransferStock(trans);
+			transferStockDetailDao.save(transDetail);
+		}
 	}
 	
 	public void delete(TransferStock transferStock) {
