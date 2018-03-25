@@ -74,6 +74,12 @@ public class Outlet {
 	@OneToMany(fetch= FetchType.LAZY, mappedBy="outlet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemInventory> listItemInventory;
 	
+	@OneToMany(fetch= FetchType.LAZY, mappedBy="outlet", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PurchaseRequest> purchaseRequest;
+	
+	@OneToMany(fetch= FetchType.LAZY, mappedBy="outlet", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PurchaseOrder> purchaseDetail;
+	
 	
 	public Province getProvince() {
 		return province;
@@ -164,6 +170,24 @@ public class Outlet {
 	}
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	public List<ItemInventory> getListItemInventory() {
+		return listItemInventory;
+	}
+	public void setListItemInventory(List<ItemInventory> listItemInventory) {
+		this.listItemInventory = listItemInventory;
+	}
+	public List<PurchaseRequest> getPurchaseRequest() {
+		return purchaseRequest;
+	}
+	public void setPurchaseRequest(List<PurchaseRequest> purchaseRequest) {
+		this.purchaseRequest = purchaseRequest;
+	}
+	public List<PurchaseOrder> getPurchaseDetail() {
+		return purchaseDetail;
+	}
+	public void setPurchaseDetail(List<PurchaseOrder> purchaseDetail) {
+		this.purchaseDetail = purchaseDetail;
 	}
 
 	
