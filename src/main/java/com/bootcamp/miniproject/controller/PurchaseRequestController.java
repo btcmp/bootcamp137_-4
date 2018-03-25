@@ -35,6 +35,7 @@ public class PurchaseRequestController {
 	}
 	
 	@RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)
+	@ResponseBody
 	public PurchaseRequest getOne(@PathVariable long id) {
 		return prService.getOne(id);
 	}
@@ -56,7 +57,6 @@ public class PurchaseRequestController {
 	public void delete(@PathVariable long id) {
 		PurchaseRequest pr = prService.getOne(id);
 		prService.delete(pr);
-		
 	}
 	
 }

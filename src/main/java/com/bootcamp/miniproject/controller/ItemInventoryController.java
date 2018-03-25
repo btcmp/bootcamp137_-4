@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bootcamp.miniproject.model.ItemInventory;
+import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 
 @Controller
@@ -29,6 +30,11 @@ public class ItemInventoryController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void save(@RequestBody ItemInventory itemInventory) {
 		itemInventoryService.save(itemInventory);
+	}
+	@RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ItemInventory getOne(@PathVariable long id) {
+		return itemInventoryService.getOne(id);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
