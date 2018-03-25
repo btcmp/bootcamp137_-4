@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.service.CategoryService;
 import com.bootcamp.miniproject.service.ItemService;
+import com.bootcamp.miniproject.service.ItemVariantService;
 
 @Controller
 @RequestMapping("/master/item")
@@ -26,10 +27,14 @@ public class ItemController {
 	ItemService itemService;
 	
 	@Autowired
+	ItemVariantService variantService;
+	
+	@Autowired
 	CategoryService categoryService;
 	@RequestMapping
 	public String home(Model model) {
 		model.addAttribute("items", itemService.getAll());
+		model.addAttribute("variant", variantService.getAll());
 		model.addAttribute("categories", categoryService.selectAll());
 		return "item";
 	}

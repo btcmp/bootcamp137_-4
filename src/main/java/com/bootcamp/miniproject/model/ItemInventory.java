@@ -26,6 +26,8 @@ public class ItemInventory {
 	private long id;
 	
 	private int beginning;
+	@Column(name = "alert_at_qty")
+	private int alertAtQty;
 	
 	@Column(name = "purchase_Qty")
 	private int purchaseQty;
@@ -79,6 +81,22 @@ public class ItemInventory {
 
 	public void setBeginning(int beginning) {
 		this.beginning = beginning;
+	}
+	
+	public int getAlertAtQty() {
+		return alertAtQty;
+	}
+
+	public void setAlertAtQty(int alertAtQty) {
+		this.alertAtQty = alertAtQty;
+	}
+
+	public Outlet getOutlet() {
+		return outlet;
+	}
+
+	public void setOutlet(Outlet outlet) {
+		this.outlet = outlet;
 	}
 
 	public int getPurchaseQty() {

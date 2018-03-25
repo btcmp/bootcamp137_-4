@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bootcamp.miniproject.dao.ItemDao;
+import com.bootcamp.miniproject.dao.ItemInventoryDao;
+import com.bootcamp.miniproject.dao.ItemVariantDao;
 import com.bootcamp.miniproject.model.Item;
+import com.bootcamp.miniproject.model.ItemInventory;
+import com.bootcamp.miniproject.model.ItemVariant;
 
 @Service
 @Transactional
@@ -16,12 +20,33 @@ public class ItemService {
 	@Autowired
 	ItemDao itemDao;
 	
+	@Autowired
+	ItemVariantDao variantDao;
+	
+	@Autowired
+	ItemInventoryDao inventoryDao;
+	
 	public List<Item> getAll() {
 		return itemDao.getAll();
 	}
 
 	public void save(Item item) {
+		List<ItemVariant> itemVariant = item.getItemVariant();
+		item.setItemVariant(null);
 		itemDao.save(item);
+		
+		ItemInventory inventory;
+		for(ItemVariant ivar : itemVariant) {
+			inventory = ivar.getItemInventory().get(0);
+			ivar.setItemInventory(null);
+			ivar.setItem(item);
+			System.out.println(item.getId());
+			variantDao.save(ivar);
+			
+			inventory.setItemVariant(ivar);
+			inventory.setEndingQty(inventory.getBeginning());
+			inventoryDao.save(inventory);
+		}
 	}
 
 	public Item getOne(long id) {

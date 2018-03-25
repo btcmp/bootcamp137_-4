@@ -53,7 +53,7 @@ public class Item {
 	private Category category;
 	
 	@OneToMany(fetch= FetchType.LAZY, mappedBy="item", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ItemVariant> listVariant;
+	private List<ItemVariant> itemVariant;
 	
 	
 	public long getId() {
@@ -136,13 +136,12 @@ public class Item {
 		this.category = category;
 	}
 
-	public List<ItemVariant> getListVariant() {
-		return listVariant;
+	public List<ItemVariant> getItemVariant() {
+		return itemVariant;
 	}
 
-	public void setListVariant(List<ItemVariant> listVariant) {
-		this.listVariant = listVariant;
+	public void setItemVariant(List<ItemVariant> itemVariant) {
+		this.itemVariant = itemVariant;
 	}
-	
 	//updated
 }
