@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bootcamp.miniproject.model.Customer;
+import com.bootcamp.miniproject.model.Outlet;
 
 @Repository
 public class CustomerDaoImpl implements CustomerDao{
@@ -51,5 +52,18 @@ public class CustomerDaoImpl implements CustomerDao{
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(customer);
 		session.flush();
+	}
+
+	@Override
+	public List<Customer> getCustomerBySearchName(String search) {
+		// TODO Auto-generated method stub
+		String hql = "from Customer Cust where lower(Cust.name) like:search";
+		Session session = sessionFactory.getCurrentSession();
+		List<Customer> customers = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
+		if(customers.isEmpty()) {
+			return null;
+		} else {
+			return customers;			
+		}
 	}
 }

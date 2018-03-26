@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bootcamp.miniproject.dao.CustomerDao;
 import com.bootcamp.miniproject.model.Customer;
+import com.bootcamp.miniproject.model.Outlet;
 
 @Service
 @Transactional
@@ -37,4 +38,12 @@ public class CustomerService {
 	public void delete(Customer customer) {
 		customerDao.delete(customer);
 	}
+	
+	public List<Customer> getCustomerBySearchName(String search) {
+		// TODO Auto-generated method stub
+		return customerDao.getCustomerBySearchName(search);
+	}
+	
+	
+	
 }
