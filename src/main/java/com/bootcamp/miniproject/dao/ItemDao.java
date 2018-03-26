@@ -12,5 +12,5 @@ public interface ItemDao {
 	void delete(Item item);
 	Item getOne(long id);
 	List<Item> getItemBySearchName(String search);
-
+	
 }

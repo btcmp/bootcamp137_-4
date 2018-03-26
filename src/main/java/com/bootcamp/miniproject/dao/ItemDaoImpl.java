@@ -32,7 +32,7 @@ public class ItemDaoImpl implements ItemDao {
 	@Override
 	public void update(Item item) {
 		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(item);
+		session.update(item);
 		session.flush();
 	}
 
@@ -52,8 +52,7 @@ public class ItemDaoImpl implements ItemDao {
 	public List<Item> getItemBySearchName(String search) {
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from Item it where lower(it.name) like :nb";
-		List<Item> items = session
-				.createQuery(hql).setParameter("nb", "%"+search.toLowerCase()+"%").list();
+		List<Item> items = session.createQuery(hql).setParameter("nb", "%"+search.toLowerCase()+"%").list();
 		if (items.isEmpty()) {
 			System.out.println("Kosong");
 			return null;

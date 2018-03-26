@@ -2,17 +2,28 @@ $(document).ready(function(){
 	var alamatUrl = window.location.href;
 	listVariant = [];
 	$('#create').click(function(){
+		$('#btn-add-item').attr('state','create');
+		console.log('disini');
+		resetItemForm();
+		resetVariantForm();
+		
 		$('#modal-addItem').modal();
 	});
 	
 	$('#btn-export').click(function(){
-		console.log('clicked')
-		
+		console.log('clicked');
 	});
 	$('#btn-add-item').click(function(e){
-		console.log('clicked');
-		console.log(listVariant);
-		save(e);
+		var state = $(this).attr('state');
+		if (state == 'create'){
+			save(e);
+		} else{
+			update(e);
+		}
+		resetItemForm();
+		resetVariantForm();
+		
+		
 	});
 	
 	$('#btn-save-variant').click(function(e){
@@ -23,6 +34,7 @@ $(document).ready(function(){
 					name : $('#add-variant-name').val(),
 					price: parseInt($('#add-unit-price').val()),
 					sku: $('#add-sku').val(),
+					active : 1,
 					itemInventory : [{
 							beginning : parseInt($('#add-beginning-stock').val()),
 							alertAtQty : parseInt($('#add-alert-at').val()),
@@ -33,12 +45,18 @@ $(document).ready(function(){
 		} else{
 			var index = $(this).attr("data-id");
     		var variant = listVariant[index];
-    		
-    		variant.name = $('#add-variant-name').val();
-    		variant.price = parseInt($('#add-unit-price').val());
-    		variant.sku = $('#add-sku').val();
-    		variant.itemInventory.beginning = parseInt($('#add-beginning-stock').val());
-    		variant.itemInventory.alertAtQty = parseInt($('#add-alert-at').val());
+    		variant = {
+    				id : $('#add-item-id').val(),
+					name : $('#add-variant-name').val(),
+					price: parseInt($('#add-unit-price').val()),
+					sku: $('#add-sku').val(),
+					active : 1,
+					itemInventory : [{
+							beginning : parseInt($('#add-beginning-stock').val()),
+							alertAtQty : parseInt($('#add-alert-at').val()),
+					}]
+			}
+    		console.log(variant);
     		listVariant[index] = variant;
 		}
 		
@@ -47,11 +65,11 @@ $(document).ready(function(){
 	});
 	
 	
-	
 	$('#table-body-variant').on('click','.edit-variant',function(e){	
 		console.log('clicked')
     	var id = $(this).attr("data-id");
-    	var data = listVariant[id];
+    	console.log('mamam');
+		var data = listVariant[id];
     	$('#add-variant-name').val(data.name);
     	console.log(data.price);
     	$('#add-unit-price').val(data.price);
@@ -63,7 +81,7 @@ $(document).ready(function(){
         $('#modal-addVariant').modal('show');
     });
 	
-	function save(e, alamatUrl){
+	save = (e) => {
 		e.preventDefault();
 		alamatUrl = window.location.href;
 		var item = {
@@ -81,25 +99,73 @@ $(document).ready(function(){
 			data : JSON.stringify(item),
 			contentType : 'application/json',
 			success : function(data){
-				console.log("berhasil");
+				console.log("berhasil save");
 				
 			}, error : function(data){
 				console.log("gagal");
 			}
 			
 		});
+		HideItemForm();
 	};
 	
-	function getDataById(id){
+	update = (e) => {
+		e.preventDefault();
+		alamatUrl = window.location.href;
+		var item = {
+			id : parseInt($('#add-item-id').val()),
+			name: $('#add-item-name').val(),
+			active : 1,
+			category :{
+				id : parseInt($('#add-category').val())
+			},
+			itemVariant : listVariant
+		};
+		console.log(item);
 		$.ajax({
-			type : "GET",
-			url : alamatUrl+'/getOne/'+id,
+			type : "PUT",
+			url : alamatUrl+'/update',
+			data : JSON.stringify(item),
+			contentType : 'application/json',
 			success : function(data){
-				console.log("berhasil");
-				listVariant = [];
-				
+				console.log("berhasil update");
 				
 			}, error : function(data){
+				console.log("gagal");
+			}
+			
+		});
+		resetItemForm();
+		HideItemForm();
+	};
+	
+	getInventoryByItemId = (id) => {
+		$.ajax({
+			type : "GET",
+			url : alamatUrl+'/searchInventory/'+id,
+			success : (data) => {
+				console.log("berhasil");
+				listVariant = [];
+				var temp;
+				$.each(data, (key, row) =>{
+					temp = row.itemVariant.item;
+					
+					inventory = row;
+					variant = row.itemVariant;
+					inventory.itemVariant = null;
+					variant.itemInventory = [inventory];
+					variant.item = null;
+					listVariant.push(variant);
+					
+				});
+				
+				console.log(data);
+				$('#add-item-id').val(parseInt(temp.id));
+				$('#add-item-name').val(temp.name);
+				$('#add-category').val(parseInt(temp.category.id));
+				createVariantTable(listVariant);
+				
+			}, error : (data) => {
 				console.log("gagal");
 			}
 			
@@ -107,32 +173,48 @@ $(document).ready(function(){
 	}
 	
 	$('#table-item').on('click','.update-item',function(e){
-		var id = $(this).attr("id");
+		var id = $(this).attr('id');
+		getInventoryByItemId(id);
 		console.log(id);
+		$('#modal-addItem').modal();
+		$('#btn-add-item').attr('state','update');
+		
 	});
 		
 	// =========================================== Utilities =========================================== //
-	function HideVariantForm(){
+	function HideItemForm() {
+    	$('#modal-addItem').modal('hide');
+    	resetItemForm();
+    }
+	function resetItemForm() {
+		console.log('clear item form');
+		$("#add-item-name").val("");
+		$("#add-category").val("");
+		$("#table-body-variant").empty();
+		
+	};
+	function HideVariantForm() {
     	$('#modal-addVariant').modal('hide');
     	resetVariantForm();
     }
     
-    function ShowVariantForm(){
+    function ShowVariantForm() {
     	$('#modal-addVariant').modal('show');
     	resetVariantForm();
     }
 	function resetVariantForm(){
+		console.log('clear variant form');
     	$("#add-variant-name").val("");
     	$("#add-unit-price").val("0");
     	$("#add-sku").val("");
     	$("#add-beginning-stock").val("");
     	$("#add-alert-at").val("");
     }
-	function createVariantTable(data){
-		var index = 0;
+	createVariantTable = (data) => {
 		console.log(data);
 		$("#table-body-variant").empty();
-		$.each(data, function(key, row){
+		var index = 0;
+		$.each(data, (key, row) =>{
 			$('#table-body-variant').append('<tr class="child"><td>'+row.name+'</td><td>'+row.price+'</td><td>'+row.sku+'</td><td>'
 					+row.itemInventory[0].beginning+'</td><td>'+row.itemInventory[0].alertAtQty+'</td>'
 					+'<td><button type="button" id="edit-variant" class="btn btn-info btn-xs edit-variant" data-id='+index+'>Edit</button> | ' 

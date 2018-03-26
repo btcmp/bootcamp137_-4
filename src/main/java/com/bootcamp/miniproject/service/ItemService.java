@@ -73,8 +73,6 @@ public class ItemService {
 		return itemDao.getOne(id);
 	}
 
-	
-
 	public void delete(Item item) {
 		itemDao.delete(item);
 	}

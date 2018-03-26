@@ -40,4 +40,8 @@ public class ItemInventoryService {
 		return itemInventoryDao.searchItemInventoryByItemName(search);
 	}
 
+	public List<ItemInventory> getInventoryByItemId(long id) {
+		return itemInventoryDao.getInventoryByItemId(id);
+	}
+
 }

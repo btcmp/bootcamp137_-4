@@ -13,7 +13,7 @@
       </div>
       <div class="modal-body">
       	<form class="form-all">
-			<div class="form-group">
+			<div class="form-group" id = "add-item-id">
 				<label for="add-item-name">Item Name</label>
 				<input type="text" class="form-control" id="add-item-name" placeholder="Item name">
 				<p></p>
@@ -45,7 +45,7 @@
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="btn-clear" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button id="btn-add-item" state="create" type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div><!-- /.modal-content -->

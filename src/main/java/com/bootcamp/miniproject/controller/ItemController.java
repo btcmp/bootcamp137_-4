@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bootcamp.miniproject.model.Item;
+import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.service.CategoryService;
+import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.ItemService;
 import com.bootcamp.miniproject.service.ItemVariantService;
 
@@ -31,6 +33,9 @@ public class ItemController {
 	
 	@Autowired
 	CategoryService categoryService;
+	
+	@Autowired
+	ItemInventoryService inventoryService;
 	@RequestMapping
 	public String home(Model model) {
 		model.addAttribute("items", itemService.getAll());
@@ -76,5 +81,11 @@ public class ItemController {
 		List<Item> items = itemService.getItemBySearchName(search);
 		model.addAttribute("listItem", items);
 		return "item";
+	}
+	
+	@RequestMapping(value = "/searchInventory/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> getInvetoryByItemId(@PathVariable long id) {
+		return inventoryService.getInventoryByItemId(id);
 	}
 }

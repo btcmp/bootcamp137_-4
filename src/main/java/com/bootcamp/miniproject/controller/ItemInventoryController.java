@@ -1,5 +1,7 @@
 package com.bootcamp.miniproject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,17 @@ public class ItemInventoryController {
 	ItemInventoryService itemInventoryService;
 	
 	@RequestMapping
+	@ResponseBody
 	public String home(Model model) {
 		model.addAttribute("items", itemInventoryService.getAll());
 		return "item";
+	}
+	
+	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> getAll(Model model) {
+		model.addAttribute("items", itemInventoryService.getAll());
+		return itemInventoryService.getAll();
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)

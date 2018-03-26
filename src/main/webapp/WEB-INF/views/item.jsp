@@ -178,7 +178,7 @@
 					
 					<th>Action</th>
 				</thead>
-				<tbody>
+				<tbody id= "table-body-item">
 					<c:forEach items="${variant }" var="var">
 						<tr>
 							<td>${var.item.name } --- <b>${var.name }</b> </td>
