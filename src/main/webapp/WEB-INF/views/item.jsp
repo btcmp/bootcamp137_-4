@@ -6,6 +6,7 @@
 <spring:url value="/resources/adminLTE" var="url"></spring:url>
 <spring:url value="/resources/js/jquery-3.3.1.js" var="jq"></spring:url>
 <spring:url value="/resources/js/parsley.js" var="parsley"></spring:url>
+<spring:url value="/resources/js/item.js" var="item"></spring:url>
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
@@ -227,7 +228,7 @@
 </div>
 
 
-<script type="text/javascript" src="<c:url value="/resources/js/item.js" />" charset="utf-8"></script>
+<script type="text/javascript" src="${item }" charset="utf-8"></script>
 <!-- jQuery 3 -->
 <script src="${url}/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->

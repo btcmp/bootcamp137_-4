@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.model.ItemVariant;
 @Repository
 public class ItemVariantDaoImpl implements ItemVariantDao {
@@ -18,7 +17,7 @@ public class ItemVariantDaoImpl implements ItemVariantDao {
 	@Override
 	public List<ItemVariant> getAll() {
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "From ItemVariant i ORDER BY i.id";
+		String hql = "From ItemVariant i where i.active = true ORDER BY i.id";
 		org.hibernate.Query query = session.createQuery(hql);
 		return query.list();
 	}
@@ -62,6 +61,20 @@ public class ItemVariantDaoImpl implements ItemVariantDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(itemVariant);
 		session.flush();
+	}
+
+	@Override
+	public List<ItemVariant> getVariantByItemId(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemVariant var where var.item.id =:id";
+		List<ItemVariant> var = session.createQuery(hql).setParameter("id", id).list();
+		if (var.isEmpty()) {
+			System.out.println("Kosong");
+			return null;
+		} else {
+			System.out.println("Ada");
+			return var;
+		}
 	}
 
 }

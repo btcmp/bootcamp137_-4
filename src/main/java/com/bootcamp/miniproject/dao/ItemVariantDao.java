@@ -6,16 +6,18 @@ import com.bootcamp.miniproject.model.ItemVariant;
 
 public interface ItemVariantDao {
 
-	List<ItemVariant> getAll();
+	public List<ItemVariant> getAll();
 
-	ItemVariant getOne(long id);
+	public ItemVariant getOne(long id);
 
-	void save(ItemVariant itemVariant);
+	public void save(ItemVariant itemVariant);
 
-	List<ItemVariant> getItemVariantBySearchName(String search);
+	public List<ItemVariant> getItemVariantBySearchName(String search);
 
-	void delete(ItemVariant itemVariant);
+	public void delete(ItemVariant itemVariant);
 
-	void update(ItemVariant itemVariant);
+	public void update(ItemVariant itemVariant);
+
+	public List<ItemVariant> getVariantByItemId(Long id);
 
 }

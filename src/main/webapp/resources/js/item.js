@@ -80,6 +80,27 @@ $(document).ready(function(){
     	$('#btn-save-variant').attr("data-id", id);
         $('#modal-addVariant').modal('show');
     });
+	$('#table-body-variant').on('click','#delete-variant',function(e){	
+		console.log('clicked');
+		var id = $(this).attr("data-id");
+		console.log(id);
+		var variant = listVariant[id];
+		
+		if (variant.id == null){
+			listVariant.splice(id,1);
+			createTableVariant(listVariant);
+		} else{
+			$.ajax({
+				type : 'DELETE',
+				url : alamatUrl+'/deleteVariant/'+variant.id,
+				success : function(data){
+					listVariant.splice(id, 1);
+    	    		createTableVariant(listVariant);
+				}
+				
+			});
+		}
+	});
 	
 	save = (e) => {
 		e.preventDefault();
@@ -218,7 +239,7 @@ $(document).ready(function(){
 			$('#table-body-variant').append('<tr class="child"><td>'+row.name+'</td><td>'+row.price+'</td><td>'+row.sku+'</td><td>'
 					+row.itemInventory[0].beginning+'</td><td>'+row.itemInventory[0].alertAtQty+'</td>'
 					+'<td><button type="button" id="edit-variant" class="btn btn-info btn-xs edit-variant" data-id='+index+'>Edit</button> | ' 
-					+'<button type="button" class="btn btn-danger btn-xs delete-variant" data-id='+index+'>X</button></td></tr>');
+					+'<button type="button" id="delete-variant" class="btn btn-xs delete-variant" data-id='+index+'>X</button></td></tr>');
 			index++;
 		});
 	}

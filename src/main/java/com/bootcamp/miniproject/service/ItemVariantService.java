@@ -31,6 +31,9 @@ public class ItemVariantService {
 	public List<ItemVariant> getItemVariantBySearchName(String search) {
 		return itemVariantDao.getItemVariantBySearchName(search);
 	}
+	public List<ItemVariant> getVariantByItemId(Long id){
+		return itemVariantDao.getVariantByItemId(id);
+	}
 
 	public void delete(ItemVariant itemVariant) {
 		itemVariantDao.delete(itemVariant);
@@ -38,6 +41,12 @@ public class ItemVariantService {
 
 	public void update(ItemVariant itemVariant) {
 		itemVariantDao.update(itemVariant);
+	}
+
+	public void deleteVar(long id) {
+		ItemVariant var = itemVariantDao.getOne(id);
+		var.setActive(false);
+		itemVariantDao.update(var);
 	}
 	
 }
