@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.bootcamp.miniproject.model.Customer;
 import com.bootcamp.miniproject.model.ItemInventory;
+import com.bootcamp.miniproject.model.Province;
 import com.bootcamp.miniproject.model.SalesOrder;
+import com.bootcamp.miniproject.service.CustomerService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
+import com.bootcamp.miniproject.service.ProvinceService;
 import com.bootcamp.miniproject.service.SalesOrderService;
 
 @Controller
@@ -29,10 +33,18 @@ public class SalesOrderController {
 	@Autowired
 	ItemInventoryService itemInventoryService;
 	
+	@Autowired
+	ProvinceService provinceService;
+	
+	@Autowired
+	CustomerService customerService;
+	
 	@RequestMapping
 	public String index(Model model) {
 		List<SalesOrder> salesOrders = salesOrderService.selectAll();
+		List<Province> provinces = provinceService.selectAll();
 		model.addAttribute("salesOrders", salesOrders);
+		model.addAttribute("provinces", provinces);
 		return "sales-order";
 	}
 	
@@ -75,5 +87,12 @@ public class SalesOrderController {
 	public List<ItemInventory> searchItem(@RequestParam(value="search", defaultValue="") String search) {
 		List<ItemInventory> itemsInventory = itemInventoryService.searchItemInventoryByItemName(search);
 		return itemsInventory;
+	}
+	
+	@RequestMapping(value = "/search-customer", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Customer> searchCustomer(@RequestParam(value="search", defaultValue="") String search) {
+		List<Customer> customers = customerService.getCustomerBySearchName(search);
+		return customers;
 	}
 }

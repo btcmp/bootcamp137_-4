@@ -33,7 +33,7 @@
 		</tbody>
 	</table>
 	
-	<button id="create" class="btn btn-block btn-success btn-lg">Choose Customer</button>
+	<button id="kosong" class="choose-customer btn btn-block btn-success btn-lg">Choose Customer</button>
 	
 	<table id="salesOrder-tabel" class="table table-striped table-bordered" cellspacing="0" width="100%">
 		<thead>
@@ -56,9 +56,10 @@
 	<button id="charge" class="btn btn-success btn-lg">Charge</button>
 </div>
 <div>
-	<%-- <%@ include file="modal/view-transfer-stock.jsp" %>
-	<%@ include file="modal/add-transfer-stock.jsp" %>
-	<%@ include file="modal/add-transfer-item.jsp" %> --%>
+	<%@ include file="modal/charge-sales-order.jsp" %>
+	<%@ include file="modal/receipt-sales-order.jsp" %>
+	<%@ include file="modal/search-customer-sales-order.jsp" %>
+	<%@ include file="modal/add-customer-sales-order.jsp" %>
 </div>
 	
 </body>
@@ -74,92 +75,60 @@ $(document).ready(function(){
 	$('.btn-added-item').hide();
 	document.getElementById("charge").disabled = true;
 	
-	$('.view').click(function(){
-		var id = $(this).attr('id');
-		$.ajax({
-			type : 'GET',
-			url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one/'+id,
-			dataType: 'json',
-			success : function(data){
-				$('#view-from-outlet').val(data.fromOutlet.name);
-				$('#view-to-outlet').val(data.toOutlet.name);
-				$('#view-notes').val(data.notes);
-				$('#view-transferStock-tbl').empty();
-				$.ajax({
-					url : '${pageContext.request.contextPath }/transaction/transfer-stock/search-transfer-stock-detail?search='+data.id,
-					type : 'GET',
-					dataType: 'json',
-					success : function(data2){
-						//console.log(data2);
-						$.each(data2, function(key, val) {
-						$('#view-transferStock-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
-								+ val.instock +'</td><td>'+ val.transferQty +'</td></tr>');
-						});
-						//call modal
-						$('#modal-view-transferStock').modal();
-					}, error : function(){
-						alert('get transfer stock detail failed');
-					}
-					
-				})
-				
-				
-				
-			}, 
-			error : function(){
-				alert('show selected transferStock data in modal failed');
-			}
-		})
+	$('.choose-customer').click(function(){
+		$('#modal-search-customer-sales-order').modal();
 	})
 	
-	$('#create').click(function(){
-		$('#modal-add-transferStock').modal();
-		document.getElementById("btn-save").disabled = true;
+	$('#charge').click(function(){
+		if ($('.choose-customer').attr("id")=="kosong") {
+			alert("choose customer first");
+		}else {
+			$('#modal-charge-sales-order').modal();
+		}
 	})
 	
-	$('#btn-add-transfer-item').click(function(){
-		$('#modal-add-transfer-item').modal();
+	$('#add-new-customer').click(function(){
+		$('#modal-add-customer-sales-order').modal();
 	})
 	
-	$('#btn-save').click(function(){
-		var transferStockDetail=[];
-		
-		$('#add-transferStock-tbl > tr').each(function(index, data){
-			var tsd = {
-					itemVariant : {
-						id : $(data).find('td').eq(0).attr('id')
-					},
-					instock : $(data).find('td').eq(1).text(),
-					transferQty : $(data).find('td').eq(2).text()
-			}
-			transferStockDetail.push(tsd);
-		});
-		
-		var transferStock = {
-				fromOutlet : {
-					id : $('#add-from-outlet').val()
+	$('#btn-add-customer').click(function(){
+		var customer={
+				name : $('#add-name').val(),
+				address : $('#add-address').val(),
+				phone : $('#add-phone').val(),
+				email : $('#add-email').val(),
+				dob : $('#add-dob').val(),
+				province : {
+					id : $('#add-province').val()
 				},
-				toOutlet : {
-					id : $('#add-to-outlet').val()
+				region : {
+					id : $('#add-region').val()
 				},
-				transferStockDetail : transferStockDetail,
-				notes : $('#add-notes').val(),
-				status : "Submitted"
-		};
-		console.log(transferStock);
+				district : {
+					id : $('#add-district').val()
+				}
+			}
 		$.ajax({
-			url : '${pageContext.request.contextPath }/transaction/transfer-stock/save',
+			url : '${pageContext.request.contextPath }/master/customer/save',
 			type : 'POST',
-			data : JSON.stringify(transferStock),
+			data : JSON.stringify(customer),
 			contentType : 'application/json',
 			success : function(){
-				alert('save successfully');
-				window.location='${pageContext.request.contextPath}/transaction/transfer-stock';
+				var word = $('#search-customer').val();
+				searchCustomer(word);
 			}, error : function(){
 				alert('save failed');
 			}
 			
 		})
+	})
+	
+	$('#charge-done').click(function(){
+		var cash = parseInt($('#charge-cash').val());
+		var total = parseInt($('#charge').text().split("Rp.")[1]);
+		$('#receipt-cash').val("Out of Rp."+cash);
+		$('#receipt-change').val("Rp."+(cash-total));
+		$('#modal-receipt-sales-order').modal();
 	})
 	
 	$('#search').on('input',function(e){
@@ -271,6 +240,122 @@ $(document).ready(function(){
 		document.getElementById("charge").disabled = true;
 		var word = $('#search').val();
 		search(word);
+	})
+	
+	$('#add-province').change(function(){
+		var id = $(this).val();
+		if (id!=="") {
+			$.ajax({
+				url : '${pageContext.request.contextPath }/additional/region/get-region?id='+id,
+				type : 'GET',
+				success : function(data){
+					var region = [];
+					var reg = "<option value=\"\">Choose Region</option>";
+					region.push(reg);
+					$(data).each(function(index, data2){
+					reg = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
+					region.push(reg);
+					})
+					$('#add-region').html(region);
+				}, error : function(){
+					alert('get failed');
+				}
+			})
+		}
+	});
+	
+	$('#add-region').change(function(){
+		var id = $(this).val();
+		if (id!=="") {
+			$.ajax({
+				url : '${pageContext.request.contextPath }/additional/district/get-district?id='+id,
+				type : 'GET',
+				success : function(data){
+					var district = [];
+					var dis = "<option value=\"\">Choose District</option>";
+					district.push(dis);
+					$(data).each(function(index, data2){
+					dis = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
+					district.push(dis);
+					})
+					$('#add-district').html(district);
+				}, error : function(){
+					alert('get failed');
+				}
+			})
+		}
+	});
+	
+	$('#search-customer').on('input',function(e){
+		var word = $(this).val();
+		searchCustomer(word);
+	})
+	
+	function searchCustomer(word) {
+		if (word=="") {
+			$('#search-customer-tbl').empty();
+		} else {
+			$.ajax({
+				type : 'GET',
+				url : '${pageContext.request.contextPath}/transaction/sales-order/search-customer?search='+word,
+				dataType: 'json',
+				success : function(data){
+					$('#search-customer-tbl').empty();
+					$.each(data, function(key, val) {
+						$('#search-customer-tbl').append('<tr><td id="customer-name'+ val.id+'">'+ val.name +'</td><td>'
+								+ val.phone +'</td><td>'+ val.email +'</td><td><button type="button" id="'+ val.id +'" class="btn-choose-customer'
+								+ val.id +' btn-choose-customer btn btn-primary"  data-dismiss="modal">Choose</button></td></tr>');
+					});
+				}, 
+				error : function(){
+					$('#search-customer-tbl').empty();
+					//alert('show selected transferStock data in modal failed');
+				}
+			})
+		}
+	}
+	
+	$('body').on('click', 'button.btn-choose-customer', function(){
+		var id = $(this).attr('id');
+		var name = $('#customer-name'+id).text();
+		$('.choose-customer').text(name);
+		$('.choose-customer').attr("id",id);
+	})
+	
+	$('#receipt-done').click(function(){
+		var salesOrderDetail = [];
+		$('#salesOrder-tbl-body > tr').each(function(index, data){
+			var sod = {
+					itemVariant : {
+						id : $(data).find('td').eq(0).attr('id')
+					},
+					qty : $(data).find('td').eq(2).text(),
+					unitPrice : $(data).find('td').eq(1).text().split("Rp.")[1],
+					subTotal : $(data).find('td').eq(3).text().split("Rp.")[1]
+			}
+			salesOrderDetail.push(sod);
+		})
+		
+		var salesOrder = {
+				customer : {
+					id : $('.choose-customer').attr('id')
+				},
+				grandTotal : $('#charge').text().split("Rp.")[1],
+				salesOrderDetail : salesOrderDetail
+		}
+		console.log(salesOrder);
+		$.ajax({
+			url : '${pageContext.request.contextPath }/transaction/sales-order/save',
+			type : 'POST',
+			data : JSON.stringify(salesOrder),
+			contentType : 'application/json',
+			success : function(){
+				window.location = "${pageContext.request.contextPath}/transaction/sales-order";
+			}, error : function(){
+				alert('save failed');
+			}
+			
+		})
 	})
 });
 </script>

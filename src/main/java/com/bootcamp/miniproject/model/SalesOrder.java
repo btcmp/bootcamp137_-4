@@ -1,13 +1,18 @@
 package com.bootcamp.miniproject.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -32,7 +37,15 @@ public class SalesOrder {
 	private long modifiedBy;
 	@Column(name="modified_on")
 	private Date modifiedOn;
+	@OneToMany(mappedBy="salesOrder", fetch=FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<SalesOrderDetail> salesOrderDetail;
 	
+	public List<SalesOrderDetail> getSalesOrderDetail() {
+		return salesOrderDetail;
+	}
+	public void setSalesOrderDetail(List<SalesOrderDetail> salesOrderDetail) {
+		this.salesOrderDetail = salesOrderDetail;
+	}
 	public long getId() {
 		return id;
 	}

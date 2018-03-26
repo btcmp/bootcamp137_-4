@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bootcamp.miniproject.dao.SalesOrderDao;
+import com.bootcamp.miniproject.dao.SalesOrderDetailDao;
+import com.bootcamp.miniproject.model.ItemVariant;
 import com.bootcamp.miniproject.model.SalesOrder;
+import com.bootcamp.miniproject.model.SalesOrderDetail;
 
 @Service
 @Transactional
@@ -16,8 +19,28 @@ public class SalesOrderService {
 	@Autowired
 	SalesOrderDao salesOrderDao;
 	
+	@Autowired
+	SalesOrderDetailDao salesOrderDetailDao;
+	
 	public void save(SalesOrder salesOrder) {
-		salesOrderDao.save(salesOrder);
+		//salesOrderDao.save(salesOrder);
+		
+		SalesOrder so = new SalesOrder();
+		so.setCustomer(salesOrder.getCustomer());
+		so.setGrandTotal(salesOrder.getGrandTotal());
+		salesOrderDao.save(so);
+		
+		for(SalesOrderDetail sod : salesOrder.getSalesOrderDetail()) {
+			ItemVariant itemVariant = new ItemVariant();
+			itemVariant.setId(sod.getItemVariant().getId());
+			SalesOrderDetail salesOD = new SalesOrderDetail();
+			salesOD.setItemVariant(itemVariant);
+			salesOD.setSalesOrder(so);
+			salesOD.setQty(sod.getQty());
+			salesOD.setSubTotal(sod.getSubTotal());
+			salesOD.setUnitPrice(sod.getUnitPrice());
+			salesOrderDetailDao.save(salesOD);
+		}
 	}
 	
 	public void delete(SalesOrder salesOrder) {
