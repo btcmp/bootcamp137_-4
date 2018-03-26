@@ -29,7 +29,7 @@ public class PurchaseRequest {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private long id;
+	private Long id;
 	
 	@ManyToOne
 	private Outlet outlet;
@@ -63,11 +63,11 @@ public class PurchaseRequest {
 	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL, orphanRemoval=true)
 	List<PurchaseRequestDetail> purchaseRequestDetail;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -40,7 +40,6 @@ public class ItemService {
 			inventory = ivar.getItemInventory().get(0);
 			ivar.setItemInventory(null);
 			ivar.setItem(item);
-			System.out.println(item.getId());
 			variantDao.save(ivar);
 			
 			inventory.setItemVariant(ivar);
@@ -48,14 +47,33 @@ public class ItemService {
 			inventoryDao.save(inventory);
 		}
 	}
-
+	
+	public void update(Item item) {
+		List<ItemVariant> itemVariant = item.getItemVariant();
+		item.setItemVariant(null);
+		itemDao.update(item);
+		
+		ItemInventory inventory;
+		for(ItemVariant ivar: itemVariant) {
+			inventory = ivar.getItemInventory().get(0);
+			ivar.setItemInventory(null);
+			ivar.setItem(item);
+			if(ivar.getId() == null) {
+				variantDao.save(ivar);
+				inventory.setItemVariant(ivar);
+				inventoryDao.save(inventory);
+			} else {
+				variantDao.update(ivar);
+				inventory.setItemVariant(ivar);
+				inventoryDao.update(inventory);
+			}
+		}
+	}
 	public Item getOne(long id) {
 		return itemDao.getOne(id);
 	}
 
-	public void update(Item item) {
-		itemDao.update(item);
-	}
+	
 
 	public void delete(Item item) {
 		itemDao.delete(item);

@@ -22,7 +22,7 @@ public class PurchaseRequestDetail {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
-	private long id;
+	private Long id;
 	
 	@ManyToOne
 	private PurchaseRequest purchaseRequest;
@@ -47,11 +47,11 @@ public class PurchaseRequestDetail {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -110,6 +110,5 @@ public class PurchaseRequestDetail {
 	public void setItemVariant(ItemVariant itemVariant) {
 		this.itemVariant = itemVariant;
 	}
-	
 
 }
