@@ -23,8 +23,16 @@ public class SupplierDaoImpl implements SupplierDao{
 
 	public List<Supplier> selectAll() {
 		// TODO Auto-generated method stub
+		String hql = "from Supplier S order by S.id desc";
 		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Supplier.class).list();
+		List<Supplier> suppliers = session.createQuery(hql).list();
+		if (suppliers.isEmpty()) {
+			return null;
+		} else {
+			return suppliers;
+		}
+		/*Session session = sessionFactory.getCurrentSession();
+		return session.createCriteria(Supplier.class).list();*/
 	}
 
 	public Supplier getOne(Supplier supplier) {

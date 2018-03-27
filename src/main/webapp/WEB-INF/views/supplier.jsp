@@ -39,10 +39,6 @@ $(document).ready(function(){
 	$('#supplier-tbl').DataTable({
 	      paging      : true,
 	      searching   : false
-	      /* 'lengthChange': false,
-	      'ordering'    : true,
-	      'info'        : true,
-	      'autoWidth'   : false */
 	    })
 	
 	$('.delete').click(function(){
