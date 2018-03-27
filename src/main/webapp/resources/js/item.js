@@ -45,9 +45,11 @@ $(document).ready(function(){
 			update(e);
 		}
 		showAll(alamatUrl);
+		enableVariantProperty();
 	});
 	$('#btn-cancel-variant').click(function(e){
 		console.log('hide');
+		enableVariantProperty();
 		HideVariantForm();
 	});
 	$('#btn-save-variant').click(function(e){
@@ -85,7 +87,8 @@ $(document).ready(function(){
 		}
 		
 		createVariantTable(listVariant);
-		resetVariantForm
+		enableVariantProperty();
+		resetVariantForm();
 		HideVariantForm();
 	});
 	
@@ -96,12 +99,20 @@ $(document).ready(function(){
     	var idx = $(this).attr("data-id");
     	console.log($(this).attr('var-id'));
 		var data = listVariant[idx];
+		if (data.id == null){
+			enableVariantProperty();
+			console.log('tidakkkk')
+		} else{
+			disableVariantProperty();
+		}
+		
     	$('#add-variant-name').val(data.name);
     	console.log(data.price);
     	$('#add-unit-price').val(data.price);
     	$('#add-sku').val(data.sku);
     	$('#add-beginning-stock').val(data.itemInventory[0].beginning);
     	$('#add-alert-at').val(data.itemInventory[0].alertAtQty);
+    	
     	$('#btn-save-variant').attr("state", "update")
     	$('#btn-save-variant').attr("data-id", idx);
     	
@@ -257,6 +268,16 @@ $(document).ready(function(){
     function ShowVariantForm() {
     	$('#modal-addVariant').modal('show');
     	resetVariantForm();
+    }
+    function enableVariantProperty(){
+    	$('#add-variant-name').prop('disabled', false);
+		$('#add-sku').prop('disabled', false);
+		$('#add-beginning-stock').prop('disabled', false);
+    }
+    function disableVariantProperty(){
+    	$('#add-variant-name').prop('disabled', true);
+		$('#add-sku').prop('disabled', true);
+		$('#add-beginning-stock').prop('disabled', true);
     }
 	function resetVariantForm(){
 		console.log('clear variant form');
