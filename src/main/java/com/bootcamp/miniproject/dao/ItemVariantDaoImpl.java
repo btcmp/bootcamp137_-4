@@ -59,6 +59,7 @@ public class ItemVariantDaoImpl implements ItemVariantDao {
 	@Override
 	public void update(ItemVariant itemVariant) {
 		Session session = sessionFactory.getCurrentSession();
+		System.out.println(itemVariant.getId());
 		session.saveOrUpdate(itemVariant);
 		session.flush();
 	}

@@ -82,7 +82,8 @@ public class ItemController {
 		model.addAttribute("listItem", items);
 		return "item";
 	}
-	@RequestMapping(value = "/deleteVariant", method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteVariant/{id}", method = RequestMethod.PUT)
+	@ResponseBody
 	public void deleteVariant(@PathVariable long id) {
 		 variantService.deleteVar(id);
 	}

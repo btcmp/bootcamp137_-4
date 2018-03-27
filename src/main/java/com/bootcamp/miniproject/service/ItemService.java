@@ -54,6 +54,7 @@ public class ItemService {
 		itemDao.update(item);
 		
 		ItemInventory inventory;
+		System.out.println(itemVariant.size());
 		for(ItemVariant ivar: itemVariant) {
 			inventory = ivar.getItemInventory().get(0);
 			ivar.setItemInventory(null);
@@ -63,6 +64,8 @@ public class ItemService {
 				inventory.setItemVariant(ivar);
 				inventoryDao.save(inventory);
 			} else {
+				System.out.println(ivar.getName());
+				System.out.println(ivar.getId());
 				variantDao.update(ivar);
 				inventory.setItemVariant(ivar);
 				inventoryDao.update(inventory);
