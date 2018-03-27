@@ -85,9 +85,10 @@ $(document).ready(function(){
 		console.log(idx);
 		var variant = listVariant[idx];
 		console.log(variant.id)
+		
 		if (variant.id == null){
-			listVariant.splice(id,1);
-			createTableVariant(listVariant);
+			listVariant.splice(idx,1);
+			createVariantTable(listVariant);
 		} else{
 			$.ajax({
 				type : 'PUT',

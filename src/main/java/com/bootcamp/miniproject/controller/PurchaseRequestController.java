@@ -25,7 +25,7 @@ public class PurchaseRequestController {
 	@RequestMapping
 	public String home(Model model) {
 		model.addAttribute("purchaseRequest", prService.getAll());
-		return "home";
+		return "purchase-request";
 	}
 	
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
