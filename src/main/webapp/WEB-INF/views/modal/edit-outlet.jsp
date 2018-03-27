@@ -62,14 +62,15 @@
 						<label for="edit-postalCode">Postal Code</label> <input type="text"
 							class="form-control" id="edit-postalCode" placeholder="Postal Code">
 					</div>
-					<div class="checkbox">
+<!-- 					<div class="checkbox">
 						<label for="edit-active"><input id="edit-active" type="checkbox"
 							value="true">Active</label>
-					</div>
+					</div> -->
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button  type="button" id="btn-delete" class="btn btn-danger">X</button>
+				<button type="button" id="btn-reset" class="btn btn-secondary" >Close</button>
 				<button type="button" id="btn-edit" class="btn btn-primary"
 					data-dismiss="modal">Update</button>
 			</div>

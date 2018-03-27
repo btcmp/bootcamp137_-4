@@ -56,10 +56,10 @@
 						<label for="entry-postalCode">Postal Code</label> <input type="text"
 							class="form-control" id="entry-postalCode" placeholder="Postal Code">
 					</div>
-					<div class="checkbox">
+<!-- 					<div class="checkbox">
 						<label id="entry-active"><input id="active" type="checkbox"
 							value="true">Active</label>
-					</div>
+					</div> -->
 				</form>
 			</div>
 			<div class="modal-footer">

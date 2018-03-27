@@ -12,5 +12,6 @@ public interface OutletDao {
 	public void update(Outlet outlet);
 	public void delete(Outlet outlet);
 	public List<Outlet> getOutletBySearchName(String search);
+	public List<Outlet> selectStatusActive();
 	
 }

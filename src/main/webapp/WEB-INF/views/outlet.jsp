@@ -53,7 +53,7 @@
 				id : $('#entry-district').val()
 			},
 			postalCode : $('#entry-postalCode').val(),
-			active : active
+			active : 1
 		}
 		
 		
@@ -146,12 +146,7 @@
 		$('#edit-district').val(outlet.district.id);
 		$('#edit-postalCode').val(outlet.postalCode);
 		$('#edit-createdOn').val(outlet.createdOn);
-		var active = outlet.active;
-		if(active==true){
-			$('#edit-active').prop('checked', true);
-		} else {
-			$('#edit-active').prop('checked', false);
-		}
+		
 	}
 	
 
@@ -178,7 +173,6 @@
 			},
 			postalCode : $('#edit-postalCode').val(),
 			createdOn : $('#edit-createdOn').val(),
-			active : active
 		}
 		
 		$.ajax({
@@ -243,7 +237,7 @@
 
 
 	//delete
-	$('.delete').on('click', function(){
+/* 	$('.delete').on('click', function(){
 		var id = $(this).attr('id');
 		$('#delete-id').val(id);
 		$('#delete-outlet').modal();
@@ -261,8 +255,67 @@
 				alert('delete failed !');
 			}
 		})
-	})
+	}) */
 	
+	
+	//Delete di Table. Data pada Database masih dan Mengubah Status Active-nya menjadi 1 (0 = active. 1 = tidak active);
+	$('#btn-delete').on('click', function(){
+		var outlet = {
+			id : $('#edit-id').val(),
+			name : $('#edit-name').val(),
+			address : $('#edit-address').val(),
+			phone : $('#edit-phone').val(),
+			email : $('#edit-email').val(),
+			province : {
+				id : $('#edit-province').val()
+			},
+			region : {
+				id : $('#edit-region').val()
+			},
+			district : {
+				id : $('#edit-district').val()
+			},
+			postalCode : $('#edit-postalCode').val(),
+			createdOn : $('#edit-createdOn').val(),
+			active : 0
+			
+		}
+		
+	console.log(outlet);
+		
+	$.ajax({
+			url : '${pageContext.request.contextPath}/master/outlet/update',
+			type : 'PUT',
+			data : JSON.stringify(outlet),
+			contentType : 'application/json',
+			
+			success : function(data){
+				alert('non-active successfully!')
+				window.location = '${pageContext.request.contextPath}/master/outlet'; 
+			},
+			error : function () {
+				alert('non-active failed')
+			}
+		
+		});
+		
+	});
+	
+	
+	//reset form
+		$('#btn-reset').on('click', function(){
+			$('#edit-id').val('');
+			$('#edit-name').val('');
+			$('#edit-address').val('');
+			$('#edit-phone').val('');
+			$('#edit-email').val('');
+			$('#edit-province').val('');
+			$('#edit-region').val('');
+			$('#edit-district').val('');
+			$('#edit-postalCode').val('');
+			$('#edit-createdOn').val('');	
+	})
+
 	
 	
 	//searching by outlet name
@@ -302,8 +355,8 @@
 				<td>${outlet.phone }</td>
 				<td>${outlet.email }</td>
 				<td>
-					<a id="${outlet.id }" class="edit btn btn-primary" style="color:white;">Edit</a>
-					<a id="${outlet.id }" class="delete btn btn-danger" style="color:white">Delete</a>
+					<a id="${outlet.id }" class="edit btn btn-success" style="color:white;">Edit</a>
+					<%-- <a id="${outlet.id }" class="delete btn btn-danger" style="color:white">Delete</a> --%>
 				</td>				
 			</tr>
 		</c:forEach>

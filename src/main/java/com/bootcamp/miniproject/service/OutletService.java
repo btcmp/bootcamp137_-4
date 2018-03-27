@@ -42,5 +42,10 @@ public class OutletService {
 		// TODO Auto-generated method stub
 		return outletDao.getOutletBySearchName(search);
 	}
+
+	public List<Outlet> selectStatusActive() {
+		// TODO Auto-generated method stub
+		return outletDao.selectStatusActive();
+	}
 	
 }

@@ -42,7 +42,7 @@ public class OutletController {
 	
 	@RequestMapping
 	public String index(Model model) {
-		List<Outlet> outlets = outletService.selectAll();
+		List<Outlet> outlets = outletService.selectStatusActive();
 		List<Province> provinces = provinceService.selectAll();
 		List<Region> regions = regionService.selectAll();
 		List<District> districts = districtService.selectAll();
