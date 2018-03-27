@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.model.ItemInventory;
+import com.bootcamp.miniproject.model.ItemVariant;
 import com.bootcamp.miniproject.service.CategoryService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.ItemService;
@@ -47,6 +48,11 @@ public class ItemController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void save(@RequestBody Item item) {
 		itemService.save(item);
+	}
+	@RequestMapping(value = "/getAllVariants", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ItemVariant> getAllVariants(){
+		return (List<ItemVariant>) variantService.getAll();
 	}
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
 	@ResponseBody

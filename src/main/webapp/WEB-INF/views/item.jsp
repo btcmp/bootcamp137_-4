@@ -180,17 +180,17 @@
 					<th>Action</th>
 				</thead>
 				<tbody id= "table-body-item">
-					<c:forEach items="${variant }" var="var">
+					<%-- <c:forEach items="${variant }" var="var">
 						<tr>
 							<td>${var.item.name } --- <b>${var.name }</b> </td>
 							<td>${var.item.category.name }</td>
 							<td>${var.price}</td>
 							<td>
-									<a id="${var.item.id }" class="update-item btn btn-primary">Update</a> |
+								<a id="${var.item.id }" class="update-item btn btn-primary">Update</a> |
 								<a id="${var.item.id }" class="delete btn btn-danger">Delete</a>
 							</td>
 						</tr>
-					</c:forEach>
+					</c:forEach> --%>
 				</tbody>
             </table>
             </div>

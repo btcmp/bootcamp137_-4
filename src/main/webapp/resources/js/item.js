@@ -1,6 +1,30 @@
 $(document).ready(function(){
 	var alamatUrl = window.location.href;
 	listVariant = [];
+	function showAll(alamatUrl){
+		$("#table-body-item").empty();
+		$.ajax({
+			dataType : "json",
+		    url : alamatUrl+'/getAllVariants',
+		    headers : {
+		    	'Accept' : 'application/json',
+		        'Content-Type' : 'application/json'
+		    },
+		    type : 'GET',
+		    success : function(data){
+		    	$.each(data, (key, data) =>{
+					$('#table-body-item').append('<tr> <td>'+data.item.name+' -- '+data.name+'</td>'+
+							'<td>'+data.item.category.name+'</td>'+
+							'<td>'+data.price+'</td>'+
+							'<td><a id='+data.item.id+' class="update-item btn btn-primary">Update</a>'
+					)
+				});
+		    }
+		});	
+	}
+	
+	showAll(alamatUrl);
+	
 	$('#create').click(function(){
 		$('#btn-add-item').attr('state','create');
 		console.log('disini');
@@ -20,9 +44,12 @@ $(document).ready(function(){
 		} else{
 			update(e);
 		}
-		
+		showAll(alamatUrl);
 	});
-	
+	$('#btn-cancel-variant').click(function(e){
+		console.log('hide');
+		HideVariantForm();
+	});
 	$('#btn-save-variant').click(function(e){
 		console.log('clicked');
 		var state= $(this).attr('state');
@@ -37,7 +64,6 @@ $(document).ready(function(){
 							alertAtQty : parseInt($('#add-alert-at').val()),
 					}]
 			}
-			console.log(variant);
 			listVariant.push(variant);
 		} else{
 			var index = $(this).attr("data-id");
@@ -50,6 +76,7 @@ $(document).ready(function(){
 					sku: $('#add-sku').val(),
 					active : 1,
 					itemInventory : [{
+							id : parseInt($('#edit-variant').attr('inv-id')),
 							beginning : parseInt($('#add-beginning-stock').val()),
 							alertAtQty : parseInt($('#add-alert-at').val()),
 					}]
@@ -58,6 +85,7 @@ $(document).ready(function(){
 		}
 		
 		createVariantTable(listVariant);
+		resetVariantForm
 		HideVariantForm();
 	});
 	
@@ -90,6 +118,8 @@ $(document).ready(function(){
 			listVariant.splice(idx,1);
 			createVariantTable(listVariant);
 		} else{
+			// if (variant.itemInventory)
+			console.log(variant.itemInventory)
 			$.ajax({
 				type : 'PUT',
 				url : alamatUrl+'/deleteVariant/'+variant.id,
@@ -176,6 +206,7 @@ $(document).ready(function(){
 					temp = row.itemVariant.item;
 					
 					inventory = row;
+					console.log(inventory.id);
 					variant = row.itemVariant;
 					inventory.itemVariant = null;
 					variant.itemInventory = [inventory];
@@ -242,11 +273,9 @@ $(document).ready(function(){
 		$.each(data, (key, row) =>{
 			$('#table-body-variant').append('<tr class="child"><td>'+row.name+'</td><td>'+row.price+'</td><td>'+row.sku+'</td><td>'
 					+row.itemInventory[0].beginning+'</td><td>'+row.itemInventory[0].alertAtQty+'</td>'
-					+'<td><button type="button" id="edit-variant" class="btn btn-info btn-xs edit-variant" var-id='+row.id+' data-id='+index+'>Edit</button> | ' 
-					+'<button type="button" id="delete-variant" class="btn btn-xs delete-variant" var-id='+row.id+' data-id='+index+'>X</button></td></tr>');
+					+'<td><button type="button" id="edit-variant" class="btn btn-info btn-xs edit-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>Edit</button> | ' 
+					+'<button type="button" id="delete-variant" class="btn btn-xs delete-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>X</button></td></tr>');
 			index++;
-			console.log(row.id)
 		});
 	}
 });
-
