@@ -131,7 +131,7 @@ $(document).ready(function(){
 			createdOn : $('#edit-createdOn').val(),
 			active : 1
 		}
-	
+	console.log(category)
 		$.ajax({
 			url : '${pageContext.request.contextPath}/master/category/update',
 			type : 'PUT',
@@ -155,9 +155,6 @@ $(document).ready(function(){
 		$('#edit-name').val('');
 	})
 
-
-
-	
 //==================================
 //SEARCH
 	$('#btn-search').click(function(){
@@ -190,10 +187,9 @@ $(document).ready(function(){
 			<c:forEach items="${categorys }" var="category">
 				<tr>
 					<td>${category.name }</td>
-					<td>Stocks Item dari Table Stock belum di Relasi</td>
+					<td>${category.itemStock }</td>
 					<td>
 						<a id="${category.id }" class="edit btn btn-success" style="color:white;">View</a>
-						<%-- <a id="${category.id }" class="delete btn btn-danger">Delete</a> --%>
 					</td>	
 				
 				</tr>

@@ -15,18 +15,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bootcamp.miniproject.model.Category;
+import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.service.CategoryService;
+import com.bootcamp.miniproject.service.ItemService;
 
 @Controller
 @RequestMapping("master/category")
 public class CategoryController {
-//
+
 	@Autowired
 	CategoryService categoryService;
 	
+	
 	@RequestMapping
 	public String index(Model model) {
-		List<Category> category = categoryService.selectStatusActive();
+		List<Category> category = categoryService.selectAll();
 		model.addAttribute("categorys", category);
 		return "category";
 	}

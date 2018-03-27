@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.sun.istack.NotNull;
 
@@ -50,6 +51,11 @@ public class Category {
 	
 	@NotNull
 	private boolean active;
+	
+	
+	//fiels ini hanya bantuan untuk menampung nilai dan  tidak masuk dalam database.
+	@Transient
+	private int itemStock;
 	
 	@OneToMany(fetch= FetchType.LAZY, mappedBy="category", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Item> listItem;
@@ -101,6 +107,12 @@ public class Category {
 	}
 	public void setListItem(List<Item> listItem) {
 		this.listItem = listItem;
+	}
+	public int getItemStock() {
+		return itemStock;
+	}
+	public void setItemStock(int itemStock) {
+		this.itemStock = itemStock;
 	}
 	
 	//updated

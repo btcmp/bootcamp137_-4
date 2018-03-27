@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bootcamp.miniproject.model.Category;
 import com.bootcamp.miniproject.model.Item;
 @Repository
 public class ItemDaoImpl implements ItemDao {
@@ -61,5 +62,18 @@ public class ItemDaoImpl implements ItemDao {
 			return items;
 		}
 	}
+
+	public List<Item> getItemByCategory(Category category) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemVariant inv where inv.item.category = :category and inv.active=1";
+		List<Item> item = session.createQuery(hql).setParameter("category", category).list();
+		if(item.isEmpty()) {
+			return null;
+		}
+		return item;
+	}
+
+	
 	
 }

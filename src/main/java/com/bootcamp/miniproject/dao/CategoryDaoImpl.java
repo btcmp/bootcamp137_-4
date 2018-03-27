@@ -58,7 +58,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	@Override
 	public List<Category> getCategoryBySearchName(String search) {
 		// TODO Auto-generated method stub
-		String hql = "from Category Cat where lower(Cat.name) like :search";
+		String hql = "from Category Cat where lower(Cat.name) like :search and Cat.active = 0";
 		Session session = sessionFactory.getCurrentSession();
 		List<Category> categories = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
 		System.out.println(categories.size());
