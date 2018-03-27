@@ -64,8 +64,6 @@ public class ItemService {
 				inventory.setItemVariant(ivar);
 				inventoryDao.save(inventory);
 			} else {
-				System.out.println(ivar.getName());
-				System.out.println(ivar.getId());
 				variantDao.update(ivar);
 				inventory.setItemVariant(ivar);
 				inventoryDao.update(inventory);
@@ -84,6 +82,4 @@ public class ItemService {
 		return itemDao.getItemBySearchName(search);
 	}
 
-
-	
 }

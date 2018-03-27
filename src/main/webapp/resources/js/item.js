@@ -294,8 +294,8 @@ $(document).ready(function(){
 		$.each(data, (key, row) =>{
 			$('#table-body-variant').append('<tr class="child"><td>'+row.name+'</td><td>'+row.price+'</td><td>'+row.sku+'</td><td>'
 					+row.itemInventory[0].beginning+'</td><td>'+row.itemInventory[0].alertAtQty+'</td>'
-					+'<td><button type="button" id="edit-variant" class="btn btn-info btn-xs edit-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>Edit</button> | ' 
-					+'<button type="button" id="delete-variant" class="btn btn-xs delete-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>X</button></td></tr>');
+					+'<td><button type="button" id="edit-variant" class="btn btn-info btn-sm edit-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>Edit</button> | ' 
+					+'<button type="button" id="delete-variant" class="btn btn-sm delete-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>X</button></td></tr>');
 			index++;
 		});
 	}

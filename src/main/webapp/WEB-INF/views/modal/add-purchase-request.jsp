@@ -4,12 +4,12 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
     
-<div class="modal fade" id="modal-addItem" data-modal-index="1">
+<div class="modal fade" id="modal-add-pr" data-modal-index="1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Add New Item</h4>
+        <h4 class="modal-title">Add / Edit Purchase Request</h4>
       </div>
       <div class="modal-body">
       	<form class="form-all">
@@ -31,11 +31,11 @@
         
 			<table id="table-variant" class="table table-bordered table-striped">
                 <thead>
-					<th class="col-md-2">Variant Name</th>
-					<th class="col-md-1">Unit Price </th>
-					<th class="col-md-1">SKU </th>
-					<th class="col-md-2">Beginning Stock </th>
-					<th class="col-md-1">Stock Alert </th>
+					<th class="col-md-3">Variant Name</th>
+					<th class="col-md-2">Unit Price </th>
+					<th class="col-md-2">SKU </th>
+					<th class="col-md-3">Beginning Stock </th>
+					<th class="col-md-3">Stock Alert </th>
 					<th class="col-md-2">Action</th>
 				</thead>
 				<tbody id="table-body-variant">

@@ -162,7 +162,7 @@
       	<div class="center">
       	
       	</div>
-      	<button id="create" data-toggle="modal" data-target="#addItemMotal" class="btn btn-primary">Create</button>
+      	<button id="create"  class="btn btn-primary">Create</button>
       	
 	  </div>
 	  <div class="col-xs-1">
@@ -195,7 +195,7 @@
 							<td>${var.item.category.name }</td>
 							<td>${var.price}</td>
 							<td>
-									<a id="${var.item.id }" class="update-item btn btn-primary">Edit</a> |
+								<a id="${var.item.id }" class="update-item btn btn-primary">Edit</a> |
 								<a id="${var.item.id }" class="delete btn btn-danger">View</a>
 							</td>
 						</tr>
@@ -233,11 +233,11 @@
 </script>
 
 <div class = "container">
-	<%@include file="modal/item/add-item.jsp" %>
+	<%@include file="modal/add-purchase-request.jsp" %>
 </div>
 
 
-<script type="text/javascript" src="<c:url value="/resources/js/item.js" />" charset="utf-8"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/purchaseRequest.js" />" charset="utf-8"></script>
 <!-- jQuery 3 -->
 <script src="${url}/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
