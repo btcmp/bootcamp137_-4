@@ -77,14 +77,14 @@ $(document).ready(function(){
 				$('#view-status-history').val();
 				$('#view-transfer-stock-detail-tbl').empty();
 				var option = [];
-				if (data.status=="submitted") {
-					option.push("<option value=\"kosong\">Action</option>");
-					option.push("<option value=\"approved\">Approve</option>");
-					option.push("<option value=\"rejected\">Reject</option>");
-					option.push("<option value=\"print\">Print</option>");
+				if (data.status=="Submitted") {
+					option.push("<option value=\"Kosong\">Action</option>");
+					option.push("<option value=\"Approved\">Approve</option>");
+					option.push("<option value=\"Rejected\">Reject</option>");
+					option.push("<option value=\"Print\">Print</option>");
 				} else {
-					option.push("<option value=\"kosong\">Action</option>");
-					option.push("<option value=\"print\">Print</option>");
+					option.push("<option value=\"Kosong\">Action</option>");
+					option.push("<option value=\"Print\">Print</option>");
 				}
 				$('#more-option').html(option);
 				$.ajax({
@@ -112,7 +112,7 @@ $(document).ready(function(){
 	
 	$('#more-option').change(function(){
 		var newStatus = $(this).val();
-		if (newStatus=="approved" || newStatus=="rejected") {
+		if (newStatus=="Approved" || newStatus=="Rejected") {
 			transferStockId = $('#view-hidden-id').val();
 			console.log(newStatus);
 			console.log(transferStockId);
@@ -129,7 +129,7 @@ $(document).ready(function(){
 				}
 				
 			})
-		} else if (newStatus=="print") {
+		} else if (newStatus=="Print") {
 			window.location='${pageContext.request.contextPath}/transaction/transfer-stock/detail';
 		}
 	})
