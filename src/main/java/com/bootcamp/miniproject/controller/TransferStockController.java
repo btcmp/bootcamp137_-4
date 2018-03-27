@@ -21,6 +21,7 @@ import com.bootcamp.miniproject.model.TransferStock;
 import com.bootcamp.miniproject.model.TransferStockDetail;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
+import com.bootcamp.miniproject.service.TransferStockDetailService;
 import com.bootcamp.miniproject.service.TransferStockService;
 
 @Controller
@@ -29,6 +30,9 @@ public class TransferStockController {
 
 	@Autowired
 	TransferStockService transferStockService;
+	
+	@Autowired
+	TransferStockDetailService transferStockDetailService;
 	
 	@Autowired
 	ItemInventoryService itemInventoryService;
@@ -47,10 +51,25 @@ public class TransferStockController {
 		return "transferStock";
 	}
 	
+	@RequestMapping(value = "/detail")
+	public String indexDetail(Model model) {
+		List<TransferStock> transferStocks = transferStockService.selectAll();
+		model.addAttribute("transferStocks", transferStocks);
+		return "transfer-stock-detail";
+	}
+	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public void saveTransferStock(@RequestBody TransferStock transferStock) {
 		transferStockService.save(transferStock);
+	}
+	
+	@RequestMapping(value = "/update-status/{id}", method = RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateStatus(@RequestBody String newStatus, @PathVariable long id) {
+		TransferStock transferStock = transferStockService.getOne(id);
+		transferStock.setStatus(newStatus);
+		transferStockService.saveUpdate(transferStock);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -102,7 +121,7 @@ public class TransferStockController {
 	@RequestMapping(value = "/search-transfer-stock-detail", method = RequestMethod.GET)
 	@ResponseBody
 	public List<TransferStockDetail> searchTSDByTSID(@RequestParam(value="search", defaultValue="") long search) {
-		List<TransferStockDetail> transferStockDetails = transferStockService.getTransferStockDetailsByTransferStockId(search);
+		List<TransferStockDetail> transferStockDetails = transferStockDetailService.getTransferStockDetailsByTransferStockId(search);
 		return transferStockDetails;
 	}
 }

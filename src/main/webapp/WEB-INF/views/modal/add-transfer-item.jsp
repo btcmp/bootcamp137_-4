@@ -5,7 +5,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add New Supplier</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -23,24 +23,24 @@
 						<table class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
 								<th>Item</th>
-								<th>In Stock</th>
+								<th>Stock</th>
 								<th>Trans. Qty</th>
 								<th>Action</th>
 							</thead>
 							<tbody id="add-item-transfer-tbl">
-								<c:forEach items="${itemInventorys }" var="itemInventory">
+								<%-- <c:forEach items="${itemInventorys }" var="itemInventory">
 									<tr>
 										<td>${itemInventory.itemVariant.item.name }-${itemInventory.itemVariant.name }</td>
 										<td>${itemInventory.endingQty }</td>
 										<td id="td-qty${itemInventory.id}">
-											<input class="add-transfer-stock-qty${itemInventory.id}" value="0"/>
+											<input type="number" class="add-transfer-stock-qty${itemInventory.id}" value="0"/>
 										</td>
 										<td>
 											<button type="button" id="${itemInventory.id}" class="btn-add-item${itemInventory.id} btn-add-item btn btn-primary">Add</button>
 											<button type="button" id="${itemInventory.id}" class="btn-added-item${itemInventory.id} btn-added-item btn">Added</button>
 										</td>
 									</tr>
-								</c:forEach>
+								</c:forEach> --%>
 							</tbody>
 						</table>
 					</div>

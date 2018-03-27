@@ -125,44 +125,46 @@ $(document).ready(function(){
 	})
 	
 	$('#btn-save').click(function(){
-		var transferStockDetail=[];
-		
-		$('#add-transferStock-tbl > tr').each(function(index, data){
-			var tsd = {
-					itemVariant : {
-						id : $(data).find('td').eq(0).attr('id')
-					},
-					instock : $(data).find('td').eq(1).text(),
-					transferQty : $(data).find('td').eq(2).text()
-			}
-			transferStockDetail.push(tsd);
-		});
-		
-		var transferStock = {
-				fromOutlet : {
-					id : $('#add-from-outlet').val()
-				},
-				toOutlet : {
-					id : $('#add-to-outlet').val()
-				},
-				transferStockDetail : transferStockDetail,
-				notes : $('#add-notes').val(),
-				status : "Submitted"
-		};
-		console.log(transferStock);
-		$.ajax({
-			url : '${pageContext.request.contextPath }/transaction/transfer-stock/save',
-			type : 'POST',
-			data : JSON.stringify(transferStock),
-			contentType : 'application/json',
-			success : function(){
-				alert('save successfully');
-				window.location='${pageContext.request.contextPath}/transaction/transfer-stock';
-			}, error : function(){
-				alert('save failed');
-			}
+		if ($('#add-from-outlet').val()==$('#add-to-outlet').val()) {
+			alert("you can't transfer stock to same outlet")
+		} else {
+			var transferStockDetail=[];
 			
-		})
+			$('#add-transferStock-tbl > tr').each(function(index, data){
+				var tsd = {
+						itemVariant : {
+							id : $(data).find('td').eq(0).attr('id')
+						},
+						instock : $(data).find('td').eq(1).text(),
+						transferQty : $(data).find('td').eq(2).text()
+				}
+				transferStockDetail.push(tsd);
+			});
+			
+			var transferStock = {
+					fromOutlet : {
+						id : $('#add-from-outlet').val()
+					},
+					toOutlet : {
+						id : $('#add-to-outlet').val()
+					},
+					transferStockDetail : transferStockDetail,
+					notes : $('#add-notes').val(),
+					status : "Submitted"
+			};
+			$.ajax({
+				url : '${pageContext.request.contextPath }/transaction/transfer-stock/save',
+				type : 'POST',
+				data : JSON.stringify(transferStock),
+				contentType : 'application/json',
+				success : function(){
+					alert('save successfully');
+					window.location='${pageContext.request.contextPath}/transaction/transfer-stock';
+				}, error : function(){
+					alert('save failed');
+				}
+			})
+		}
 	})
 	
 	$('#outlet-search').change(function(){
@@ -176,26 +178,33 @@ $(document).ready(function(){
 	
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
-		var transQty = $('.add-transfer-stock-qty'+id).val();
-		added.push(id);
-		addedQty.push(transQty);
-		$('#td-qty'+id).html(transQty);
-		$(this).hide();
-		$('.btn-added-item'+id).show();
-		document.getElementById("btn-save").disabled = false;
-		$.ajax({
-			type : 'GET',
-			url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one-item/'+id,
-			dataType: 'json',
-			success : function(data){
-				$('#add-transferStock-tbl').append('<tr id="tr-transferStock'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>'
-						+ data.endingQty +'</td><td>'+ transQty +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
-						+ data.id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
-			},
-			error : function(){
-				alert('get one item inventory failed');
-			}
-		})
+		var inStock = parseInt($('#inStock'+id).text());
+		var transQty = parseInt($('.add-transfer-stock-qty'+id).val());
+		if (transQty>inStock) {
+			alert("not enough stock");
+		} else if (transQty<1) {
+			alert("at least 1");
+		}else {
+			added.push(id);
+			addedQty.push(transQty);
+			$('#td-qty'+id).html(transQty);
+			$(this).hide();
+			$('.btn-added-item'+id).show();
+			document.getElementById("btn-save").disabled = false;
+			$.ajax({
+				type : 'GET',
+				url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one-item/'+id,
+				dataType: 'json',
+				success : function(data){
+					$('#add-transferStock-tbl').append('<tr id="tr-transferStock'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>'
+							+ data.endingQty +'</td><td>'+ transQty +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
+							+ data.id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
+				},
+				error : function(){
+					alert('get one item inventory failed');
+				}
+			})
+		}
 	})
 	
 	$('body').on('click', 'button.btn-cancel-item', function(){
@@ -203,7 +212,7 @@ $(document).ready(function(){
 		$('#tr-transferStock'+id).remove();
 		$('.btn-added-item'+id).hide();
 		$('.btn-add-item'+id).show();
-		$('#td-qty'+id).html('<input class="add-transfer-stock-qty'+ id +'" value="0" />');
+		$('#td-qty'+id).html('<input type="number" class="add-transfer-stock-qty'+ id +'" value="1" />');
 		var a = added.indexOf(id.toString());
 		added.splice(a,1);
 		addedQty.splice(a,1);
@@ -216,34 +225,38 @@ $(document).ready(function(){
 	
 	$('#search-item-varian').on('input',function(e){
 		var word = $(this).val();
-		$.ajax({
-			type : 'GET',
-			url : '${pageContext.request.contextPath}/transaction/transfer-stock/search-item?search='+word,
-			dataType: 'json',
-			success : function(data){
-				$('#add-item-transfer-tbl').empty();
-				$.each(data, function(key, val) {
-					if(added.indexOf(val.id.toString()) == -1) {
-						$('#add-item-transfer-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
-								+ val.endingQty +'</td><td id="td-qty'+ val.id +'"><input class="add-transfer-stock-qty'+ val.id +'" value="0" /></td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
-								+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
-								+ val.id +' btn-added-item btn">Added</button></td></tr>');
-						$('.btn-added-item'+val.id).hide();
-					} else {
-						var a = added.indexOf(val.id.toString());
-						$('#add-item-transfer-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
-								+ val.endingQty +'</td><td id="td-qty'+ val.id +'">'+addedQty[a]+'</td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
-								+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
-								+ val.id +' btn-added-item btn">Added</button></td></tr>');
-						$('.btn-add-item'+val.id).hide();
-					}
-				});
-			}, 
-			error : function(){
-				$('#add-item-transfer-tbl').empty();
-				//alert('show selected transferStock data in modal failed');
-			}
-		})
+		if (word=="") {
+			$('#add-item-transfer-tbl').empty();
+		} else {
+			$.ajax({
+				type : 'GET',
+				url : '${pageContext.request.contextPath}/transaction/transfer-stock/search-item?search='+word,
+				dataType: 'json',
+				success : function(data){
+					$('#add-item-transfer-tbl').empty();
+					$.each(data, function(key, val) {
+						if(added.indexOf(val.id.toString()) == -1) {
+							$('#add-item-transfer-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td id="inStock'+ val.id +'">'
+									+ val.endingQty +'</td><td id="td-qty'+ val.id +'"><input type="number" class="add-transfer-stock-qty'+ val.id +'" value="1" /></td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
+									+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
+									+ val.id +' btn-added-item btn">Added</button></td></tr>');
+							$('.btn-added-item'+val.id).hide();
+						} else {
+							var a = added.indexOf(val.id.toString());
+							$('#add-item-transfer-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
+									+ val.endingQty +'</td><td id="td-qty'+ val.id +'">'+addedQty[a]+'</td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
+									+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
+									+ val.id +' btn-added-item btn">Added</button></td></tr>');
+							$('.btn-add-item'+val.id).hide();
+						}
+					});
+				}, 
+				error : function(){
+					$('#add-item-transfer-tbl').empty();
+					//alert('show selected transferStock data in modal failed');
+				}
+			})
+		}
 	})
 });
 </script>

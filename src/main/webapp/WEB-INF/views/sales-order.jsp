@@ -25,7 +25,7 @@
 <div class="container">
 <h3>Sales Order</h3>
 	<div style="margin-left: 30px; margin-top: 30px;" id="search-box" class="row"> 
-		<div clas="col-sm-4"><input  class="form-control" type="text" id="search" placeholder="search supplier"/></div>
+		<div clas="col-sm-4"><input  class="form-control" type="text" id="search" placeholder="search item-variant"/></div>
 	</div>
 	<table class="table table-striped table-bordered" cellspacing="0" width="100%">
 		<tbody id="item-tbl">
@@ -174,36 +174,40 @@ $(document).ready(function(){
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
 		var transQty = $('.add-item-qty'+id).val();
-		added.push(id);
-		addedQty.push(transQty);
-		$('#td-qty'+id).html(transQty);
-		$(this).hide();
-		$('.btn-added-item'+id).show();
-		$.ajax({
-			type : 'GET',
-			url : '${pageContext.request.contextPath}/transaction/sales-order/get-one-item/'+id,
-			dataType: 'json',
-			success : function(data){
-				document.getElementById("charge").disabled = false;
-				if (added.length=="1") {
-					$('#salesOrder-tbl-body').empty();
+		if (transQty<1) {
+			alert("at least 1");
+		} else {
+			added.push(id);
+			addedQty.push(transQty);
+			$('#td-qty'+id).html(transQty);
+			$(this).hide();
+			$('.btn-added-item'+id).show();
+			$.ajax({
+				type : 'GET',
+				url : '${pageContext.request.contextPath}/transaction/sales-order/get-one-item/'+id,
+				dataType: 'json',
+				success : function(data){
+					document.getElementById("charge").disabled = false;
+					if (added.length=="1") {
+						$('#salesOrder-tbl-body').empty();
+					}
+					$('#salesOrder-tbl-body').append('<tr id="tr-salesOrder'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>Rp.'
+							+ data.itemVariant.price +'</td><td>'+ transQty +'</td><td>Rp.'+ data.itemVariant.price*transQty +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
+							+ data.id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
+					$('#salesOrder-tbl-foot').empty();
+					var total = 0;
+					$('#salesOrder-tbl-body > tr').each(function(index, data){
+						var price = $(data).find('td').eq(3).text().split("Rp.")[1];
+						total = total + parseInt(price);
+					})
+					$('#salesOrder-tbl-foot').append('<tr id="tr-total-item"><th colspan="3">TOTAL</th><th colspan="2">Rp. '+ total +'</th></tr>');
+					$('#charge').text("Charge Rp."+total)
+				},
+				error : function(){
+					alert('get one item inventory failed');
 				}
-				$('#salesOrder-tbl-body').append('<tr id="tr-salesOrder'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>Rp.'
-						+ data.itemVariant.price +'</td><td>'+ transQty +'</td><td>Rp.'+ data.itemVariant.price*transQty +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
-						+ data.id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
-				$('#salesOrder-tbl-foot').empty();
-				var total = 0;
-				$('#salesOrder-tbl-body > tr').each(function(index, data){
-					var price = $(data).find('td').eq(3).text().split("Rp.")[1];
-					total = total + parseInt(price);
-				})
-				$('#salesOrder-tbl-foot').append('<tr id="tr-total-item"><th colspan="3">TOTAL</th><th colspan="2">Rp. '+ total +'</th></tr>');
-				$('#charge').text("Charge Rp."+total)
-			},
-			error : function(){
-				alert('get one item inventory failed');
-			}
-		})
+			})
+		}
 	})
 	
 	$('body').on('click', 'button.btn-cancel-item', function(){
