@@ -1,20 +1,24 @@
 package com.bootcamp.miniproject.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -36,18 +40,20 @@ public class User {
 	
 	@NotNull
 	private String password;
-		
-
-	@ManyToOne
-	@NotNull
-	@JoinColumn(name="role_id", nullable=false)
-	private Role role;
 	
-	@OneToOne
-	@NotNull
-	@JoinColumn(name="employee_id")
-	@JsonBackReference
+	/*@ManyToOne
+	private Role role;*/
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private Employee employee;
+	
+
+	@ManyToMany
+	@JoinTable(
+			name = "user_roles",
+			joinColumns={@JoinColumn(name="user_id")},
+			inverseJoinColumns={@JoinColumn(name="role_id")}
+			)
+	private List<Role> roles;
 	
 	@Column(name="created_by")
 	private long createdBy;
@@ -64,6 +70,7 @@ public class User {
 	private Date modifiedOn;
 	
 	@NotNull
+	@Column(name="enabled")
 	private boolean active;
 
 	public long getId() {
@@ -90,13 +97,13 @@ public class User {
 		this.password = password;
 	}
 
-	public Role getRole() {
+	/*public Role getRole() {
 		return role;
 	}
 
 	public void setRole(Role role) {
 		this.role = role;
-	}
+	}*/
 
 	public Employee getEmployee() {
 		return employee;
@@ -104,6 +111,14 @@ public class User {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public long getCreatedBy() {
@@ -145,7 +160,6 @@ public class User {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-	
+
 	
 }
