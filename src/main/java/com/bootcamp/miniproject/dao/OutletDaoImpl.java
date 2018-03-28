@@ -56,7 +56,7 @@ public class OutletDaoImpl implements OutletDao{
 	@Override
 	public List<Outlet> getOutletBySearchName(String search) {
 		// TODO Auto-generated method stub
-		String hql = "from Outlet Out where lower(Out.name) like:search";
+		String hql = "from Outlet Out where lower(Out.name) like:search and Out.active = 1";
 		Session session = sessionFactory.getCurrentSession();
 		List<Outlet> outlets = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
 		if(outlets.isEmpty()) {

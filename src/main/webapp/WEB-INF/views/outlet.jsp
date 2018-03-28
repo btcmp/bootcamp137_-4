@@ -3,22 +3,112 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<spring:url value="/resources/adminLTE" var="url"></spring:url>
 <spring:url value="/resources/js/jquery-3.3.1.js" var="jq"></spring:url>
 <spring:url value="/resources/js/parsley.js" var="parsley"></spring:url>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Entry Outlet</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css"/>
-<script type="text/javascript" src="${jq}"></script>
-<script type="text/javascript" src="${parsley}"></script>
-<script type="text/javascript" src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<%@ include file="template/head.jsp" %>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <%@ include file="template/template.jsp" %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+  
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h2 style="text-align: center;">
+        Master Outlet
+      </h2>
+      <ol class="breadcrumb">
+        <li><a href="${pageContext.request.contextPath}/master"><i class="fa fa-dashboard"></i> Master</a></li>
+        <li class="active">Outlet</li>
+      </ol>
+    </section>
+    
+    <section class="content-header row">
+      <!-- search form -->
+      <div class="col-xs-4">
+        <div class="input-group ">
+          <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
+          <span class="input-group-btn">
+                <button name="search" id="btn-search" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div class="col-xs-7">
+        <a id="create-outlet" class="btn btn-primary">Create</a>
+      </div>
+      <div class="col-xs-1">
+        <a class="btn btn-primary">Export</a>
+      </div>
+      </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content"  style="background-color: ;">
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- /.box -->
+          <div class="box">
+            <!-- /.box-header -->
+            
+            
+            <div class="box-body">
+              <table id="outlet-tbl" class="table table-bordered table-striped">
+				<thead>
+					<th>Name</th>
+					<th>Address</th>
+					<th>Phone</th>
+					<th>Email</th>
+					<th>Action</th>
+				</thead>
+				<tbody>
+				<c:forEach items="${outlets }" var="outlet">
+					<tr>
+						<td>${outlet.name }</td>
+						<td>${outlet.address }</td>
+						<td>${outlet.phone }</td>
+						<td>${outlet.email }</td>
+						<td>
+							<a id="${outlet.id }" class="edit btn btn-success" style="color:white;">Edit</a>
+						</td>				
+					</tr>
+				</c:forEach>
+				</tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+            
+            
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  <%@ include file="template/footer.jsp" %>
+
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+<div>
+	<%@ include file="modal/add-outlet.jsp" %>
+	<%@ include file="modal/edit-outlet.jsp" %>
+</div>
+
+
+
+</body>
 
 <script type="text/javascript">
 	$(function() {
@@ -27,6 +117,9 @@
 			searching:false	
 		});
 		
+		$("#outlet-side-option").addClass('active');
+		$("#treeview-master").addClass('active');
+		
 //================================================== ADD DATA
 	$('#create-outlet').on('click', function() {
 		$('#save-outlet').modal();   //call modal
@@ -34,10 +127,6 @@
 	
 	//execute button add/save
 	$('#btn-entry').on('click', function() {
-		var active = "false";
-		$('#entry-active input:checked').each(function(){
-			active = $(this).val()
-		})
 		var out = {
 			name : $('#entry-name').val(),
 			address : $('#entry-address').val(),
@@ -152,10 +241,6 @@
 
 	//eksekusi button update/edit
 	$('#btn-edit').on('click', function() {
-		var active = "false";
-		$('#edit-active input:checked').each(function() {
-			active = $(this).val()
-		})
 		var outlet = {
 			id : $('#edit-id').val(),
 			name : $('#edit-name').val(),
@@ -173,6 +258,7 @@
 			},
 			postalCode : $('#edit-postalCode').val(),
 			createdOn : $('#edit-createdOn').val(),
+			active : 1
 		}
 		
 		$.ajax({
@@ -329,43 +415,6 @@
 		
 	});
 </script>
-</head>
-<body>
-<div class="container">
-<p><h1>DATA OUTLET</h1></p>
-<div id="search-box">
-	<span>Search</span>
-	<span><input type="text" id="search"/></span>
-	<span><a id="btn-search" href="#" class="btn btn-primary">Search</a></span>
-</div>
-<p><a class="btn btn-info" id="create-outlet" style="color:white;">Create</a></p>
-	<table class="table table-striped table-bordered" id="outlet-tbl">
-		<thead>
-			<th>Name</th>
-			<th>Address</th>
-			<th>Phone</th>
-			<th>Email</th>
-			<th>Action</th>
-		</thead>
-		<tbody>
-		<c:forEach items="${outlets }" var="outlet">
-			<tr>
-				<td>${outlet.name }</td>
-				<td>${outlet.address }</td>
-				<td>${outlet.phone }</td>
-				<td>${outlet.email }</td>
-				<td>
-					<a id="${outlet.id }" class="edit btn btn-success" style="color:white;">Edit</a>
-					<%-- <a id="${outlet.id }" class="delete btn btn-danger" style="color:white">Delete</a> --%>
-				</td>				
-			</tr>
-		</c:forEach>
-		</tbody>
-	</table>
-</div>		
-<%@ include file="modal/add-outlet.jsp" %>
-<%@ include file="modal/edit-outlet.jsp" %>
-<%@ include file="modal/del-outlet.html" %>
 
-</body>
 </html>
+

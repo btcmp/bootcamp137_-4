@@ -6,11 +6,11 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Update Category</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
+				<h4 class="modal-title" id="exampleModalLabel"><b>Update Category</b></h4>
 			</div>
 			<div class="modal-body">
 				<form action="#">
@@ -21,11 +21,11 @@
 						<input type="text" class="form-control" id="edit-name"  placeholder="Category Name" />
 					</div>
 				</form>
-			</div>
+
 			<div class="modal-footer">
-				<button type="button" id="btn-delete" class="btn btn-danger" >Delete</button> 
-				<button type="button" id="btn-reset" class="btn btn-secondary">Close</button>
-				<button type="button" id="btn-update" class="btn btn-primary">Save</button>
+			<button style="float:left;" type="button" id="btn-delete" class="btn btn-danger" >X</button>
+			<button type="button" id="btn-reset" class="btn btn-secondary">Close</button>
+			<button type="button" id="btn-update" class="btn btn-primary float-right">Save</button>
 			</div>
 		</div>
 	</div>

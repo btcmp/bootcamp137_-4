@@ -28,17 +28,18 @@ public class CategoryService {
 	
 	public List<Category> selectAll(){
 		List<Category> categories = categoryDao.selectStatusActive();
-		List<Category> cat = new ArrayList();
- 		for(Category category : categories) {
-			List<Item> item = itemDao.getItemByCategory(category);
-			if (item == null) {
+		for(Category category : categories) {
+			List<Item> items = itemDao.getItemByCategory(category);
+			if (items == null) {
 				category.setItemStock(0);
-			} else
-			category.setItemStock(item.size());
-			cat.add(category);
-			System.out.println(category.getName()+" item= "+ category.getItemStock());
+			}
+			else {
+				category.setItemStock(items.size());
+			}
 		}
-		return cat;
+		return categories;
+		/*return categoryDao.selectAll();*/
+
 	}
 	
 	
@@ -57,8 +58,17 @@ public class CategoryService {
 	}
 
 	public List<Category> getCategoryBySearchName(String search) {
-		// TODO Auto-generated method stub
-		return categoryDao.getCategoryBySearchName(search);
+		List<Category> categories = categoryDao.getCategoryBySearchName(search);
+		for(Category category : categories) {
+			List<Item> items = itemDao.getItemByCategory(category);
+			if (items == null) {
+				category.setItemStock(0);
+			}
+			else {
+				category.setItemStock(items.size());
+			}
+		}
+		return categories;		
 	}
 
 	public List<Category> selectStatusActive() {

@@ -5,11 +5,11 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">edit Outlet</h5>
-				<button type="button" class="close" data-dismiss="modal"
+				 <button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
+				<h4 class="modal-title" id="exampleModalLabel"><b>Edit Outlet</b></h4> 
 			</div>
 			<div class="modal-body">
 				<form class="form-all">
@@ -69,7 +69,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-			<button  type="button" id="btn-delete" class="btn btn-danger">X</button>
+				<button style="float:left;" type="button" id="btn-delete" class="btn btn-danger">X</button>
 				<button type="button" id="btn-reset" class="btn btn-secondary" >Close</button>
 				<button type="button" id="btn-edit" class="btn btn-primary"
 					data-dismiss="modal">Update</button>
