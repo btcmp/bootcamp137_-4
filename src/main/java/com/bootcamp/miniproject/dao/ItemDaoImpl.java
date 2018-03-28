@@ -20,7 +20,12 @@ public class ItemDaoImpl implements ItemDao {
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "From Item i ORDER BY i.id";
 		org.hibernate.Query query = session.createQuery(hql);
-		return query.list();
+		List<Item> item = query.list();
+		if (item.isEmpty()) {
+			return null;
+		} else {
+			return item;
+		}
 	}
 
 	@Override
@@ -46,7 +51,12 @@ public class ItemDaoImpl implements ItemDao {
 	@Override
 	public Item getOne(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		return session.get(Item.class, id);
+		Item item = session.get(Item.class, id);
+		if (item == null) {
+			return null;
+		} else {
+			return item;
+		}
 	}
 
 	@Override

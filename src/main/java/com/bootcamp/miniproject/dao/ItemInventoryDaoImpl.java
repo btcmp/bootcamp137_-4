@@ -21,7 +21,12 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "FROM ItemInventory i WHERE i.itemVariant.active = true ORDER BY i.id DESC";
 		Query query = session.createQuery(hql);
-		return query.list();
+		List<ItemInventory> inventory = query.list();
+		if (inventory.isEmpty()) {
+			return null;
+		} else {
+			return inventory;
+		}
 	}
 //
 	@Override
@@ -34,7 +39,12 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 	@Override
 	public ItemInventory getOne(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		return session.get(ItemInventory.class, id);
+		ItemInventory inventory = session.get(ItemInventory.class, id);
+		if(inventory == null) {
+			return null;
+		} else {
+			return inventory;
+		}
 	}
 
 	@Override

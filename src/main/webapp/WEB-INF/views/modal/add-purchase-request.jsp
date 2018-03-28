@@ -33,9 +33,10 @@
 		    <label for="add-pr">Purchase Request</label>
 			<table id="table-variant" class="table table-bordered table-striped">
                 <thead>
-                	<th class="col-xl-4">Item</th>
-					<th class="col-xl-4">In Stock</th>
-					<th class="col-xl-4">Request Quantity </th>
+                	<th class="col-xl-3">Item</th>
+					<th class="col-xl-3">In Stock</th>
+					<th class="col-xl-3">Request Quantity </th>
+					<th class="col-xl-3"> # </th>
                 	
 				</thead>
 				<tbody id="table-body-variant">
@@ -45,8 +46,11 @@
         
       </div>
       <div class="modal-footer">
-        <button id="btn-clear" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="btn-save-pr" state="create" type="button" class="btn btn-primary">Save changes</button>
+        <button id="btn-pr-submit" state="create" type="button " class="btn btn-success">Submit</button>
+        
+        <button id="btn-pr-save" state="create" type="button" class="btn btn-primary">Save changes</button>
+        
+        <button id="btn-pr-cancel" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -83,9 +87,9 @@
         
       </div>
       <div class="modal-footer">
-        <button id="btn-cancel-variant"type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id="btn-save-variant" state="create" type="button" class="btn btn-primary">Add</button>
-      </div>
+        <button id="btn-cancel-variant"type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button id="btn-save-variant" state="create" type="button" class="btn btn-primary">Add</button>-->      
+ 		</div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

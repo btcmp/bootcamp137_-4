@@ -21,13 +21,23 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "FROM PurchaseRequest";
 		Query query = session.createQuery(hql);
-		return query.list();
+		List<PurchaseRequest> pr = query.list();
+		if (pr.isEmpty()) {
+			return null;
+		} else {
+			return pr;
+		}
 	}
 
 	@Override
 	public PurchaseRequest getOne(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		return session.get(PurchaseRequest.class, id);
+		PurchaseRequest pr = session.get(PurchaseRequest.class, id);
+		if (pr == null) {
+			return null;
+		} else {
+			return pr;
+		}
 	}
 
 	@Override

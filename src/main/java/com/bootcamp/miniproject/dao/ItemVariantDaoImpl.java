@@ -19,13 +19,23 @@ public class ItemVariantDaoImpl implements ItemVariantDao {
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "From ItemVariant i where i.active = true ORDER BY i.id";
 		org.hibernate.Query query = session.createQuery(hql);
-		return query.list();
+		List<ItemVariant> variant = query.list();
+		if (variant.isEmpty()) {
+			return null;
+		} else {
+			return variant;
+		}
 	}
 
 	@Override
 	public ItemVariant getOne(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		return session.get(ItemVariant.class, id);
+		ItemVariant variant = session.get(ItemVariant.class, id);
+		if (variant == null) {
+			return null;
+		} else {
+			return variant;
+		}
 	}
 
 	@Override

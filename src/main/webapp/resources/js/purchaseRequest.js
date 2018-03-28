@@ -8,21 +8,21 @@ $(document).ready(function(){
 		console.log('disini');
 		
 		$('#modal-add-pr').modal();
-		$('#btn-save-pr').prop('disabled',true);
+		$('#btn-pr-save').prop('disabled',true);
 	});
 	
 	$('#search-item-variant').on('input',function(e){
 		var word = $(this).val();
 		console.log(alamatUrl);
 		if (word=="") {
-			$('#tabel-add-pr-body').empty();
+			$('#table-add-pr-body').empty();
 		} else {
 			$.ajax({
 				type : 'GET',
 				url : alamatUrl+'/search-item?name='+word,
 				dataType: 'json',
 				success : function(data){
-					$('#tabel-add-pr-body').empty();
+					$('#table-add-pr-body').empty();
 					$.each(data, function(key, val) {
 						if(added.indexOf(val.id.toString()) == -1) {
 							$('#table-add-pr-body').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td>'
@@ -43,7 +43,7 @@ $(document).ready(function(){
 					});
 				}, 
 				error : function(){
-					$('#tabel-add-pr-body').empty();
+					$('#table-add-pr-body').empty();
 				}
 			})
 		}
@@ -60,13 +60,13 @@ $(document).ready(function(){
 			$('#pr-qty'+id).html(purchaseRequestQty);
 			$(this).hide();
 			$('.btn-added-item'+id).show();
-			$('#btn-save-pr').prop('disabled',true);
+			
 			$.ajax({
 				type : 'GET',
 				url : alamatUrl+'/get-item/'+id,
 				dataType: 'json',
 				success : function(data){
-					$('#table-add-pr-body').append('<tr id="pr-PurchaseRequest'+ data.id +'">'
+					$('#table-body-variant').append('<tr id="pr-PurchaseRequest'+ data.id +'">'
 							+'<td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td>'
 							+'<td>'+ data.endingQty +'</td><td>'+ purchaseRequestQty +'</td>'
 							+'<td><button type="button" id="'+ data.id +'" '
@@ -75,9 +75,24 @@ $(document).ready(function(){
 				error : function(){
 					alert('get one item inventory failed');
 				}
-			})
+			});
+			$('#btn-pr-save').prop('disabled',false);
 		}
 	});
 
-	
+	$('body').on('click', 'button.btn-cancel-item', function(){
+		var id = $(this).attr('id');
+		$('#pr-PurchaseRequest'+id).remove();
+		$('.btn-added-item'+id).hide();
+		$('.btn-add-item'+id).show();
+		$('#pr-qty'+id).html('<input type="number" class="add-purchase-request-qty'+ id +'" value="1" />');
+		var a = added.indexOf(id.toString());
+		added.splice(a,1);
+		addedQty.splice(a,1);
+		if ($('#table-body-variant tr').length > 0){
+			$('#btn-pr-save').prop('disabled',false);
+		} else{
+			$('#btn-pr-save').prop('disabled',true);
+		}
+	})
 });

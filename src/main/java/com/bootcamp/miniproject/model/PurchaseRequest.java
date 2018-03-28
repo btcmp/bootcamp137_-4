@@ -63,6 +63,9 @@ public class PurchaseRequest {
 	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL, orphanRemoval=true)
 	List<PurchaseRequestDetail> purchaseRequestDetail;
 	
+	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL, orphanRemoval=true)
+	List<PurchaseRequestHistory> purchaseRequestHistory;
+	
 	public Long getId() {
 		return id;
 	}
@@ -150,12 +153,14 @@ public class PurchaseRequest {
 	public void setPurchaseRequestDetail(List<PurchaseRequestDetail> purchaseRequestDetail) {
 		this.purchaseRequestDetail = purchaseRequestDetail;
 	}
-	
-	// Purchase Orde
-	
-	
-	// Setter Getter
-	
+
+	public List<PurchaseRequestHistory> getPurchaseRequestHistory() {
+		return purchaseRequestHistory;
+	}
+
+	public void setPurchaseRequestHistory(List<PurchaseRequestHistory> purchaseRequestHistory) {
+		this.purchaseRequestHistory = purchaseRequestHistory;
+	}
 	
 	
 }

@@ -34,6 +34,9 @@ public class PurchaseOrder {
 	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseOrder", cascade=CascadeType.ALL, orphanRemoval=true)
 	List<PurchaseOrderDetail> purchaseOrderDetail;
 	
+	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseOrder", cascade=CascadeType.ALL, orphanRemoval=true)
+	List<PurchaseOrderHistory> purchaseOrderHistory;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	private PurchaseRequest purchaseRequest;
 		
@@ -172,4 +175,14 @@ public class PurchaseOrder {
 	public void setPurchaseOrderDetail(List<PurchaseOrderDetail> purchaseOrderDetail) {
 		this.purchaseOrderDetail = purchaseOrderDetail;
 	}
+
+	public List<PurchaseOrderHistory> getPurchaseOrderHistory() {
+		return purchaseOrderHistory;
+	}
+
+	public void setPurchaseOrderHistory(List<PurchaseOrderHistory> purchaseOrderHistory) {
+		this.purchaseOrderHistory = purchaseOrderHistory;
+	}
+	
+	
 }
