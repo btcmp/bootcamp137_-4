@@ -5,75 +5,78 @@
 
     
 <div class="modal fade" id="modal-add-pr" data-modal-index="1">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Add / Edit Purchase Request</h4>
+        <h4 class="modal-title">Purchase Request</h4>
       </div>
       <div class="modal-body">
+      		<label for="select-outlet">Outlet Login</label>
+			<select class="selectpicker" name="select-outlet" id="select-outlet">
+				<c:forEach var="outlet" items="${outlets }">
+					<option value="${outlet.id }">${outlet.name }</option>
+				</c:forEach>
+			</select>
+			
       	<form class="form-all">
-			<div class="form-group" id = "add-item-id">
-				<label for="add-item-name">Item Name</label>
-				<input type="text" class="form-control" id="add-item-name" placeholder="Item name">
+			<div class="form-group" id = "add-pr-id">
+				<br>
+				<label for="add-pr-date">Item Ready Target Date</label>
+				<input type="date" class="form-control" id="add-pr-date" placeholder="Date">
 				<p></p>
-				<label for="add-category">Category</label>
-				<select class="form-control" name="add-category" id="add-category">
-					<c:forEach var="category" items="${categories }">
-						<option value="${category.id }">${category.name }</option>
-					</c:forEach>
-				</select>
+				<label for="add-pr-notes">PR Notes</label><br>
+				<textarea rows="4" id="add-pr-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
 				<p></p>
 			</div>
 		</form>
-		<label for="add-item-variant">Variant</label>	
-		<button style="float:right;" id="btn-add-variant" class="btn btn-primary" data-toggle="modal" data-target="#modal-addVariant">Add Variant</button>
-        
+		    <label for="add-pr">Purchase Request</label>
 			<table id="table-variant" class="table table-bordered table-striped">
                 <thead>
-					<th class="col-md-3">Variant Name</th>
-					<th class="col-md-2">Unit Price </th>
-					<th class="col-md-2">SKU </th>
-					<th class="col-md-3">Beginning Stock </th>
-					<th class="col-md-3">Stock Alert </th>
-					<th class="col-md-2">Action</th>
+                	<th class="col-xl-4">Item</th>
+					<th class="col-xl-4">In Stock</th>
+					<th class="col-xl-4">Request Quantity </th>
+                	
 				</thead>
 				<tbody id="table-body-variant">
 				</tbody>
             </table>
-        
+        <button id="btn-add-item-variant" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-add-item-variant">Add Item</button>
         
       </div>
       <div class="modal-footer">
         <button id="btn-clear" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="btn-add-item" state="create" type="button" class="btn btn-primary">Save changes</button>
+        <button id="btn-save-pr" state="create" type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
-<div class="modal fade" id="modal-addVariant" data-modal-index="2">
-  <div class="modal-dialog">
+<div class="modal fade" id="modal-add-item-variant" data-modal-index="2">
+  <div class="modal-dialog modal-xs">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Add Item Variant</h4>
+        <h4 class="modal-title">Add Item</h4>
       </div>
       <div class="modal-body">
-      		<form class="form-all">
+      	<form class="form-all">
 			<div class="form-group">
-				<label for="add-variant-name">Variant Name</label>
-				<input type="text" class="form-control" id="add-variant-name" placeholder="Item Name"> <p></p>
-				<label for="add-unit-price">Unit Price</label>
-				<input type="text" class="form-control" value= "0" id="add-unit-price" placeholder="Unit Price"> <p></p>
-				<label for="add-sku">SKU</label>
-				<input type="text" class="form-control" id="add-sku" placeholder="SKU"> <p></p>
-				<hr>
-				<label for="add-beginning-stock">Beginning Stock</label>
-				<input type="text" class="form-control" id="add-beginning-stock" placeholder="Beginning Stock"> <p></p>
-				<label for="add-alert-at">Alert At</label>
-				<input type="text" class="form-control" id="add-alert-at" placeholder="Alert At">
+				<label for="search-item-variant">Search Item - Variant</label> 
+				<input type="text" class="form-control" id="search-item-variant" placeholder="Search items ">
+				<br>
+				<table id ="table-add-pr"class="table table-striped table-bordered" cellspacing="0" width="100%">
+					<thead>
+						<th>Item</th>
+						<th>Stock</th>
+						<th>Request Quantity</th>
+						<th>Action</th>
+					</thead>
+					<tbody id="table-add-pr-body">
+						
+					</tbody>
+				</table>
 				
 			</div>
 		</form>

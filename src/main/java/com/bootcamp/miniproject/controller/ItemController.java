@@ -54,10 +54,17 @@ public class ItemController {
 	public List<ItemVariant> getAllVariants(){
 		return (List<ItemVariant>) variantService.getAll();
 	}
+	
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Item> getAll(){
 		return (List<Item>) itemService.getAll();
+	}
+	
+	@RequestMapping(value = "/get-all-item-inventories", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> getAllInventories(){
+		return (List<ItemInventory>) inventoryService.getAll();
 	}
 	
 	@RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)

@@ -19,7 +19,7 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 	@Override
 	public List<ItemInventory> getAll() {
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "FROM ItemInventory i ORDER BY i.id";
+		String hql = "FROM ItemInventory i WHERE i.itemVariant.active = true ORDER BY i.id DESC";
 		Query query = session.createQuery(hql);
 		return query.list();
 	}

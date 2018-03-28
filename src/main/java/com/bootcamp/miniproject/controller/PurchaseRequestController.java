@@ -10,21 +10,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.PurchaseRequest;
+import com.bootcamp.miniproject.service.ItemInventoryService;
+import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.PurchaseRequestService;
 
 @Controller
-@RequestMapping("/transaction/purchaseRequest")
+@RequestMapping("/transaction/purchase-request")
 public class PurchaseRequestController {
 	@Autowired
 	PurchaseRequestService prService;
 	
+	@Autowired
+	ItemInventoryService inventoryService;
+	
+	@Autowired
+	OutletService outletService;
 	@RequestMapping
 	public String home(Model model) {
 		model.addAttribute("purchaseRequest", prService.getAll());
+		model.addAttribute("itemInventories", inventoryService.getAll());
+		model.addAttribute("outlets", outletService.selectAll());
 		return "purchase-request";
 	}
 	
@@ -59,4 +70,16 @@ public class PurchaseRequestController {
 		prService.delete(pr);
 	}
 	
+	@RequestMapping(value = "/search-item", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> searchItem(@RequestParam(value="name", defaultValue="") String search) {
+		List<ItemInventory> itemsInventory = inventoryService.searchItemInventoryByItemName(search);
+		return itemsInventory;
+	}
+	@RequestMapping(value = "/get-item/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ItemInventory getOneItem(@PathVariable long id) {
+		ItemInventory itemInventory = inventoryService.getOne(id);
+		return itemInventory;
+	}
 }

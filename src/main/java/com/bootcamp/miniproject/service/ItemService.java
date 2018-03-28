@@ -57,15 +57,18 @@ public class ItemService {
 		System.out.println(itemVariant.size());
 		for(ItemVariant ivar: itemVariant) {
 			inventory = ivar.getItemInventory().get(0);
-			ivar.setItemInventory(null);
+			ivar.getItemInventory().clear();
 			ivar.setItem(item);
 			if(ivar.getId() == null) {
 				variantDao.save(ivar);
 				inventory.setItemVariant(ivar);
+				inventory.setEndingQty(inventory.getBeginning());
 				inventoryDao.save(inventory);
 			} else {
 				variantDao.update(ivar);
+				System.out.println("beres update variant");
 				inventory.setItemVariant(ivar);
+				inventory.setEndingQty(inventory.getBeginning());
 				inventoryDao.update(inventory);
 			}
 		}

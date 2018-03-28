@@ -176,7 +176,7 @@
 					<th>Name</th>
 					<th>Category</th>
 					<th>Unit Price </th>
-					
+					<th>Item Stock </th>
 					<th>Action</th>
 				</thead>
 				<tbody id= "table-body-item">

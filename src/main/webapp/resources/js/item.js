@@ -5,18 +5,21 @@ $(document).ready(function(){
 		$("#table-body-item").empty();
 		$.ajax({
 			dataType : "json",
-		    url : alamatUrl+'/getAllVariants',
-		    headers : {
+		    //url : alamatUrl+'/getAllVariants',
+		    url : alamatUrl+'/get-all-item-inventories',
+			headers : {
 		    	'Accept' : 'application/json',
 		        'Content-Type' : 'application/json'
 		    },
 		    type : 'GET',
 		    success : function(data){
+		    	console.log(data);
 		    	$.each(data, (key, data) =>{
-					$('#table-body-item').append('<tr> <td>'+data.item.name+' -- '+data.name+'</td>'+
-							'<td>'+data.item.category.name+'</td>'+
-							'<td>'+data.price+'</td>'+
-							'<td><a id='+data.item.id+' class="update-item btn btn-primary">Update</a>'
+					$('#table-body-item').append('<tr> <td>'+data.itemVariant.item.name+' -- '+data.itemVariant.name+'</td>'+
+							'<td>'+data.itemVariant.item.category.name+'</td>'+
+							'<td>'+data.itemVariant.price+'</td>'+
+							'<td>'+data.endingQty+'</td>'+
+							'<td><a id='+data.itemVariant.item.id+' class="update-item btn btn-primary">Update</a>'
 					)
 				});
 		    }
@@ -47,13 +50,19 @@ $(document).ready(function(){
 		showAll(alamatUrl);
 		enableVariantProperty();
 	});
+	
+	$('#btn-add-variant').click(function(e){
+		$(this).attr('state','create');
+		var state = $(this).attr('state');
+		console.log(state);
+	});
+	
+	
 	$('#btn-cancel-variant').click(function(e){
-		console.log('hide');
 		enableVariantProperty();
 		HideVariantForm();
 	});
 	$('#btn-save-variant').click(function(e){
-		console.log('clicked');
 		var state= $(this).attr('state');
 		if (state == 'create'){
 			variant = {
@@ -72,13 +81,13 @@ $(document).ready(function(){
     		var variant = listVariant[index];
     		console.log('var id = '+ parseInt($('#edit-variant').attr('var-id')));
     		variant = {
-    				id : parseInt($('#edit-variant').attr('var-id')),
+    				id : parseInt($('#btn-save-variant').attr('var-id')),
     				name : $('#add-variant-name').val(),
 					price: parseInt($('#add-unit-price').val()),
 					sku: $('#add-sku').val(),
 					active : 1,
 					itemInventory : [{
-							id : parseInt($('#edit-variant').attr('inv-id')),
+							id : parseInt($('#btn-save-variant').attr('inv-id')),
 							beginning : parseInt($('#add-beginning-stock').val()),
 							alertAtQty : parseInt($('#add-alert-at').val()),
 					}]
@@ -94,20 +103,16 @@ $(document).ready(function(){
 	
 	
 	$('#table-body-variant').on('click','.edit-variant',function(e){	
-		console.log('clicked')
-		
-    	var idx = $(this).attr("data-id");
-    	console.log($(this).attr('var-id'));
+		var idx = $(this).attr("data-id");
+    	console.log('var id = '+$(this).attr('var-id'));
 		var data = listVariant[idx];
 		if (data.id == null){
 			enableVariantProperty();
-			console.log('tidakkkk')
 		} else{
 			disableVariantProperty();
 		}
 		
     	$('#add-variant-name').val(data.name);
-    	console.log(data.price);
     	$('#add-unit-price').val(data.price);
     	$('#add-sku').val(data.sku);
     	$('#add-beginning-stock').val(data.itemInventory[0].beginning);
@@ -115,22 +120,18 @@ $(document).ready(function(){
     	
     	$('#btn-save-variant').attr("state", "update")
     	$('#btn-save-variant').attr("data-id", idx);
-    	
+    	$('#btn-save-variant').attr("var-id", data.id);
+    	$('#btn-save-variant').attr("inv-id", data.itemInventory[0].id);
         $('#modal-addVariant').modal('show');
     });
 	$('#table-body-variant').on('click','.delete-variant',function(e){	
-		console.log('clicked');
 		idx = $(this).attr('data-id');
-		console.log(idx);
 		var variant = listVariant[idx];
-		console.log(variant.id)
 		
 		if (variant.id == null){
 			listVariant.splice(idx,1);
 			createVariantTable(listVariant);
 		} else{
-			// if (variant.itemInventory)
-			console.log(variant.itemInventory)
 			$.ajax({
 				type : 'PUT',
 				url : alamatUrl+'/deleteVariant/'+variant.id,
@@ -217,7 +218,6 @@ $(document).ready(function(){
 					temp = row.itemVariant.item;
 					
 					inventory = row;
-					console.log(inventory.id);
 					variant = row.itemVariant;
 					inventory.itemVariant = null;
 					variant.itemInventory = [inventory];
@@ -242,7 +242,7 @@ $(document).ready(function(){
 	$('#table-item').on('click','.update-item',function(e){
 		var id = $(this).attr('id');
 		getInventoryByItemId(id);
-		console.log(id);
+		console.log('item id : '+id);
 		$('#modal-addItem').modal();
 		$('#btn-add-item').attr('state','update');
 		
@@ -292,11 +292,12 @@ $(document).ready(function(){
 		$("#table-body-variant").empty();
 		var index = 0;
 		$.each(data, (key, row) =>{
-			$('#table-body-variant').append('<tr class="child"><td>'+row.name+'</td><td>'+row.price+'</td><td>'+row.sku+'</td><td>'
-					+row.itemInventory[0].beginning+'</td><td>'+row.itemInventory[0].alertAtQty+'</td>'
+			$('#table-body-variant').append('<tr class="child"><td>'+row.name+ ' '+ row.id +'</td><td>'+row.price+'</td><td>'+row.sku+'</td><td>'
+					+row.itemInventory[0].beginning+'</td><td>'+row.itemInventory[0].alertAtQty+ ' '+row.itemInventory[0].id+'</td>'
 					+'<td><button type="button" id="edit-variant" class="btn btn-info btn-sm edit-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>Edit</button> | ' 
 					+'<button type="button" id="delete-variant" class="btn btn-sm delete-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>X</button></td></tr>');
 			index++;
+			console.log(row.itemInventory[0].id);
 		});
 	}
 });
