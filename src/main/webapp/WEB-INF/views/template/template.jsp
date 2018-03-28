@@ -65,9 +65,9 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="treeview active">
+        <li id="treeview-master" class="treeview">
           <a href="#" style="background-color: #5b160d;">
-            <i class="fa fa-table"></i> <span>Master Tables</span>
+            <i class="fa fa-table"></i> <span>Master</span>
             <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
@@ -78,6 +78,21 @@
             <li id="outlet-side-option"><a href="${pageContext.request.contextPath}/master/outlet"><i class="fa fa-circle-o"></i> Outlet</a></li>
             <li id="supplier-side-option"><a href="${pageContext.request.contextPath}/master/supplier"><i class="fa fa-circle-o"></i> Supplier</a></li>
             <li id="category-side-option"><a href="${pageContext.request.contextPath}/master/category"><i class="fa fa-circle-o"></i> Category</a></li>
+          </ul>
+        </li>
+        <li id="treeview-transaction" class="treeview">
+          <a href="#" style="background-color: #5b160d;">
+            <i class="fa fa-table"></i> <span>Transaction</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu" style="background-color: #872619;">
+            <li id="purchase-request-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-order"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
+            <li id="purchase-order-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-request"><i class="fa fa-circle-o"></i> Purchase Request</a></li>
+            <li id="adjustment-side-option"><a href="${pageContext.request.contextPath}/transaction/adjustment"><i class="fa fa-circle-o"></i> Adjustment</a></li>
+            <li id="transfer-stock-side-option"><a href="${pageContext.request.contextPath}/transaction/transfer-stock"><i class="fa fa-circle-o"></i> Transfer Stock</a></li>
+            <li id="sales-order-side-option"><a href="${pageContext.request.contextPath}/transaction/sales-order"><i class="fa fa-circle-o"></i> Sales Order</a></li>
           </ul>
         </li>
       </ul>

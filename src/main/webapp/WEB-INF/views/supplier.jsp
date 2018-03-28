@@ -120,6 +120,7 @@ $(document).ready(function(){
 	      searching   : false
 	    })
 	$("#supplier-side-option").addClass('active');
+	$("#treeview-master").addClass('active');
 	
 	$('.delete').click(function(){
 		var id = $(this).attr('id');
