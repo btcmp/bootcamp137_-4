@@ -29,7 +29,6 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private long id;
-	@Column(name="role_name")
 	private String name;
 	private String description;
 	
@@ -50,12 +49,12 @@ public class Role {
 	@NotNull
 	private boolean active;
 
-	/*@OneToMany(fetch=FetchType.LAZY, mappedBy="role", cascade=CascadeType.ALL, orphanRemoval=true)
-	List<User> users;*/
 	
-
+/*	@OneToMany(fetch=FetchType.LAZY, mappedBy="role", cascade=CascadeType.ALL, orphanRemoval=true)
+	List<User> users;
+*/	
 	
-	/*public List<User> getUsers() {
+/*	public List<User> getUsers() {
 		return users;
 	}
 
