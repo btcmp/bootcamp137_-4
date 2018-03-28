@@ -180,7 +180,7 @@
           <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="table-item" class="table table-bordered table-striped">
+              <table id="table-view-pr" class="table table-bordered table-striped">
                 <thead>
 					<th>Created Date</th>
 					<th>PR No.</th>
@@ -188,8 +188,8 @@
 					<th>Status </th>
 					<th>#</th>
 				</thead>
-				<tbody id= "table-body-item">
-					<c:forEach items="${variant }" var="var">
+				<tbody id= "table-view-pr-body">
+					<%-- <c:forEach items="${variant }" var="var">
 						<tr>
 							<td>${var.item.name } --- <b>${var.name }</b> </td>
 							<td>${var.item.category.name }</td>
@@ -199,7 +199,7 @@
 								<a id="${var.item.id }" class="delete btn btn-danger">View</a>
 							</td>
 						</tr>
-					</c:forEach>
+					</c:forEach> --%>
 				</tbody>
             </table>
             </div>

@@ -40,6 +40,9 @@ $(document).ready(function(){
 	$('#btn-export').click(function(){
 		console.log('clicked');
 	});
+	$('#btn-clear').click(function(){
+		listVariant = [];
+	});
 	$('#btn-add-item').click(function(e){
 		var state = $(this).attr('state');
 		if (state == 'create'){
@@ -49,6 +52,7 @@ $(document).ready(function(){
 		}
 		showAll(alamatUrl);
 		enableVariantProperty();
+		listVariant = [];
 	});
 	
 	$('#btn-add-variant').click(function(e){
@@ -75,12 +79,11 @@ $(document).ready(function(){
 							alertAtQty : parseInt($('#add-alert-at').val()),
 					}]
 			}
-			listVariant = [];
 			listVariant.push(variant);
 		} else{
 			var index = $(this).attr("data-id");
     		var variant = listVariant[index];
-    		console.log('var id = '+ parseInt($('#edit-variant').attr('var-id')));
+    		//console.log('var id = '+ parseInt($('#edit-variant').attr('var-id')));
     		variant = {
     				id : parseInt($('#btn-save-variant').attr('var-id')),
     				name : $('#add-variant-name').val(),
@@ -105,7 +108,7 @@ $(document).ready(function(){
 	
 	$('#table-body-variant').on('click','.edit-variant',function(e){	
 		var idx = $(this).attr("data-id");
-    	console.log('var id = '+$(this).attr('var-id'));
+    	//console.log('var id = '+$(this).attr('var-id'));
 		var data = listVariant[idx];
 		if (data.id == null){
 			enableVariantProperty();
@@ -189,7 +192,7 @@ $(document).ready(function(){
 			},
 			itemVariant : listVariant
 		};
-		console.log(item);
+		//console.log(item);
 		$.ajax({
 			type : "PUT",
 			url : alamatUrl+'/update',
@@ -227,7 +230,7 @@ $(document).ready(function(){
 					// console.log(variant.id)
 				});
 				
-				console.log(data);
+				//console.log(data);
 				$('#add-item-id').val(parseInt(temp.id));
 				$('#add-item-name').val(temp.name);
 				$('#add-category').val(parseInt(temp.category.id));
@@ -281,7 +284,6 @@ $(document).ready(function(){
 		$('#add-beginning-stock').prop('disabled', true);
     }
 	function resetVariantForm(){
-		console.log('clear variant form');
     	$("#add-variant-name").val("");
     	$("#add-unit-price").val("0");
     	$("#add-sku").val("");
@@ -289,7 +291,7 @@ $(document).ready(function(){
     	$("#add-alert-at").val("");
     }
 	createVariantTable = (data) => {
-		console.log(data);
+		
 		$("#table-body-variant").empty();
 		var index = 0;
 		$.each(data, (key, row) =>{

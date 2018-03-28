@@ -79,6 +79,7 @@ public class ItemDaoImpl implements ItemDao {
 		String hql = "from ItemVariant inv where inv.item.category = :category and inv.active=1";
 		List<Item> item = session.createQuery(hql).setParameter("category", category).list();
 		if(item.isEmpty()) {
+			System.out.println("kosong");
 			return null;
 		}
 		return item;

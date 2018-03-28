@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class PurchaseRequest {
 	
 	public PurchaseRequest() {
-		this.createOn = new Date();
+		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
 	
@@ -46,12 +46,12 @@ public class PurchaseRequest {
 	@NotEmpty
 	private String status;
 	
-	@Column(name="create_by")
+	@Column(name="created_by")
 	private long createdBy;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="create_on")
-	private Date createOn;
+	@Column(name="created_on")
+	private Date createdOn;
 	
 	@Column(name="modified_by")
 	private long modifiedBy;
@@ -122,12 +122,12 @@ public class PurchaseRequest {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreateOn() {
-		return createOn;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public long getModifiedBy() {

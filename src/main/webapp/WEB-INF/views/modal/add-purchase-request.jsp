@@ -31,7 +31,7 @@
 			</div>
 		</form>
 		    <label for="add-pr">Purchase Request</label>
-			<table id="table-variant" class="table table-bordered table-striped">
+			<table id="table-add-pr" class="table table-bordered table-striped">
                 <thead>
                 	<th class="col-xl-3">Item</th>
 					<th class="col-xl-3">In Stock</th>
@@ -39,7 +39,7 @@
 					<th class="col-xl-3"> # </th>
                 	
 				</thead>
-				<tbody id="table-body-variant">
+				<tbody id="table-add-pr-body">
 				</tbody>
             </table>
         <button id="btn-add-item-variant" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-add-item-variant">Add Item</button>
@@ -70,14 +70,14 @@
 				<label for="search-item-variant">Search Item - Variant</label> 
 				<input type="text" class="form-control" id="search-item-variant" placeholder="Search items ">
 				<br>
-				<table id ="table-add-pr"class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<table id ="table-add-item-variant"class="table table-striped table-bordered" cellspacing="0" width="100%">
 					<thead>
 						<th>Item</th>
 						<th>Stock</th>
 						<th>Request Quantity</th>
 						<th>Action</th>
 					</thead>
-					<tbody id="table-add-pr-body">
+					<tbody id="table-add-item-variant-body">
 						
 					</tbody>
 				</table>
