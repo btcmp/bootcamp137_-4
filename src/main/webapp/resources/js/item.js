@@ -75,6 +75,7 @@ $(document).ready(function(){
 							alertAtQty : parseInt($('#add-alert-at').val()),
 					}]
 			}
+			listVariant = [];
 			listVariant.push(variant);
 		} else{
 			var index = $(this).attr("data-id");
