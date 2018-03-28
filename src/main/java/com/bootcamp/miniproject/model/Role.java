@@ -49,18 +49,18 @@ public class Role {
 	@NotNull
 	private boolean active;
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="role", cascade=CascadeType.ALL, orphanRemoval=true)
+	
+/*	@OneToMany(fetch=FetchType.LAZY, mappedBy="role", cascade=CascadeType.ALL, orphanRemoval=true)
 	List<User> users;
+*/	
 	
-
-	
-	public List<User> getUsers() {
+/*	public List<User> getUsers() {
 		return users;
 	}
 
 	public void setUsers(List<User> users) {
 		this.users = users;
-	}
+	}*/
 
 	public long getId() {
 		return id;

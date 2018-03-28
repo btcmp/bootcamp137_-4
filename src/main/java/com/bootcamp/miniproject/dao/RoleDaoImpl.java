@@ -7,65 +7,51 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bootcamp.miniproject.model.Employee;
+import com.bootcamp.miniproject.model.Role;
 
 @Repository
-public class EmployeeDaoImpl implements EmployeeDao{
-	
+public class RoleDaoImpl implements RoleDao{
+
 	@Autowired
 	SessionFactory sessionFactory;
 
 	@Override
-	public void save(Employee employee) {
+	public void save(Role role) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.save(employee);
+		session.save(role);
 		session.flush();
 	}
 
 	@Override
-	public List<Employee> selectAll() {
+	public List<Role> selectAll() {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Employee.class).list();
+		return session.createCriteria(Role.class).list();
 	}
 
 	@Override
-	public Employee getOne(Employee employee) {
+	public Role getOne(Role role) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		return session.get(Employee.class, employee.getId());
+		return session.get(Role.class, role.getId());
 	}
 
 	@Override
-	public void update(Employee employee) {
+	public void update(Role role) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.update(employee);
+		session.update(role);
 		session.flush();
 	}
 
 	@Override
-	public void delete(Employee employee) {
+	public void delete(Role role) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(employee);
+		session.delete(role);
 		session.flush();
 	}
-
-	@Override
-	public List<Employee> selectStatusActive() {
-		// TODO Auto-generated method stub
-		Session session = sessionFactory.getCurrentSession();
-		String hql = "from Employee emp where emp.active = 1";
-		List<Employee> employees = session.createQuery(hql).list();
-		if(employees.isEmpty()) {
-			return null;
-		} else {
-			return employees;
-		}
-		
-
-	}
+	
 	
 }

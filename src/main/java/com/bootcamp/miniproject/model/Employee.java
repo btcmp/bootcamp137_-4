@@ -11,14 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.Email;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -70,16 +68,15 @@ public class Employee {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
 	List<EmployeeOutlet> employeeOutlets;
 	
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
-	@JsonManagedReference
-	private User user;
-
-	public User getUser() {
-		return user;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
+	List<User> users;
+	
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	public List<EmployeeOutlet> getEmployeeOutlets() {
@@ -177,6 +174,6 @@ public class Employee {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	//
+	
 	
 }

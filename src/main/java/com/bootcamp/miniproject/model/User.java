@@ -7,11 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -33,10 +36,17 @@ public class User {
 	
 	@NotNull
 	private String password;
-	
+		
+
 	@ManyToOne
+	@NotNull
+	@JoinColumn(name="role_id", nullable=false)
 	private Role role;
-	@ManyToOne
+	
+	@OneToOne
+	@NotNull
+	@JoinColumn(name="employee_id")
+	@JsonBackReference
 	private Employee employee;
 	
 	@Column(name="created_by")
