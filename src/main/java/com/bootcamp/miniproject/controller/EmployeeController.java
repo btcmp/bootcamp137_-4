@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.model.Role;
+import com.bootcamp.miniproject.service.EmployeeOutletService;
 import com.bootcamp.miniproject.service.EmployeeService;
 import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.RoleService;
@@ -30,6 +31,8 @@ public class EmployeeController {
 	RoleService roleService;
 	@Autowired
 	OutletService outletService;
+	@Autowired
+	EmployeeOutletService employeeOutletService;
 	
 	@RequestMapping
 	public String index(Model model) {
@@ -68,5 +71,12 @@ public class EmployeeController {
 		employeeService.delete(employee);
 		return "redirect:/employee";
 	}
+	
+	@RequestMapping("/get-all")
+	@ResponseBody
+	public List<Employee> getAll(){
+		return employeeService.selectAll();
+	}
+	
 	
 }

@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.User;
 
 @Repository
@@ -51,6 +52,18 @@ public class UserDaoImpl implements UserDao{
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(user);
 		session.flush();
+	}
+
+	@Override
+	public User getUserByEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from User where employee = :employee";
+		List<User> user = session.createQuery(hql).setParameter("employee", employee).list();
+		if(user.isEmpty()) {
+			return null;
+		}
+		return user.get(0);
 	}
 	
 }

@@ -38,29 +38,32 @@ public class EmployeeService {
 		emp.setActive(employee.isActive());
 		employeeDao.save(emp);
 		
-		if (employee.isHaveAccount() == true) {
-
-			for(User users : employee.getUsers()) {
-				User user = new User();
-				user.setEmployee(emp);
-				user.setRole(users.getRole());
-				user.setUsername(users.getUsername());
-				user.setPassword(users.getPassword());
-				userDao.save(user);
-			} 	
-
+		
+		List<EmployeeOutlet> employeeOutlets = employeeOutletDao.getEmployeeOutletByEmployee(employee);
+		if(employeeOutlets!=null) {
+			for(EmployeeOutlet employeeOutlet : employeeOutlets) {
+				employeeOutletDao.delete(employeeOutlet);
+			}
+		}
+		if(employee.getEmployeeOutlets()!=null) {
+			for(EmployeeOutlet employeeOutlet : employee.getEmployeeOutlets()) {
+				EmployeeOutlet empo = new EmployeeOutlet();
+				empo.setEmployee(employee);
+				empo.setOutlet(employeeOutlet.getOutlet());
+				employeeOutletDao.save(empo);
+			}
 		}
 		
-		for(EmployeeOutlet employeeOutlets : employee.getEmployeeOutlets()) {
-			Outlet outlet = new Outlet();
-			outlet.setId(employeeOutlets.getOutlet().getId());
-			EmployeeOutlet employeeOutlet = new EmployeeOutlet();
-			employeeOutlet.setOutlet(outlet);
-			employeeOutlet.setEmployee(emp);
-			employeeOutletDao.save(employeeOutlet);
+		if(emp.getUser()!=null) {
+			User user = new User();
+			user.setId(emp.getUser().getId());
+			user.setEmployee(employee);
+			user.setActive(emp.getUser().isActive());
+			user.setRole(emp.getUser().getRole());
+			user.setUsername(emp.getUser().getUsername());
+			user.setPassword(emp.getUser().getPassword());
+			userDao.save(user);
 		}
-		
-		
 	}
 	
 	public List<Employee> selectAll(){

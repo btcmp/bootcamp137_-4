@@ -151,8 +151,15 @@
 									</td>
 									<td>${emp.email }</td>
 									<td>${emp.haveAccount }</td>
-									<td>#</td>
-									<td>#</td>
+									<td>
+											
+												<c:forEach items="${emp.employeeOutlets }" var="empo">
+													${empo.outlet.name }
+												</c:forEach>
+									
+									
+									</td>
+									<td>${emp.user.role.name }</td>
 									<td>
 										<a style="color:white;" id="${emp.id }" class="edit btn btn-primary">Edit</a>
 										<a style="color:white;" id="${emp.id }" class="delete btn btn-danger">X</a>
@@ -241,9 +248,9 @@ $(function () {
 			employeeOutlets : employeeOutlets
 			 
 		}
-
 		 console.log(emp);
-		  		
+		 
+		 
  		$.ajax({
 			url : '${pageContext.request.contextPath}/master/employee/save',	
 			type : 'POST',
@@ -256,15 +263,23 @@ $(function () {
 				alert('save failed!');
 			}
 		})  
-		
+	
 	}); 
+	
+	
+	
 	
 	//reset form
 	$('#btn-reset').on('click', function(){
 		$('#add-title').val(''),
 		$('#add-firstName').val(''),
 		$('#add-lastName').val(''),
-		$('#add-email').val('')
+		$('#add-email').val(''),
+		$('#add-username').val(''),
+		$('#add-password').val(''),
+		$('#select-role').val(''),
+		$('#create-account').prop('checked', false)
+		
 	});
 	
 	//====================================== EDIT DATA
@@ -384,9 +399,7 @@ $(function () {
 		$('#save-assign-outlet').modal();
 	})	
 	
-
 }); /* end */
 </script>
 
 </html>
-

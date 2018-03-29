@@ -1,12 +1,16 @@
 package com.bootcamp.miniproject.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+	
 @Entity
 @Table(name="mp_mst_employee_outlet")
 public class EmployeeOutlet {
@@ -16,9 +20,12 @@ public class EmployeeOutlet {
 	private long id;
 	
 	@ManyToOne
+	@JoinColumn(name="employee_id")
+	@JsonIgnore
 	private Employee employee;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="outlet_id")
 	private Outlet outlet;
 
 	

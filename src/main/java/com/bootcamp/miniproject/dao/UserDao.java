@@ -2,6 +2,7 @@ package com.bootcamp.miniproject.dao;
 
 import java.util.List;
 
+import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.User;
 
 public interface UserDao {
@@ -11,4 +12,5 @@ public interface UserDao {
 	public User getOne(User user);
 	public void update(User user);
 	public void delete(User user);
+	public User getUserByEmployee(Employee employee);
 }

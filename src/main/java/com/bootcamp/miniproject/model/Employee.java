@@ -67,7 +67,7 @@ public class Employee {
 	@NotNull
 	private boolean active;
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<EmployeeOutlet> employeeOutlets;
 	
 	

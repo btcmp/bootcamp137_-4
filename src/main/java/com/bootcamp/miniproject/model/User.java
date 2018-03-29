@@ -28,7 +28,7 @@ public class User {
 	
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private long id;
 	
 	@NotNull
@@ -40,7 +40,7 @@ public class User {
 
 	@ManyToOne
 	@NotNull
-	@JoinColumn(name="role_id", nullable=false)
+	@JoinColumn(name="role_id")
 	private Role role;
 	
 	@OneToOne
