@@ -13,9 +13,9 @@
 			</div>
 			<div class="modal-body">
 				<form action="#">
-					<div class="form-group">
-						<c:forEach items="${outlets }" var="outlet" >
-							<label>${outlet.name } <input type="radio" name="optRadio" value="${outlet.id }"></label><br>
+					<div id="add-outlet" class="form-group">
+						<c:forEach items="${outlets }" var="outlet">
+						<input type="checkbox" class="add-outlet" name="add-outlet" value="${outlet.id }"> ${outlet.name } <br/>
 						</c:forEach>
 					</div>
 				</form>
