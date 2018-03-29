@@ -19,7 +19,9 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "mp_t_purchase_request_detail")
 public class PurchaseRequestDetail {
-	
+	public PurchaseRequestDetail() {
+		this.modifiedOn = new Date();
+	}
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Long id;
@@ -33,12 +35,12 @@ public class PurchaseRequestDetail {
 	@Column(name = "request_qty")
 	private int requestQty;
 	
-	@Column(name="create_by")
+	@Column(name="created_by")
 	private long createdBy;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="create_on")
-	private Date createOn;
+	@Column(name="created_on")
+	private Date createdOn;
 	
 	@Column(name="modified_by")
 	private long modifiedBy;
@@ -79,12 +81,12 @@ public class PurchaseRequestDetail {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreateOn() {
-		return createOn;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public long getModifiedBy() {

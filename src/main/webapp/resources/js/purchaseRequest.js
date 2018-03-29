@@ -3,16 +3,20 @@ $(document).ready(function(){
 	var listVariant = [];
 	var added = [];
 	var addedQty = [];
-	
+	showPRByOutlet();
 	$('#create').click(function(){
 		//$('#btn-add-item').attr('state','create');
+		$(this).attr('state','create');
+		if ($(this).attr('state') == 'create'){
+			$('#btn-pr-submit').prop('disabled', true);
+		}
 		console.log('disini');
 		
 		$('#modal-add-pr').modal();
 		$('#btn-pr-save').prop('disabled',true);
 	});
 	function showAll(alamatUrl){
-		$("#table-add-pr-body").empty();
+		$('#table-add-pr-body').empty();
 		$.ajax({
 			dataType : "json",
 		    url : alamatUrl+'/getAll',
@@ -24,18 +28,54 @@ $(document).ready(function(){
 		    success : function(data){
 		    	console.log(data);
 		    	$.each(data, (key, data) =>{
-					$('#table-view-pr-body').append('<tr> <td>'+data.createdDate+'</td>'+
+					$('#table-view-pr-body').append('<tr> <td>'+getDateFormat(data.createdOn)+'</td>'+
 							'<td>'+data.prNo+'</td>'+
 							'<td>'+data.notes+'</td>'+
 							'<td>'+data.status+'</td>'+
-							'<td><a id='+data.id+' class="update-item btn btn-primary">Update</a>'+
-							'<td><a id='+data.id+' class="update-item btn btn-success">View</a>'
+							'<td><a id='+data.id+' class="btn-update-pr btn btn-primary">Edit</a>'+
+							'<a id='+data.id+' class="btn-detail-pr btn btn-success">View</a></td>'
 					)
 				});
 		    }
 		});	
 	}
-	showAll(alamatUrl)
+	//showAll(alamatUrl);
+	function showPRByOutlet(){
+		outletId = $('#select-outlet-main').val();
+		$('#table-add-pr-body').empty();
+		$('#table-view-pr-body').empty();
+		$.ajax({
+			dataType : "json",
+		    url : alamatUrl+'/getAllPr?outletId='+outletId,
+			headers : {
+		    	'Accept' : 'application/json',
+		        'Content-Type' : 'application/json'
+		    },
+		    type : 'GET',
+		    success : function(data){
+		    	console.log(data);
+		    	$.each(data, (key, data) =>{
+					$('#table-view-pr-body').append('<tr> <td>'+getDateFormat(data.createdOn)+'</td>'+
+							'<td>'+data.prNo+'</td>'+
+							'<td>'+data.notes+'</td>'+
+							'<td>'+data.status+'</td>'+
+							'<td><a id='+data.id+' class="btn-update-pr btn btn-primary">Edit</a>'+
+							'<a id='+data.id+' class="btn-detail-pr btn btn-success">View</a></td>'
+					)
+				});
+		    }
+		});	
+	}
+	
+	
+	//================= Show Purchase Request By Outlet =================//
+	//================= Select Option =================//
+	$('#select-outlet-main').on('change', function() {
+		$('#select-outlet').val($('#select-outlet-main').val());
+		showPRByOutlet();
+	});
+	
+	
 	$('#search-item-variant').on('input',function(e){
 		var word = $(this).val();
 		console.log(alamatUrl);
@@ -105,6 +145,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	
 	$('body').on('click', 'button.btn-cancel-item', function(){
 		var id = $(this).attr('id');
 		$('#pr-PurchaseRequest'+id).remove();
@@ -129,15 +170,22 @@ $(document).ready(function(){
 			update(e);
 		}
 		
-		
-		
-		
-		
 	});
+	$('#btn-pr-cancel').click(function(e){
+		$('#add-pr-date').val('');
+		$('#add-pr-notes').val('');
+	});
+	
+//	function cleanPRModal(){
+//		$('#add-pr-date').val('');
+//		$('#add-pr-notes').val('');
+//	}
+//	cleanPRModal();
 	
 	save = (e) => {
 		e.preventDefault();
 		alamatUrl = window.location.href;
+		
 		purchaseRequestDetail =[];
 		
 		$('#table-add-pr-body > tr').each(function(index, data){
@@ -155,12 +203,13 @@ $(document).ready(function(){
 		matriks = $('#add-pr-date').val().split('-');
 		// yyyy-MM-dd
 		readyTime = matriks[0]+'-'+matriks[1]+'-'+matriks[2];
+		pr = matriks[0]+matriks[1]+matriks[2];
 		
 		var pr = {
-			prNo : 'PR'+matriks,
+			prNo : 'PR'+pr,
 			readyTime : readyTime,
 			notes : $('#add-pr-notes').val(),
-			status : 'Submitted',
+			status : 'Created',
 			outlet : {
 				id : parseInt($('#select-outlet').val())
 			},
@@ -180,6 +229,69 @@ $(document).ready(function(){
 			}
 			
 		});
+		$('#modal-add-pr').modal('hide');
+		showPRByOutlet();
 //		HideItemForm();
 	};
+	function getDateFormat(date) {
+		var d = new Date(Number(date)),
+		month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate(),
+		year = d.getFullYear();
+
+		if (month.length < 2)
+		    month = '0' + month;
+		if (day.length < 2)
+		    day = '0' + day;
+		var date = new Date();
+		date.toLocaleDateString();
+
+		return [year, month, day].join('-');
+	};
+		
+	getPurchaseRequestById = (id) => {
+		var dataTemp;
+		function myCallback(response){
+			console.log("berhasil");
+			dataTemp = response;
+			tanggal = getDateFormat(dataTemp.readyTime);
+			$('#select-outlet').val(dataTemp.outlet.id);
+			$('#add-pr-notes').val(dataTemp.notes);
+			$('#add-pr-date').val(tanggal);
+			console.log(dataTemp)
+			//createVariantTable(listVariant);
+			
+		}
+		$.ajax({
+			// async : false,
+			type : "GET",
+			dataType: 'json',
+			url : alamatUrl+'/getOne/'+id,
+			success : myCallback ,
+			error : (data) => {
+				console.log("gagal");
+			}
+		});
+		
+		return dataTemp;
+	}
+	
+	$('#table-view-pr').on('click','.btn-update-pr',function(e){
+		
+		$(this).attr('state','update');
+		var id = $(this).attr('id');
+		
+		console.log('pr id : '+id);
+		dataku = getPurchaseRequestById(id);
+		$('#modal-add-pr').modal();
+		$('#btn-pr-save').attr('state','update');
+		console.log('mode: ' +$(this).attr('state'));
+		if ($('#table-add-pr-body tr').length > 0){
+			$('#btn-pr-save').prop('disabled',false);
+			$('#btn-pr-submit').prop('disabled',false);
+		} else{
+			$('#btn-pr-save').prop('disabled',true);
+			$('#btn-pr-submit').prop('disabled',true);
+		}
+	});
 });

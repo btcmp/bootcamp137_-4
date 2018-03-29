@@ -21,6 +21,7 @@ public class PurchaseRequestService {
 	@Autowired
 	PurchaseRequestDetailDao prDetailDao;
 	
+	
 	public List<PurchaseRequest> getAll() {
 		return prDao.getAll();
 	}
@@ -58,6 +59,14 @@ public class PurchaseRequestService {
 
 	public void delete(PurchaseRequest pr) {
 		prDao.delete(pr);
+	}
+
+	public List<PurchaseRequestDetail> getPRDetailByPRIdandOutletId(Long prId, Long outletId) {
+		return prDetailDao.getPRDetailByPRIdandOutletId(prId, outletId);
+	}
+
+	public List<PurchaseRequest> getAllPrByOutlet(Long outletId) {
+		return prDao.getAllPrByOutlet(outletId);
 	}
 	
 }

@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 @Table(name = "mp_t_po_history")
 public class PurchaseOrderHistory {
 	public PurchaseOrderHistory() {
-		this.createOn = new Date();
+		this.createdOn = new Date();
 	}
 	
 	@Id
@@ -28,12 +28,12 @@ public class PurchaseOrderHistory {
 	
 	private String status;
 	
-	@Column(name="create_by")
+	@Column(name="created_by")
 	private long createdBy;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="create_on")
-	private Date createOn;
+	@Column(name="created_on")
+	private Date createdOn;
 
 	public Long getId() {
 		return id;
@@ -67,12 +67,12 @@ public class PurchaseOrderHistory {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreateOn() {
-		return createOn;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 	
 	

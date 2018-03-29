@@ -28,6 +28,19 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 			return pr;
 		}
 	}
+	
+	@Override
+	public List<PurchaseRequest> getAllPrByOutlet(Long outletId) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "FROM PurchaseRequest pr WHERE pr.outlet.id =:outletId";
+		Query query = session.createQuery(hql).setParameter("outletId", outletId);
+		List<PurchaseRequest> pr = query.list();
+		if (pr.isEmpty()) {
+			return null;
+		} else {
+			return pr;
+		}
+	}
 
 	@Override
 	public PurchaseRequest getOne(long id) {
@@ -60,5 +73,7 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 		session.delete(pr);
 		session.flush();
 	}
+
+	
 	
 }

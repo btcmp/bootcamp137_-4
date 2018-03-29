@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 @Table(name = "mp_t_purchase_order_detail")
 public class PurchaseOrderDetail {
 	public PurchaseOrderDetail() {
-		this.createOn = new Date();
+		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
 	@Id
@@ -39,12 +39,12 @@ public class PurchaseOrderDetail {
 	@Column(name = "sub_total")
 	private float subTotal;
 	
-	@Column(name="create_by")
+	@Column(name="created_by")
 	private long createdBy;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="create_on")
-	private Date createOn;
+	@Column(name="created_on")
+	private Date createdOn;
 	
 	@Column(name="modified_by")
 	private long modifiedBy;
@@ -109,12 +109,12 @@ public class PurchaseOrderDetail {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreateOn() {
-		return createOn;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public long getModifiedBy() {

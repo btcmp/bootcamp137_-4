@@ -148,13 +148,20 @@
     </section>
     <section class="content-header row">
       <!-- search form -->
+      <label for="select-outlet-main">Outlet Login</label>
+      <select class="selectpicker" name="select-outlet-main" id="select-outlet-main">
+				<c:forEach var="outlet" items="${outlets }">
+					<option value="${outlet.id }">${outlet.name }</option>
+				</c:forEach>
+			</select>
       <div class="col-xs-4">
         <div class="input-group ">
           <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
-                <button name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
+                <button name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                
+          </span>
+          
         </div>
       </div>
       <div style="text-align: right;">

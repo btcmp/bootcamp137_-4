@@ -13,7 +13,7 @@
       </div>
       <div class="modal-body">
       		<label for="select-outlet">Outlet Login</label>
-			<select class="selectpicker" name="select-outlet" id="select-outlet">
+			<select disabled class="selectpicker" name="select-outlet" id="select-outlet">
 				<c:forEach var="outlet" items="${outlets }">
 					<option value="${outlet.id }">${outlet.name }</option>
 				</c:forEach>

@@ -10,5 +10,6 @@ public interface PurchaseRequestDao {
 	public void save(PurchaseRequest pr);
 	public void update(PurchaseRequest pr);
 	public void delete(PurchaseRequest pr);
+	public List<PurchaseRequest> getAllPrByOutlet(Long outletId);
 	
 }

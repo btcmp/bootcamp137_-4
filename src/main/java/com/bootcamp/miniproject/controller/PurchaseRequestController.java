@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.PurchaseRequest;
+import com.bootcamp.miniproject.model.PurchaseRequestDetail;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.PurchaseRequestService;
@@ -45,10 +46,21 @@ public class PurchaseRequestController {
 		return (List<PurchaseRequest>) prService.getAll();
 	}
 	
+	@RequestMapping(value = "/getAllPr", method = RequestMethod.GET)
+	@ResponseBody
+	public List<PurchaseRequest> getAllPrByOutlet(@RequestParam(value="outletId", defaultValue="") Long outletId){
+		return (List<PurchaseRequest>) prService.getAllPrByOutlet(outletId);
+	}
+	
 	@RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public PurchaseRequest getOne(@PathVariable long id) {
 		return prService.getOne(id);
+	}
+	@RequestMapping(value = "/getPRDetail", method = RequestMethod.GET)
+	@ResponseBody
+	public List<PurchaseRequestDetail> getPRDetailByPRIdandOutletId(@RequestParam(value="prId", defaultValue="") Long prId, @RequestParam(value="outledId", defaultValue="") Long outletId) {
+		return prService.getPRDetailByPRIdandOutletId(prId,outletId);
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
