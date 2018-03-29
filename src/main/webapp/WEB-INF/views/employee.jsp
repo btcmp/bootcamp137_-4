@@ -216,26 +216,29 @@ $(function () {
 		 })
 		 
 		 //USERS
-		 var users = [];
-		 var user  = {
+		 var users  = {
 			 username : $('#add-username').val(),
 			 password : $('#add-password').val(),
 			 role : {
 				 id :  $('#select-role').val(),
-			 }
+			 },
+			 active : 1
+		 
 		 }
-		 users.push(user);
 		 /* console.log(user); */
 		 
 		 //EMPLOYEE OUTLETS
 		 var employeeOutlets = [];
-		 var employeeOutlet = {
-			outlet : {
-				id : $('input:radio[name=optRadio]:checked').val(),				
-			}
-		 } 
-		  employeeOutlets.push(employeeOutlet);
-		 /* console.log(employeeOutlet); */
+		 $('#add-outlet input:checked').each(function() {
+				
+			 var employeeOutlet = {
+						outlet : {
+							id : $(this).val()
+						}
+					 } 
+					  employeeOutlets.push(employeeOutlet);
+		})
+				 /* console.log(employeeOutlet); */
 		 
 		 var emp = {
 			title : $('#add-title').val(),
@@ -244,7 +247,7 @@ $(function () {
 			email : $('#add-email').val(),
 			haveAccount : haveAccount,
 			active : 1,
-			users : users,
+			user : users,
 			employeeOutlets : employeeOutlets
 			 
 		}
@@ -263,7 +266,7 @@ $(function () {
 				alert('save failed!');
 			}
 		})  
-	
+	 
 	}); 
 	
 	

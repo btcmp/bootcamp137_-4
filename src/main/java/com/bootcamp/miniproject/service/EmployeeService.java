@@ -29,7 +29,6 @@ public class EmployeeService {
 	
 	public void save(Employee employee) {
 		Employee emp = new Employee();
-		emp.setId(employee.getId());
 		emp.setFirstName(employee.getFirstName());
 		emp.setLastName(employee.getLastName());
 		emp.setEmail(employee.getEmail());
@@ -37,31 +36,23 @@ public class EmployeeService {
 		emp.setHaveAccount(employee.isHaveAccount());
 		emp.setActive(employee.isActive());
 		employeeDao.save(emp);
-		
-		
-		List<EmployeeOutlet> employeeOutlets = employeeOutletDao.getEmployeeOutletByEmployee(employee);
-		if(employeeOutlets!=null) {
-			for(EmployeeOutlet employeeOutlet : employeeOutlets) {
-				employeeOutletDao.delete(employeeOutlet);
-			}
-		}
+	
 		if(employee.getEmployeeOutlets()!=null) {
 			for(EmployeeOutlet employeeOutlet : employee.getEmployeeOutlets()) {
 				EmployeeOutlet empo = new EmployeeOutlet();
-				empo.setEmployee(employee);
+				empo.setEmployee(emp);
 				empo.setOutlet(employeeOutlet.getOutlet());
 				employeeOutletDao.save(empo);
 			}
 		}
 		
-		if(emp.getUser()!=null) {
+		if(employee.getUser()!=null) {
 			User user = new User();
-			user.setId(emp.getUser().getId());
-			user.setEmployee(employee);
-			user.setActive(emp.getUser().isActive());
-			user.setRole(emp.getUser().getRole());
-			user.setUsername(emp.getUser().getUsername());
-			user.setPassword(emp.getUser().getPassword());
+			user.setEmployee(emp);
+			user.setActive(employee.getUser().isActive());
+			user.setRole(employee.getUser().getRole());
+			user.setUsername(employee.getUser().getUsername());
+			user.setPassword(employee.getUser().getPassword());
 			userDao.save(user);
 		}
 	}
