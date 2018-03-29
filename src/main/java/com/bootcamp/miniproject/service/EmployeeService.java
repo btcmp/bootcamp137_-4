@@ -36,8 +36,10 @@ public class EmployeeService {
 		emp.setHaveAccount(employee.isHaveAccount());
 		emp.setActive(employee.isActive());
 		employeeDao.save(emp);
+		
+		System.out.println(employee.getEmployeeOutlets());
 	
-		if(employee.getEmployeeOutlets()!=null) {
+		if(!employee.getEmployeeOutlets().isEmpty()) {
 			for(EmployeeOutlet employeeOutlet : employee.getEmployeeOutlets()) {
 				EmployeeOutlet empo = new EmployeeOutlet();
 				empo.setEmployee(emp);
@@ -46,7 +48,7 @@ public class EmployeeService {
 			}
 		}
 		
-		if(employee.getUser()!=null) {
+		if(employee.isHaveAccount()) {
 			User user = new User();
 			user.setEmployee(emp);
 			user.setActive(employee.getUser().isActive());
