@@ -27,19 +27,21 @@ public class CategoryService {
 	}
 	
 	public List<Category> selectAll(){
-		List<Category> categories = categoryDao.selectStatusActive();
-		for(Category category : categories) {
-			List<Item> items = itemDao.getItemByCategory(category);
-			if (items == null) {
-				category.setItemStock(0);
+		try {
+			List<Category> categories = categoryDao.selectStatusActive();
+			for(Category category : categories) {
+				List<Item> items = itemDao.getItemByCategory(category);
+				if (items == null) {
+					category.setItemStock(0);
+				}
+				else {
+					category.setItemStock(items.size());
+				}
 			}
-			else {
-				category.setItemStock(items.size());
-			}
+			return categories;
+		} catch(NullPointerException e) {
+			return null; 
 		}
-		return categories;
-		/*return categoryDao.selectAll();*/
-
 	}
 	
 	
