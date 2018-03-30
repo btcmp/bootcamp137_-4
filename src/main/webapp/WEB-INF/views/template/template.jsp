@@ -88,8 +88,8 @@
                 </span>
           </a>
           <ul class="treeview-menu" style="background-color: #872619;">
-            <li id="purchase-request-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-order"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
-            <li id="purchase-order-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-request"><i class="fa fa-circle-o"></i> Purchase Request</a></li>
+            <li id="purchase-request-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-request"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
+            <li id="purchase-order-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-order"><i class="fa fa-circle-o"></i> Purchase Request</a></li>
             <li id="adjustment-side-option"><a href="${pageContext.request.contextPath}/transaction/adjustment"><i class="fa fa-circle-o"></i> Adjustment</a></li>
             <li id="transfer-stock-side-option"><a href="${pageContext.request.contextPath}/transaction/transfer-stock"><i class="fa fa-circle-o"></i> Transfer Stock</a></li>
             <li id="sales-order-side-option"><a href="${pageContext.request.contextPath}/transaction/sales-order"><i class="fa fa-circle-o"></i> Sales Order</a></li>
