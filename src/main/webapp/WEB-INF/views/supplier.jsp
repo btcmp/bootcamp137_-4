@@ -70,7 +70,7 @@
 				<tbody>
 					<c:forEach items="${suppliers }" var="supplier">
 						<tr>
-							<td>${supplier.name }</td>
+							<td class="supplierName">${supplier.name }</td>
 							<td>${supplier.address }</td>
 							<td>${supplier.phone }</td>
 							<td>${supplier.email }</td>
@@ -201,19 +201,49 @@ $(document).ready(function(){
 				createdOn : $('#update-created-on').val(),
 				active : active
 			}
+		if (supplier.name=="" || supplier.email=="" || supplier.postalCode=="" || supplier.phone=="" || supplier.email=="" || supplier.province.id=="" || supplier.region.id=="" || supplier.district.id=="") {
+			alert("fill the form completely");
+		} else {
 			$.ajax({
-				url : '${pageContext.request.contextPath}/master/supplier/update',
-				type : 'PUT',
-				data : JSON.stringify(supplier),
-				contentType : 'application/json',
-				success : function(){
-					alert('update successfully');
-					window.location='${pageContext.request.contextPath}/master/supplier';
+				url : '${pageContext.request.contextPath }/master/supplier/get-all',
+				type : 'GET',
+				success : function(data){
+					var sameName = 0;
+					var sameEmail = 0;
+					$(data).each(function(index, data2){
+						if (parseInt(data2.id)!==parseInt(supplier.id)) {
+							console.log(supplier.id+" "+data2.id);
+							if (supplier.name.toLowerCase()==data2.name.toLowerCase()) {
+								sameName++;
+							} else if (supplier.email.toLowerCase()==data2.email.toLowerCase()) {
+								sameEmail++;
+							}
+						}
+					})
+					if (sameName>0) {
+						alert("This name has been taken, please change it!");
+					} else if (sameEmail>0) {
+						alert("This email has been used, please change it!");
+					} else {
+						$.ajax({
+							url : '${pageContext.request.contextPath}/master/supplier/update',
+							type : 'PUT',
+							data : JSON.stringify(supplier),
+							contentType : 'application/json',
+							success : function(){
+								alert('update successfully');
+								window.location='${pageContext.request.contextPath}/master/supplier';
+							}, error : function(){
+								alert('update failed');
+							}
+							
+						})
+					}
 				}, error : function(){
-					alert('update failed');
+					alert('get all supplier failed');
 				}
-				
 			})
+		}
 		})
 	
 	//add
@@ -222,10 +252,6 @@ $(document).ready(function(){
 	})
 	
 	$('#btn-add').click(function(){
-		var active = "false";
-		$('#add-active input:checked').each(function(){
-			active = $(this).val()
-		})
 		var supplier={
 				name : $('#add-name').val(),
 				address : $('#add-address').val(),
@@ -241,21 +267,47 @@ $(document).ready(function(){
 				district : {
 					id : $('#add-district').val()
 				},
-				active : active
+				active : true
 			}
-		$.ajax({
-			url : '${pageContext.request.contextPath }/master/supplier/save',
-			type : 'POST',
-			data : JSON.stringify(supplier),
-			contentType : 'application/json',
-			success : function(){
-				alert('save successfully');
-				window.location='${pageContext.request.contextPath}/master/supplier';
-			}, error : function(){
-				alert('save failed');
-			}
-			
-		})
+		if (supplier.name=="" || supplier.address=="" || supplier.postalCode=="" || supplier.phone=="" || supplier.email=="" || supplier.province.id=="" || supplier.region.id=="" || supplier.district.id=="") {
+			alert("fill the form completely");
+		} else {
+			$.ajax({
+				url : '${pageContext.request.contextPath }/master/supplier/get-all',
+				type : 'GET',
+				success : function(data){
+					var sameName = 0;
+					var sameEmail = 0;
+					$(data).each(function(index, data2){
+						if (supplier.name.toLowerCase()==data2.name.toLowerCase()) {
+							sameName++;
+						} else if (supplier.email.toLowerCase()==data2.email.toLowerCase()) {
+							sameEmail++;
+						}
+					})
+					if (sameName>0) {
+						alert("This name has been taken, please change it!");
+					} else if (sameEmail>0) {
+						alert("This email has been used, please change it!");
+					} else {
+						$.ajax({
+							url : '${pageContext.request.contextPath }/master/supplier/save',
+							type : 'POST',
+							data : JSON.stringify(supplier),
+							contentType : 'application/json',
+							success : function(){
+								alert('save successfully');
+								window.location='${pageContext.request.contextPath}/master/supplier';
+							}, error : function(){
+								alert('save failed');
+							}
+						})
+					}
+				}, error : function(){
+					alert('get all supplier failed');
+				}
+			})	
+		}
 	})
 	
 	$('#add-province').change(function(){

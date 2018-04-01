@@ -31,8 +31,6 @@ public class SupplierDaoImpl implements SupplierDao{
 		} else {
 			return suppliers;
 		}
-		/*Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Supplier.class).list();*/
 	}
 
 	public Supplier getOne(Supplier supplier) {
@@ -67,6 +65,19 @@ public class SupplierDaoImpl implements SupplierDao{
 		String hql = "from Supplier S where lower(S.name) like :search";
 		Session session = sessionFactory.getCurrentSession();
 		List<Supplier> suppliers = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
+		if (suppliers.isEmpty()) {
+			return null;
+		} else {
+			return suppliers;
+		}
+	}
+
+	@Override
+	public List<Supplier> selectStatusActive() {
+		// TODO Auto-generated method stub
+		String hql = "from Supplier S where S.active = 1 order by S.id desc";
+		Session session = sessionFactory.getCurrentSession();
+		List<Supplier> suppliers = session.createQuery(hql).list();
 		if (suppliers.isEmpty()) {
 			return null;
 		} else {

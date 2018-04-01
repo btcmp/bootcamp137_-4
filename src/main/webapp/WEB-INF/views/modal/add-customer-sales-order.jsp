@@ -5,7 +5,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add New Supplier</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Add New Customer</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -20,11 +20,11 @@
 							class="form-control" id="add-name" placeholder="Name">
 					</div>
 					<div class="form-group">
-						<label for="add-email">Email</label> <input type="text"
+						<label for="add-email">Email</label> <input type="email"
 							class="form-control" id="add-email" placeholder="Email">
 					</div>
 					<div class="form-group">
-						<label for="add-phone">Phone</label> <input type="text"
+						<label for="add-phone">Phone</label> <input type="number"
 							class="form-control" id="add-phone" placeholder="Phone">
 					</div>
 					<div class="form-group">
@@ -60,7 +60,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" id="btn-add-customer" class="btn btn-primary" data-dismiss="modal">Save</button>
+				<button type="button" id="btn-add-customer" class="btn btn-primary">Save</button>
 			</div>
 		</div>
 	</div>

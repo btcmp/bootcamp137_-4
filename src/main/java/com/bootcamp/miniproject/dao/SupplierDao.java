@@ -19,4 +19,6 @@ public interface SupplierDao {
 	public void delete(Supplier supplier);
 	
 	public List<Supplier> getSupplierBySearchName(String search);
+
+	public List<Supplier> selectStatusActive();
 }

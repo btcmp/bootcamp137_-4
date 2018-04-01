@@ -46,4 +46,9 @@ public class SupplierService {
 		// TODO Auto-generated method stub
 		return supplierDao.getSupplierBySearchName(search);
 	}
+	
+	public List<Supplier> selectStatusActive() {
+		// TODO Auto-generated method stub
+		return supplierDao.selectStatusActive();
+	}
 }

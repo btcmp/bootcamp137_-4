@@ -3,65 +3,107 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<spring:url value="/resources/adminLTE" var="url"></spring:url>
 <spring:url value="/resources/js/jquery-3.3.1.js" var="jq"></spring:url>
 <spring:url value="/resources/js/parsley.js" var="parsley"></spring:url>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Entry Sales Order</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css"/>
-<script type="text/javascript" src="${jq}"></script>
-<script type="text/javascript" src="${parsley}"></script>
-<script type="text/javascript" src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<%@ include file="template/head.jsp" %>
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
 
-</head>
-<body>
-<div class="container">
-<h3>Sales Order</h3>
-	<div style="margin-left: 30px; margin-top: 30px;" id="search-box" class="row"> 
-		<div clas="col-sm-4"><input  class="form-control" type="text" id="search" placeholder="search item-variant"/></div>
+		<%@ include file="template/template.jsp"%>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h2 style="text-align: center;">Transfer Stock</h2>
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.request.contextPath}/master"><i
+							class="fa fa-dashboard"></i> Master</a></li>
+					<li class="active">Transfer-stock</li>
+				</ol>
+			</section>
+
+			<section class="content-header row">
+				<div style="text-align: right;">
+					<div class="col-xs-11">
+						<a id="kosong" class="choose-customer btn btn-primary">Choose Customer</a>
+					</div>
+					<div class="col-xs-1">
+						<a class="btn btn-primary">Export</a>
+					</div>
+				</div>
+			</section>
+
+			<!-- Main content -->
+			<section class="content" style="background-color:;">
+				<div class="row">
+					<div class="col-xs-12">
+						<!-- /.box -->
+						<div class="box">
+							<!-- /.box-header -->
+
+							<div class="box-body" class="row">
+								<div class="col-xs-6">
+									<div style="margin-bottom: 10px;" id="search-box"> 
+										<input  class="form-control" type="text" id="search" placeholder="search item-variant"/>
+									</div>
+									<table class="table table-striped table-bordered" cellspacing="0" width="100%">
+										<tbody id="item-tbl">
+											
+										</tbody>
+									</table>
+									</div>
+								<div class="col-xs-6">
+									<table id="salesOrder-tabel" class="table table-striped table-bordered" cellspacing="0" width="100%">
+										<thead>
+											<th>Item</th>
+											<th>Price</th>
+											<th>Qty.</th>
+											<th>Subtotal</th>
+											<th>Action</th>
+										</thead>
+										<tbody id="salesOrder-tbl-body">
+										</tbody>
+										<tfoot id="salesOrder-tbl-foot">
+											<tr>
+												<th colspan="3">TOTAL</th>
+												<th colspan="2">Rp. 0</th>
+											</tr>
+										</tfoot>
+									</table>
+									<button id="clear" class="btn btn-primary btn-lg">Clear Sale</button>
+									<button id="charge" class="btn btn-primary btn-lg">Charge</button>
+								</div>
+								
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+		<%@ include file="template/footer.jsp"%>
+
+		<div class="control-sidebar-bg"></div>
 	</div>
-	<table class="table table-striped table-bordered" cellspacing="0" width="100%">
-		<tbody id="item-tbl">
-			
-		</tbody>
-	</table>
-	
-	<button id="kosong" class="choose-customer btn btn-block btn-success btn-lg">Choose Customer</button>
-	
-	<table id="salesOrder-tabel" class="table table-striped table-bordered" cellspacing="0" width="100%">
-		<thead>
-			<th>Item</th>
-			<th>Price</th>
-			<th>Qty.</th>
-			<th>Subtotal</th>
-			<th>Action</th>
-		</thead>
-		<tbody id="salesOrder-tbl-body">
-		</tbody>
-		<tfoot id="salesOrder-tbl-foot">
-			<tr>
-				<th colspan="3">TOTAL</th>
-				<th colspan="2">Rp. 0</th>
-			</tr>
-		</tfoot>
-	</table>
-	<button id="clear" class="btn btn-success btn-lg">Clear Sale</button>
-	<button id="charge" class="btn btn-success btn-lg">Charge</button>
-</div>
-<div>
-	<%@ include file="modal/charge-sales-order.jsp" %>
-	<%@ include file="modal/receipt-sales-order.jsp" %>
-	<%@ include file="modal/search-customer-sales-order.jsp" %>
-	<%@ include file="modal/add-customer-sales-order.jsp" %>
-</div>
-	
+	<!-- ./wrapper -->
+	<div>
+		<%@ include file="modal/charge-sales-order.jsp" %>
+		<%@ include file="modal/receipt-sales-order.jsp" %>
+		<%@ include file="modal/search-customer-sales-order.jsp" %>
+		<%@ include file="modal/add-customer-sales-order.jsp" %>
+	</div>
+
 </body>
 <script>
 $(document).ready(function(){
@@ -106,21 +148,49 @@ $(document).ready(function(){
 				},
 				district : {
 					id : $('#add-district').val()
+				},
+				active : true
+			}
+		if (customer.name=="" || customer.address=="" || customer.dob=="" || customer.phone=="" || customer.email=="" || customer.province.id=="" || customer.region.id=="" || customer.district.id=="") {
+			alert("fill the form completely");
+		} else {
+			$.ajax({
+				url : '${pageContext.request.contextPath }/master/customer/get-all',
+				type : 'GET',
+				success : function(data){
+					var sameName = 0;
+					var sameEmail = 0;
+					$(data).each(function(index, data2){
+						if (customer.name.toLowerCase()==data2.name.toLowerCase()) {
+							sameName++;
+						} else if (customer.email.toLowerCase()==data2.email.toLowerCase()) {
+							sameEmail++;
+						}
+					})
+					if (sameName>0) {
+						alert("This name has been taken, please change it!");
+					} else if (sameEmail>0) {
+						alert("This email has been used, please change it!");
+					} else {
+						$.ajax({
+							url : '${pageContext.request.contextPath }/master/customer/save',
+							type : 'POST',
+							data : JSON.stringify(customer),
+							contentType : 'application/json',
+							success : function(){
+								var word = $('#search-customer').val();
+								searchCustomer(word);
+								$('#modal-add-customer-sales-order').modal('toggle');
+							}, error : function(){
+								alert('save new customer failed');
+							}
+						})
+					}
+				}, error : function(){
+					alert('get all supplier failed');
 				}
-			}
-		$.ajax({
-			url : '${pageContext.request.contextPath }/master/customer/save',
-			type : 'POST',
-			data : JSON.stringify(customer),
-			contentType : 'application/json',
-			success : function(){
-				var word = $('#search-customer').val();
-				searchCustomer(word);
-			}, error : function(){
-				alert('save failed');
-			}
-			
-		})
+			})	
+		}
 	})
 	
 	$('#charge-done').click(function(){

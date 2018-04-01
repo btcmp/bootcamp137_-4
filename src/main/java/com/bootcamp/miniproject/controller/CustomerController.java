@@ -42,6 +42,12 @@ public class CustomerController {
 		return customerService.getOne(id);
 	}
 	
+	@RequestMapping(value="/get-all")
+	@ResponseBody
+	public List<Customer> getAll() {
+		return customerService.selectAll();
+	}
+	
 	@RequestMapping(value="/update", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.CREATED)
 	public void update(@RequestBody Customer customer) {

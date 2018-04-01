@@ -24,15 +24,15 @@
 							class="form-control" id="add-address" placeholder="Address">
 					</div>
 					<div class="form-group">
-						<label for="add-postal-code">Postal Code</label> <input type="text"
+						<label for="add-postal-code">Postal Code</label> <input type="number"
 							class="form-control" id="add-postal-code" placeholder="Postal Code">
 					</div>
 					<div class="form-group">
-						<label for="add-phone">Phone</label> <input type="text"
+						<label for="add-phone">Phone</label> <input type="number"
 							class="form-control" id="add-phone" placeholder="Phone">
 					</div>
 					<div class="form-group">
-						<label for="add-email">Email</label> <input type="text"
+						<label for="add-email">Email</label> <input type="email"
 							class="form-control" id="add-email" placeholder="Email">
 					</div>
 					<div class="form-group">
@@ -55,10 +55,6 @@
 							class="form-control" name="add-district" id="add-district">
 								<option value="">Choose District</option>
 						</select>
-					</div>
-					<div class="checkbox">
-						<label id="add-active"><input id="active" type="checkbox"
-							value="true">Active</label>
 					</div>
 				</form>
 			</div>

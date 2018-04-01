@@ -91,4 +91,11 @@ public class SupplierController {
 		Supplier supplier = supplierService.getOne(id);
 		return supplier;
 	}
+	
+	@RequestMapping(value = "/get-all", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Supplier> getAllSupplier() {
+		List<Supplier> supplier = supplierService.selectAll();
+		return supplier;
+	}
 }

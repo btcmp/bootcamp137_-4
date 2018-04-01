@@ -151,9 +151,6 @@ $(document).ready(function(){
 					}
 					
 				})
-				
-				
-				
 			}, 
 			error : function(){
 				alert('show selected transferStock data in modal failed');
@@ -163,7 +160,11 @@ $(document).ready(function(){
 	
 	$('#create').click(function(){
 		$('#modal-add-transferStock').modal();
-		document.getElementById("btn-save").disabled = true;
+		if (document.getElementById("add-transferStock-tbl").rows.length>0) {
+			document.getElementById("btn-save").disabled = false;
+		}else {
+			document.getElementById("btn-save").disabled = true;
+		}
 	})
 	
 	$('#btn-add-transfer-item').click(function(){
