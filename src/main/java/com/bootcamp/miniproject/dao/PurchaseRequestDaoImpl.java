@@ -72,5 +72,46 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(pr);
 		session.flush();
-	}		
+	}
+	
+	public List<PurchaseRequest> searchPR(String search) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseRequest where lower(prNo) = :search or lower(status) = :search or lower(notes) = :search";
+		List<PurchaseRequest> prs = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
+		if(prs.isEmpty()) {
+			return null;
+		}else {
+			return prs;
+		}
+	}
+	
+	public List<PurchaseRequest> searchPRByStatus(String search){
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseRequest where status = :status";
+		List<PurchaseRequest> prs = session.createQuery(hql).setParameter("status", search).list();
+		if(prs.isEmpty()) {
+			return null;
+		}else {
+			return prs;
+		}
+	}
+	
+	public void approve(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update PurchaseRequest set status='Approved' where id = :id";
+		session.createQuery(hql).setParameter("id", id).executeUpdate();
+	}
+
+	public void reject(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update PurchaseRequest set status='Rejected' where id = :id";
+		session.createQuery(hql).setParameter("id", id).executeUpdate();
+	}
+
+	public void createPo(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update PurchaseRequest set status='PO Created' where id = :id";
+		session.createQuery(hql).setParameter("id", id).executeUpdate();
+	}
 }

@@ -105,4 +105,34 @@ public class PurchaseRequestController {
 	public List<Object> findPRDetailAndQty(@RequestParam(value="outletId", defaultValue="") Long outletId,@RequestParam(value="prId", defaultValue="") Long prId) {
 		return prDetailService.findPRDetailAndQty(outletId, prId);
 	}
+	
+	@RequestMapping(value="/approve/{id}", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public void approve(@PathVariable long id) {
+		prService.approve(id);
+	}
+	
+	@RequestMapping(value="/reject/{id}", method= RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public void reject(@PathVariable long id) {
+		prService.reject(id);
+	}
+	
+	@RequestMapping(value="/create-po/{id}", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public void createPo(@PathVariable long id) {
+		prService.createPo(id);
+	}
+	
+	@RequestMapping("/search-status")
+	@ResponseBody
+	public List<PurchaseRequest> getByStatus(@RequestParam(value="search", defaultValue="") String status){
+		return prService.getPRByStatus(status);
+	}
+	
+	@RequestMapping("/search")
+	@ResponseBody
+	public List<PurchaseRequest> search(@RequestParam(value="search", defaultValue="") String search){
+		return prService.search(search);
+	}
 }

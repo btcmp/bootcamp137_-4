@@ -11,5 +11,9 @@ public interface PurchaseRequestDao {
 	public void update(PurchaseRequest pr);
 	public void delete(PurchaseRequest pr);
 	public List<PurchaseRequest> getAllPrByOutlet(Long outletId);
-	
+	public void approve(long id);
+	public void reject(long id);
+	public void createPo(long id);
+	public List<PurchaseRequest> searchPR(String search);
+	public List<PurchaseRequest> searchPRByStatus(String search);
 }

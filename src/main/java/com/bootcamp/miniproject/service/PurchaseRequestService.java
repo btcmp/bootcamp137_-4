@@ -88,5 +88,25 @@ public class PurchaseRequestService {
 	public List<PurchaseRequest> getAllPrByOutlet(Long outletId) {
 		return prDao.getAllPrByOutlet(outletId);
 	}
+
+	public void approve(long id) {
+		prDao.approve(id);
+	}
+
+	public void reject(long id) {
+		prDao.reject(id);
+	}
+
+	public void createPo(long id) {
+		prDao.createPo(id);
+	}
+
+	public List<PurchaseRequest> getPRByStatus(String status) {
+		return prDao.searchPRByStatus(status);
+	}
+
+	public List<PurchaseRequest> search(String search) {
+		return prDao.searchPR(search);
+	}
 	
 }
