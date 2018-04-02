@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bootcamp.miniproject.dao.PurchaseRequestDao;
 import com.bootcamp.miniproject.dao.PurchaseRequestDetailDao;
+import com.bootcamp.miniproject.dao.PurchaseRequestHistoryDao;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.PurchaseRequestDetail;
+import com.bootcamp.miniproject.model.PurchaseRequestHistory;
 
 @Service
 @Transactional
@@ -21,16 +23,29 @@ public class PurchaseRequestService {
 	@Autowired
 	PurchaseRequestDetailDao prDetailDao;
 	
+	@Autowired
+	PurchaseRequestHistoryDao prHistoryDao;
 	
 	public List<PurchaseRequest> getAll() {
 		return prDao.getAll();
 	}
 	
 	public PurchaseRequest getOne(long id) {
-		return prDao.getOne(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		System.out.println("Berhasil buka");
+		List<PurchaseRequestDetail> prd = prDetailDao.getPRDetailByPRIdandOutletId(id, pr.getOutlet().getId());
+		//List<PurchaseRequestHistory> prh = prHistoryDao.getPRHistoryByPR(id);
+		if (prd.isEmpty()) {
+			
+		} else {
+			pr.setPurchaseRequestDetail(prd);
+			System.out.println("berhasil set pr detail");
+		}
+		return pr;
 	}
 
 	public void save(PurchaseRequest pr) {
+		System.out.println("Msuk Service");
 		List<PurchaseRequestDetail> prDetail = pr.getPurchaseRequestDetail();
 		pr.setPurchaseRequestDetail(null);
 		prDao.save(pr);
@@ -39,6 +54,11 @@ public class PurchaseRequestService {
 			prd.setPurchaseRequest(pr);
 			prDetailDao.save(prd);
 		}
+		PurchaseRequestHistory prh = new PurchaseRequestHistory();
+		prh.setPurchaseRequest(pr);
+		prh.setStatus(pr.getStatus());
+		prh.setCreatedOn(pr.getCreatedOn());
+		prHistoryDao.save(prh);
 	}
 
 	public void update(PurchaseRequest pr) {

@@ -1,26 +1,34 @@
 $(document).ready(function(){
 	var alamatUrl = window.location.href;
 	listVariant = [];
+	$("#item-side-option").addClass('active');
+	$("#treeview-master").addClass('active');
 	function showAll(alamatUrl){
 		$("#table-body-item").empty();
 		$.ajax({
 			dataType : "json",
-		    //url : alamatUrl+'/getAllVariants',
-		    url : alamatUrl+'/get-all-item-inventories',
+		    url : alamatUrl+'/getAllVariants',
+//		    url : alamatUrl+'/get-all-item-inventories',
 			headers : {
 		    	'Accept' : 'application/json',
 		        'Content-Type' : 'application/json'
 		    },
 		    type : 'GET',
 		    success : function(data){
-		    	console.log(data);
+		    	//console.log(data);
 		    	$.each(data, (key, data) =>{
-					$('#table-body-item').append('<tr> <td>'+data.itemVariant.item.name+' -- '+data.itemVariant.name+'</td>'+
-							'<td>'+data.itemVariant.item.category.name+'</td>'+
-							'<td>'+data.itemVariant.price+'</td>'+
-							'<td>'+data.endingQty+'</td>'+
-							'<td><a id='+data.itemVariant.item.id+' class="update-item btn btn-primary">Update</a>'
+		    		$('#table-body-item').append('<tr> <td>'+data.item.name+' -- '+data.name+'</td>'+
+							'<td>'+data.item.category.name+'</td>'+
+							'<td>'+data.price+'</td>'+
+							'<td>'+'---'+'</td>'+
+							'<td><a id='+data.item.id+' class="update-item btn btn-primary">Update</a>'
 					)
+//					$('#table-body-item').append('<tr> <td>'+data.itemVariant.item.name+' -- '+data.itemVariant.name+'</td>'+
+//							'<td>'+data.itemVariant.item.category.name+'</td>'+
+//							'<td>'+data.itemVariant.price+'</td>'+
+//							'<td>'+data.endingQty+'</td>'+
+//							'<td><a id='+data.itemVariant.item.id+' class="update-item btn btn-primary">Update</a>'
+//					)
 				});
 		    }
 		});	
@@ -30,7 +38,7 @@ $(document).ready(function(){
 	
 	$('#create').click(function(){
 		$('#btn-add-item').attr('state','create');
-		console.log('disini');
+		//console.log('disini');
 		resetItemForm();
 		resetVariantForm();
 		
@@ -46,11 +54,13 @@ $(document).ready(function(){
 	$('#btn-add-item').click(function(e){
 		var state = $(this).attr('state');
 		if (state == 'create'){
+			console.log('membuat');
 			save(e);
 		} else{
+			console.log('edit');
 			update(e);
 		}
-		showAll(alamatUrl);
+		
 		enableVariantProperty();
 		listVariant = [];
 	});
@@ -58,7 +68,9 @@ $(document).ready(function(){
 	$('#btn-add-variant').click(function(e){
 		$(this).attr('state','create');
 		var state = $(this).attr('state');
-		console.log(state);
+		
+		$('#btn-save-variant').attr('state','create');
+		console.log($('#btn-save-variant').attr('state'));
 	});
 	
 	
@@ -142,10 +154,10 @@ $(document).ready(function(){
 				success : function(data){
 					listVariant.splice(idx, 1);
     	    		createVariantTable(listVariant);
-    	    		console.log('Berhasil')
+    	    		//console.log('Berhasil')
 				},
 				error : function(data){
-					console.log('error')
+					//console.log('error')
 				}
 				
 			});
@@ -170,10 +182,10 @@ $(document).ready(function(){
 			data : JSON.stringify(item),
 			contentType : 'application/json',
 			success : function(data){
-				console.log("berhasil save");
-				
+				showAll(alamatUrl);
 			}, error : function(data){
-				console.log("gagal");
+				showAll(alamatUrl);
+				//console.log("gagal");
 			}
 			
 		});
@@ -192,17 +204,18 @@ $(document).ready(function(){
 			},
 			itemVariant : listVariant
 		};
-		//console.log(item);
+		console.log(item);
 		$.ajax({
 			type : "PUT",
 			url : alamatUrl+'/update',
 			data : JSON.stringify(item),
 			contentType : 'application/json',
 			success : function(data){
-				console.log("berhasil update");
-				
+				//console.log("berhasil update");
+				showAll(alamatUrl);
 			}, error : function(data){
-				console.log("gagal");
+				//console.log("gagal");
+				showAll(alamatUrl);
 			}
 			
 		});
@@ -211,11 +224,13 @@ $(document).ready(function(){
 	};
 	
 	getInventoryByItemId = (id) => {
+		outletId = $('#select-outlet-main').val();
 		$.ajax({
 			type : "GET",
-			url : alamatUrl+'/searchInventory/'+id,
+//			url : alamatUrl+'/searchInventory/'+id,
+			url : alamatUrl+'/getItemInventory?itemId='+id+'&outletId='+outletId,
 			success : (data) => {
-				console.log("berhasil");
+				//console.log("berhasil");
 				listVariant = [];
 				var temp;
 				$.each(data, (key, row) =>{
@@ -237,7 +252,7 @@ $(document).ready(function(){
 				createVariantTable(listVariant);
 				
 			}, error : (data) => {
-				console.log("gagal");
+				//console.log("gagal");
 			}
 			
 		});
@@ -246,7 +261,7 @@ $(document).ready(function(){
 	$('#table-item').on('click','.update-item',function(e){
 		var id = $(this).attr('id');
 		getInventoryByItemId(id);
-		console.log('item id : '+id);
+		//console.log('item id : '+id);
 		$('#modal-addItem').modal();
 		$('#btn-add-item').attr('state','update');
 		
@@ -258,7 +273,7 @@ $(document).ready(function(){
     	resetItemForm();
     }
 	function resetItemForm() {
-		console.log('clear item form');
+		//console.log('clear item form');
 		$("#add-item-name").val("");
 		$("#add-category").val("");
 		$("#table-body-variant").empty();
@@ -300,7 +315,7 @@ $(document).ready(function(){
 					+'<td><button type="button" id="edit-variant" class="btn btn-info btn-sm edit-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>Edit</button> | ' 
 					+'<button type="button" id="delete-variant" class="btn btn-sm delete-variant" inv-id='+row.itemInventory[0].id+' var-id='+row.id+' data-id='+index+'>X</button></td></tr>');
 			index++;
-			console.log(row.itemInventory[0].id);
+			
 		});
 	}
 });

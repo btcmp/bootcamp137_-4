@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bootcamp.miniproject.dao.ItemInventoryDao;
 import com.bootcamp.miniproject.dao.ItemVariantDao;
+import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.ItemVariant;
 
 @Service
@@ -15,6 +17,9 @@ public class ItemVariantService {
 	
 	@Autowired
 	ItemVariantDao itemVariantDao;
+	
+	@Autowired
+	ItemInventoryDao inventoryDao;
 	
 	public List<ItemVariant> getAll() {
 		return itemVariantDao.getAll();
@@ -34,7 +39,24 @@ public class ItemVariantService {
 	public List<ItemVariant> getVariantByItemId(Long id){
 		return itemVariantDao.getVariantByItemId(id);
 	}
+	
+	// Integrasi Outlet Login
+	public List<ItemVariant> getAllVariant(Long outletId){
+		List<ItemVariant> varList = itemVariantDao.getAll();
+		for (ItemVariant var:varList) {
+			ItemInventory iInv = inventoryDao.searchInventoryByVariantAndOutletId(var.getId(), outletId);
+			var.setItemInventory(null);
+		}
+		return varList;
+	}
 
+
+	public void deleteVar(long id) {
+		ItemVariant var = itemVariantDao.getOne(id);
+		var.setActive(false);
+		itemVariantDao.update(var);
+	}
+	// Unused Methods
 	public void delete(ItemVariant itemVariant) {
 		itemVariantDao.delete(itemVariant);
 	}
@@ -42,11 +64,4 @@ public class ItemVariantService {
 	public void update(ItemVariant itemVariant) {
 		itemVariantDao.update(itemVariant);
 	}
-
-	public void deleteVar(long id) {
-		ItemVariant var = itemVariantDao.getOne(id);
-		var.setActive(false);
-		itemVariantDao.update(var);
-	}
-	
 }

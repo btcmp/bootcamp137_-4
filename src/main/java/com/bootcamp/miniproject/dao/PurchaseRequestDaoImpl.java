@@ -72,8 +72,5 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(pr);
 		session.flush();
-	}
-
-	
-	
+	}		
 }

@@ -84,10 +84,18 @@ public class PurchaseRequestController {
 	
 	@RequestMapping(value = "/search-item", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ItemInventory> searchItem(@RequestParam(value="name", defaultValue="") String search) {
-		List<ItemInventory> itemsInventory = inventoryService.searchItemInventoryByItemName(search);
+	public List<ItemInventory> searchItem(@RequestParam(value="outletId", defaultValue="") Long outletId,@RequestParam(value="name", defaultValue="") String search) {
+		List<ItemInventory> itemsInventory = inventoryService.searchItemInventoryByItemNameAndOutlet(outletId, search);
 		return itemsInventory;
 	}
+	
+//	@RequestMapping(value = "/search-item1", method = RequestMethod.GET)
+//	@ResponseBody
+//	public List<ItemInventory> searchItem1(@RequestParam(value="name", defaultValue="") String search, @RequestParam(value="outletId", defaultValue="") Long outletId) {
+//		List<ItemInventory> itemsInventory = inventoryService.searchItemInventoryByItemName1(search, outletId);
+//		return itemsInventory;
+//	}
+	
 	@RequestMapping(value = "/get-item/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ItemInventory getOneItem(@PathVariable long id) {

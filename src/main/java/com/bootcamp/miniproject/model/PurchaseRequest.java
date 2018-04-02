@@ -12,11 +12,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "mp_t_purchase_request")
@@ -60,11 +63,17 @@ public class PurchaseRequest {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	
-	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL, orphanRemoval=true)
-	List<PurchaseRequestDetail> purchaseRequestDetail;
+	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL)
+	@JsonManagedReference(value = "purchase-request-detail")
+	private List<PurchaseRequestDetail> purchaseRequestDetail;
 	
-	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL, orphanRemoval=true)
-	List<PurchaseRequestHistory> purchaseRequestHistory;
+	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL)
+	@JsonManagedReference(value = "purchase-request-history")
+	private List<PurchaseRequestHistory> purchaseRequestHistory;
+	
+	@OneToOne(fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL, orphanRemoval=true)
+	private PurchaseOrder purchaseOrder;
+	
 	
 	public Long getId() {
 		return id;
@@ -160,6 +169,14 @@ public class PurchaseRequest {
 
 	public void setPurchaseRequestHistory(List<PurchaseRequestHistory> purchaseRequestHistory) {
 		this.purchaseRequestHistory = purchaseRequestHistory;
+	}
+
+	public PurchaseOrder getPurchaseOrder() {
+		return purchaseOrder;
+	}
+
+	public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+		this.purchaseOrder = purchaseOrder;
 	}
 	
 	

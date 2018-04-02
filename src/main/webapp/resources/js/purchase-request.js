@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	var alamatUrl = window.location.href;
+	$("#purchase-request-side-option").addClass('active');
+	$("#treeview-transaction").addClass('active');
 	var listVariant = [];
 	var added = [];
 	var addedQty = [];
@@ -10,7 +12,7 @@ $(document).ready(function(){
 		if ($(this).attr('state') == 'create'){
 			$('#btn-pr-submit').prop('disabled', true);
 		}
-		console.log('disini');
+		//console.log('disini');
 		
 		$('#modal-add-pr').modal();
 		$('#btn-pr-save').prop('disabled',true);
@@ -75,16 +77,15 @@ $(document).ready(function(){
 		showPRByOutlet();
 	});
 	
-	
 	$('#search-item-variant').on('input',function(e){
 		var word = $(this).val();
-		console.log(alamatUrl);
+		outledId = $('#select-outlet-main').val();
 		if (word=="") {
 			$('#table-add-item-variant-body').empty();
 		} else {
 			$.ajax({
 				type : 'GET',
-				url : alamatUrl+'/search-item?name='+word,
+				url : alamatUrl+'/search-item?outletId='+outletId+'&name='+word,
 				dataType: 'json',
 				success : function(data){
 					$('#table-add-item-variant-body').empty();
@@ -113,8 +114,11 @@ $(document).ready(function(){
 			})
 		}
 	});
+
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
+		
+		console.log(id);
 		var inStock = parseInt($('#inStock'+id).text());
 		var purchaseRequestQty = parseInt($('.add-purchase-request-qty'+id).val());
 		if (purchaseRequestQty<1) {
@@ -144,8 +148,8 @@ $(document).ready(function(){
 			$('#btn-pr-save').prop('disabled',false);
 		}
 	});
-	
-	
+//	
+//	
 	$('body').on('click', 'button.btn-cancel-item', function(){
 		var id = $(this).attr('id');
 		$('#pr-PurchaseRequest'+id).remove();
@@ -181,7 +185,7 @@ $(document).ready(function(){
 //		$('#add-pr-notes').val('');
 //	}
 //	cleanPRModal();
-	
+	//======================== Fungsi Save / Update ========================//
 	save = (e) => {
 		e.preventDefault();
 		alamatUrl = window.location.href;

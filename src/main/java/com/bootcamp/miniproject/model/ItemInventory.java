@@ -23,7 +23,7 @@ public class ItemInventory {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private long id;
+	private Long id;
 	
 	private int beginning;
 	@Column(name = "alert_at_qty")
@@ -67,11 +67,11 @@ public class ItemInventory {
 	private Outlet outlet;
 	
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

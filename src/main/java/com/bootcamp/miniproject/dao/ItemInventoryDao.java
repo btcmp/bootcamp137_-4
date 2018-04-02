@@ -16,7 +16,14 @@ public interface ItemInventoryDao {
 
 	public void update(ItemInventory itemInventory);
 
+	public List<ItemInventory> searchItemInventoryByItemNameAndOutlet(Long outletId,String search);
 	public List<ItemInventory> searchItemInventoryByItemName(String search);
 
 	public List<ItemInventory> getInventoryByItemId(long id);
+
+	public List<ItemInventory> searchInventoryByVariantId(long variantId);
+
+	public ItemInventory searchInventoryByVariantAndOutletId(Long id, Long outletId);
+
+	public List<ItemInventory> getInvetoryByItemIdandOutletId(Long id, Long outletId);
 }

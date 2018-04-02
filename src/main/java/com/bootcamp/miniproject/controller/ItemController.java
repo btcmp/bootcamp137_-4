@@ -21,6 +21,7 @@ import com.bootcamp.miniproject.service.CategoryService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.ItemService;
 import com.bootcamp.miniproject.service.ItemVariantService;
+import com.bootcamp.miniproject.service.OutletService;
 
 @Controller
 @RequestMapping("/master/item")
@@ -36,12 +37,16 @@ public class ItemController {
 	CategoryService categoryService;
 	
 	@Autowired
+	OutletService outletService;
+	
+	@Autowired
 	ItemInventoryService inventoryService;
 	@RequestMapping
 	public String home(Model model) {
 		model.addAttribute("items", itemService.getAll());
 		model.addAttribute("variant", variantService.getAll());
 		model.addAttribute("categories", categoryService.selectAll());
+		model.addAttribute("outlets", outletService.selectAll());
 		return "item";
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -105,5 +110,11 @@ public class ItemController {
 	@ResponseBody
 	public List<ItemInventory> getInvetoryByItemId(@PathVariable long id) {
 		return inventoryService.getInventoryByItemId(id);
+	}
+	
+	@RequestMapping(value = "/getItemInventory", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> getInvetoryByItemIdandOutletId(@RequestParam ("itemId") Long id, @RequestParam ("outletId") Long outletId) {
+		return inventoryService.getInvetoryByItemIdandOutletId(id, outletId);
 	}
 }

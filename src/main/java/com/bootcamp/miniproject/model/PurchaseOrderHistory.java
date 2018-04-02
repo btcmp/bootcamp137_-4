@@ -12,6 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "mp_t_po_history")
 public class PurchaseOrderHistory {
@@ -24,6 +27,7 @@ public class PurchaseOrderHistory {
 	private Long id;
 	
 	@ManyToOne
+	@JsonIgnore
 	private PurchaseOrder purchaseOrder;
 	
 	private String status;
