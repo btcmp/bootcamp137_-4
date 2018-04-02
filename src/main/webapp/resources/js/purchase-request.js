@@ -17,6 +17,7 @@ $(document).ready(function(){
 		$('#modal-add-pr').modal();
 		$('#btn-pr-save').prop('disabled',true);
 	});
+	
 	function showAll(alamatUrl){
 		$('#table-add-pr-body').empty();
 		$.ajax({
@@ -166,8 +167,9 @@ $(document).ready(function(){
 		}
 	})
 	$('#btn-pr-save').click(function(e){
-		console.log('clicked');
+		
 		var state = $(this).attr('state');
+		console.log('clicked '+state);
 		if (state == 'create'){
 			save(e);
 		} else{
@@ -178,6 +180,7 @@ $(document).ready(function(){
 	$('#btn-pr-cancel').click(function(e){
 		$('#add-pr-date').val('');
 		$('#add-pr-notes').val('');
+		$('#table-add-pr-body').empty();
 	});
 	
 //	function cleanPRModal(){
@@ -258,13 +261,40 @@ $(document).ready(function(){
 		function myCallback(response){
 			console.log("berhasil");
 			dataTemp = response;
+			outletId = $('#select-outlet').val();
 			tanggal = getDateFormat(dataTemp.readyTime);
 			$('#select-outlet').val(dataTemp.outlet.id);
 			$('#add-pr-notes').val(dataTemp.notes);
 			$('#add-pr-date').val(tanggal);
 			console.log(dataTemp)
 			//createVariantTable(listVariant);
+			$.ajax({
+				type : 'GET',
+				url : alamatUrl+'/findPRDetailAndQty?outletId='+outletId+'&prId='+id,
+				dataType: 'json',
+				success : function(data){
+					console.log(data);
+					added = [];
+					addedQty = [];
+					$.each(data, function(key, val) {
+						$('#table-add-pr-body').append('<tr prdId='+val[0].id+' id="pr-PurchaseRequest'+ val[0].id +'">'
+								+'<td id="'+ val[1].itemVariant.id +'">'+ val[1].itemVariant.item.name +'-'+ val[1].itemVariant.name +'</td>'
+								+'<td>'+ val[1].endingQty +'</td><td>'+ val[0].requestQty +'</td>'
+								+'<td><button type="button" id="'+ val[1].id +'" '
+								+'class="btn-cancel-item'+ val[1].id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
+						added.push(val[1].id);
+						addedQty.push(val[0].requestQty);
+						//console.log('Mengeluarkan button added item'+ '.btn-added-item'+val[1].id);
+						$('.btn-add-item'+val[1].id).hide();
+						$('.btn-added-item'+val[1].id).show();
+					});
+				},
+				error : function(data){
+					alert('get one item inventory failed');
+				}
+			});
 			
+			//
 		}
 		$.ajax({
 			// async : false,
@@ -297,5 +327,9 @@ $(document).ready(function(){
 			$('#btn-pr-save').prop('disabled',true);
 			$('#btn-pr-submit').prop('disabled',true);
 		}
+	});
+	$('#table-view-pr').on('click','.btn-detail-pr',function(e){
+		console.log('buka modal pr-detail');
+		$('#modal-pr-detail').modal();
 	});
 });
