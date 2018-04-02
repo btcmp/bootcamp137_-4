@@ -32,8 +32,8 @@ public class EmployeeOutletController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public void save(@RequestBody EmployeeOutlet employeeOutlet) {
-		employeeOutletService.save(employeeOutlet);
+	public void saveOrUpdate(@RequestBody EmployeeOutlet employeeOutlet) {
+		employeeOutletService.saveOrUpdate(employeeOutlet);
 	}
 	
 	@RequestMapping(value="get-one/{id}")

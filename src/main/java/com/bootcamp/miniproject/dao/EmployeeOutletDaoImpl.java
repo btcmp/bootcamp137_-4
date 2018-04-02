@@ -24,6 +24,15 @@ public class EmployeeOutletDaoImpl implements EmployeeOutletDao{
 		session.save(employeeOutlet);
 		session.flush();
 	}
+	
+	@Override
+	public void saveOrUpdate(EmployeeOutlet employeeOutlet) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(employeeOutlet);
+		session.flush();
+	}
+	
 
 	@Override
 	public List<EmployeeOutlet> selectAll() {
@@ -65,6 +74,16 @@ public class EmployeeOutletDaoImpl implements EmployeeOutletDao{
  		}
 		return empos;
 	}
+
+	@Override
+	public void deleteByEmployeeId(long employeeId) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "delete from EmployeeOutlet where employee.id = :employeeId";
+		session.createQuery(hql).setParameter("employeeId", employeeId);
+	}
+
+
 
 	
 }

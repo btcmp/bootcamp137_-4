@@ -31,8 +31,7 @@ public class EmployeeController {
 	RoleService roleService;
 	@Autowired
 	OutletService outletService;
-	@Autowired
-	EmployeeOutletService employeeOutletService;
+	
 	
 	@RequestMapping
 	public String index(Model model) {
@@ -40,7 +39,7 @@ public class EmployeeController {
 		model.addAttribute("employees", employee);
 		List<Role> role = roleService.selectAll();
 		model.addAttribute("roles", role);
-		List<Outlet> outlet = outletService.selectAll();
+		List<Outlet> outlet = outletService.selectStatusActive();
 		model.addAttribute("outlets", outlet);
 		return "employee";
 	}
@@ -61,6 +60,12 @@ public class EmployeeController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void update(@RequestBody Employee employee) {
 		employeeService.update(employee);
+	}
+	
+	@RequestMapping(value="/update-delete", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.CREATED)
+	public void updateDelete(@RequestBody Employee employee) {
+		employeeService.updateDelete(employee);
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.DELETE)

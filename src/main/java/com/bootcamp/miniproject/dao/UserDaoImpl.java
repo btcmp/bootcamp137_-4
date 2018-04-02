@@ -23,6 +23,16 @@ public class UserDaoImpl implements UserDao{
 		session.save(user);
 		session.flush();
 	}
+	
+	@Override
+	public void saveOrUpdate(User user) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(user);
+		session.flush();
+		
+	}
+	
 
 	@Override
 	public List<User> selectAll() {
