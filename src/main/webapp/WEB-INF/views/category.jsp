@@ -40,11 +40,8 @@
         </div>
       </div>
       <div style="text-align: right;">
-        <div class="col-xs-7">
-        <a id="create-category" class="btn btn-primary">Create</a>
-      </div>
-      <div class="col-xs-1">
-        <a class="btn btn-primary">Export</a>
+        <div class="col-xs-8">
+        <a id="create-category" class="btn btn-primary col-xs-3" style="float:right;">Create</a>
       </div>
       </div>
     </section>
@@ -251,6 +248,7 @@ $('#btn-search').click(function(){
 	var word = $('#search').val();
 	window.location = "${pageContext.request.contextPath}/master/category/search?search="+word;
 })
+
 
 
 
