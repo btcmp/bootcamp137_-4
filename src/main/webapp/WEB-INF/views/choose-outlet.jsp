@@ -25,7 +25,6 @@
 			<c:forEach var="outlet" items="${outlets }">
 				<option value="${outlet.id }">${outlet.name }</option>
 			</c:forEach>
-			<option value="all">All Outlet</option>
 		</select>
 		<input type="button" class="btn btn-primary" id="choose-outlet" value="choose"/>
 	  </div>

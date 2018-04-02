@@ -1,6 +1,7 @@
 package com.bootcamp.miniproject.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bootcamp.miniproject.model.Employee;
+import com.bootcamp.miniproject.model.EmployeeOutlet;
 import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.service.EmployeeService;
 import com.bootcamp.miniproject.service.OutletService;
@@ -46,7 +48,13 @@ public class FreeController {
 		}
 		httpSession.setAttribute("username", username);
 		httpSession.setAttribute("employee", empl);
-		List<Outlet> outlets = outletService.selectAll();
+		List<EmployeeOutlet> empOutlets = empl.getEmployeeOutlets();
+		List<Outlet> outlets = new ArrayList<>();
+		for(EmployeeOutlet eo : empOutlets) {
+			Outlet out = eo.getOutlet();
+			outlets.add(out);
+		}
+		System.out.println(empOutlets.size()+" "+outlets.size());
 		model.addAttribute("outlets", outlets);
 		return "choose-outlet";
 	}
