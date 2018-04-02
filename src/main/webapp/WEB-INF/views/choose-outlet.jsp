@@ -41,5 +41,6 @@ $(document).ready(function(){
 		}
 	})
 })
+/* ini comment */
 </script>
 </html>

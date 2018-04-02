@@ -58,7 +58,7 @@ public class FreeController {
 		model.addAttribute("outlets", outlets);
 		return "choose-outlet";
 	}
-	
+	//
 	@RequestMapping(value="/home")
 	public String home(@RequestParam(value="id", defaultValue="") long id) {
 		Outlet outlet =  outletService.getOne(id);
