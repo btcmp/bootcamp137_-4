@@ -20,6 +20,10 @@ public class UserService {
 		userDao.save(user);
 	}
 	
+	public void saveOrUpdate(User user) {
+		userDao.saveOrUpdate(user);
+	}
+	
 	public List<User> selectAll(){
 		return userDao.selectAll();
 	}

@@ -13,48 +13,50 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.bootcamp.miniproject.model.User;
-import com.bootcamp.miniproject.service.UserService;
+import com.bootcamp.miniproject.model.AdjustmentHistory;
+import com.bootcamp.miniproject.service.AdjustmentHistoryService;
 
 @Controller
-@RequestMapping("master/user")
-public class UserController {
+@RequestMapping("/transaction/adjustment-history")
+public class AdjustmentHistoryController {
 
 	@Autowired
-	UserService userService;
-	
+	AdjustmentHistoryService adjustmentHistoryService;
 	
 	@RequestMapping
 	public String index(Model model) {
-		List<User> user = userService.selectAll();
-		model.addAttribute("users", user);
-		return "user";
+		List<AdjustmentHistory> adjustmentHistory = adjustmentHistoryService.selectAll();
+		model.addAttribute("adjustmentHistories", adjustmentHistory);
+		return "adjustment-history";
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public void saveOrUpdate(@RequestBody User user) {
-		userService.saveOrUpdate(user);
+	public void save(@RequestBody AdjustmentHistory adjustmentHistory) {
+		adjustmentHistoryService.save(adjustmentHistory);
 	}
 	
-	@RequestMapping(value="/get-one/{id}")
+	@RequestMapping(value="/get-one/{id}", method=RequestMethod.GET)
 	@ResponseBody
-	public User getOne(@PathVariable long id) {
-		return userService.getOne(id);
+	public AdjustmentHistory getOne(@PathVariable long id) {
+		return adjustmentHistoryService.getOne(id);
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.CREATED)
-	public void update(@RequestBody User user) {
-		userService.update(user);
+	public void update(@RequestBody AdjustmentHistory adjustmentHistory) {
+		adjustmentHistoryService.update(adjustmentHistory);
 	}
+	
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
 	@ResponseBody
 	public String delete(@PathVariable long id) {
-		User user = new User();
-		user.setId(id);
-		userService.delete(user);
-		return "redirect:/user";
+		AdjustmentHistory adjustmentHistory = new AdjustmentHistory();
+		adjustmentHistory.setId(id);
+		adjustmentHistoryService.delete(adjustmentHistory);
+		return "redirect:/adjustment-history";
 	}
+	
+	
 }

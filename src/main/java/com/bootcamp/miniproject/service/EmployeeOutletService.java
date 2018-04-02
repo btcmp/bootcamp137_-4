@@ -20,6 +20,10 @@ public class EmployeeOutletService {
 		employeeOutletDao.save(employeeOutlet);
 	}
 	
+	public void saveOrUpdate(EmployeeOutlet employeeOutlet) {
+		employeeOutletDao.saveOrUpdate(employeeOutlet);
+	}
+	
 	public List<EmployeeOutlet> selectAll(){
 		return employeeOutletDao.selectAll();
 	}
@@ -37,5 +41,11 @@ public class EmployeeOutletService {
 	public void delete(EmployeeOutlet employeeOutlet) {
 		employeeOutletDao.delete(employeeOutlet);
 	}
+	
+	public void deleteByEmployeeId(long employeeId) {
+		employeeOutletDao.deleteByEmployeeId(employeeId);
+	}
+
+	
 	
 }
