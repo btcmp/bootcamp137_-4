@@ -57,4 +57,5 @@ public class FreeController {
 		httpSession.setAttribute("outlet", outlet);
 		return "main-menu";
 	}
+	//
 }

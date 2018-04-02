@@ -30,7 +30,7 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         handle(request, response, authentication);
         clearAuthenticationAttributes(request);
     }
- 
+ //
     protected void handle(HttpServletRequest request, 
       HttpServletResponse response, Authentication authentication)
       throws IOException {

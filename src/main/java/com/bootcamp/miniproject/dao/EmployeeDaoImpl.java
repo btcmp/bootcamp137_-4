@@ -74,5 +74,5 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		List<Employee> employee = session.createQuery(hql).setParameter("username", username).list();
 		return employee;
 	}
-	
+	//
 }

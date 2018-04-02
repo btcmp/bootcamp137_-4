@@ -11,7 +11,7 @@
 <html>
 <%@ include file="template/head.jsp" %>
 <body class="hold-transition login-page">
-	
+	<!-- comment -->
 	<div class="login-box">
 	  <div class="login-logo">
 	    <a href="../../index2.html"><b>Admin</b>LTE</a>

@@ -12,7 +12,7 @@
 <%@ include file="template/head.jsp" %>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
-
+<!-- comment -->
 		<%@ include file="template/template.jsp"%>
 
 		<!-- Content Wrapper. Contains page content -->

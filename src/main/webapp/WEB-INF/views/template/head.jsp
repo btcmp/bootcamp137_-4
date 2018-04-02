@@ -1,4 +1,8 @@
 <head>
+	<meta name="_csrf" content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <!-- ... -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Data Tables</title>
@@ -18,7 +22,7 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="${url}/dist/css/skins/_all-skins.min.css">
   <script type="text/javascript" src="${jq}"></script>
-	<script type="text/javascript" src="${parsley}"></script>
+  <script type="text/javascript" src="${parsley}"></script>
 
   <!-- Google Font -->
   <link rel="stylesheet"
@@ -40,5 +44,5 @@
 	<!-- AdminLTE for demo purposes -->
 	<script src="${url}/dist/js/demo.js"></script>
 	<!-- page script -->
-
-</head>
+<!-- comment -->
+</head><!-- comment -->

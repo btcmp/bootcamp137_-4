@@ -21,7 +21,7 @@
 	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 	<!-- ... -->
 <title>Login</title>
-</head>
+</head><!-- comment -->
 <body class="hold-transition login-page">
 	
 	<div class="login-box">
