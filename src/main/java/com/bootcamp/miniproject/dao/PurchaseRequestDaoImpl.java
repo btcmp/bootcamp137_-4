@@ -28,7 +28,7 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 			return pr;
 		}
 	}
-	
+	//
 	@Override
 	public List<PurchaseRequest> getAllPrByOutlet(Long outletId) {
 		Session session = sessionFactory.getCurrentSession();

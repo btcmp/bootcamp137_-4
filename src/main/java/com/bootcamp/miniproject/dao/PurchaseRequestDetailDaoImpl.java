@@ -14,7 +14,7 @@ public class PurchaseRequestDetailDaoImpl implements PurchaseRequestDetailDao{
 
 	@Autowired
 	SessionFactory sessionFactory;
-	
+	//
 	@Override
 	public void save(PurchaseRequestDetail prDetail) {
 		Session session = sessionFactory.getCurrentSession();
@@ -28,7 +28,7 @@ public class PurchaseRequestDetailDaoImpl implements PurchaseRequestDetailDao{
 		session.update(prDetail);
 		session.flush();
 	}
-
+////
 	@Override
 	public void delete(PurchaseRequestDetail prDetail) {
 		Session session = sessionFactory.getCurrentSession();

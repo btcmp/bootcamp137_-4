@@ -14,6 +14,9 @@ public interface PurchaseRequestDao {
 	public void approve(long id);
 	public void reject(long id);
 	public void createPo(long id);
+	
 	public List<PurchaseRequest> searchPR(String search);
+	
 	public List<PurchaseRequest> searchPRByStatus(String search);
 }
+//

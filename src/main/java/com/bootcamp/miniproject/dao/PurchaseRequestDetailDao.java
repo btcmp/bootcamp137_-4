@@ -12,3 +12,4 @@ public interface PurchaseRequestDetailDao {
 	public List<PurchaseRequestDetail> getPRDetailByPRIdandOutletId(Long prId, Long outletId);
 	public List<Object> findPRDetailAndQty(Long outletId, Long prId);
 }
+//

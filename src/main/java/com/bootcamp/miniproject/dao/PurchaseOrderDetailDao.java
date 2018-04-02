@@ -18,3 +18,4 @@ public interface PurchaseOrderDetailDao {
 
 	public List<PurchaseOrderDetail> getDetailByPO(PurchaseOrder po);
 }
+//
