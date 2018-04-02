@@ -72,6 +72,14 @@ public class TransferStockController {
 		transferStockService.saveUpdate(transferStock);
 	}
 	
+	@RequestMapping(value = "/update-status-and-stock/{id}", method = RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateStatusAndStock(@RequestBody String newStatus, @PathVariable long id) {
+		TransferStock transferStock = transferStockService.getOne(id);
+		transferStock.setStatus(newStatus);
+		transferStockService.saveUpdateStatusAndStock(transferStock);
+	}
+	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	public void updateTransferStock(@RequestBody TransferStock transferStock) {

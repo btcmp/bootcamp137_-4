@@ -69,4 +69,9 @@ public class TransferStockService {
 		// TODO Auto-generated method stub
 		return transferStockDao.getTransferStockByOutletId(search);
 	}
+
+	public void saveUpdateStatusAndStock(TransferStock transferStock) {
+		transferStockDao.saveUpdate(transferStock);
+		System.out.println(transferStock);
+	}
 }

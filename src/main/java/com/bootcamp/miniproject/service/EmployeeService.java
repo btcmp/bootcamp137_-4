@@ -86,4 +86,9 @@ public class EmployeeService {
 		return employeeDao.selectStatusActive();
 	}
 	
+	public List<Employee> getOneByUsername(String username) {
+		// TODO Auto-generated method stub
+		return employeeDao.getOneByUsername(username);
+	}
+	
 }

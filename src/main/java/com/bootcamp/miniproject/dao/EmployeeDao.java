@@ -12,5 +12,5 @@ public interface EmployeeDao {
 	public void update(Employee employee);
 	public void delete(Employee employee);
 	public List<Employee> selectStatusActive();
-	
+	public List<Employee> getOneByUsername(String username);
 }

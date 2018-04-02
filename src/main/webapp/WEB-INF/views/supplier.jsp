@@ -44,7 +44,7 @@
         <a id="create" class="btn btn-primary">Create</a>
       </div>
       <div class="col-xs-1">
-        <a class="btn btn-primary">Export</a>
+        <a id="export" class="btn btn-primary">Export</a>
       </div>
       </div>
     </section>
@@ -401,6 +401,10 @@ $(document).ready(function(){
 	$('#search-btn').click(function(){
 		var word = $('#search').val();
 		window.location = "${pageContext.request.contextPath}/master/supplier/search?search="+word;
+	})
+	
+	$('#export').click(function(){
+		window.print();
 	})
 });
 </script>

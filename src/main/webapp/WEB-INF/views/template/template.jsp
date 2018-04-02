@@ -1,4 +1,19 @@
-
+<script>
+var outlet = "${outlet.name}";
+if (outlet=="") {
+	window.location = "${pageContext.request.contextPath}/free-autentication/choose-outlet";
+}
+$(document).ready(function(){
+	var firstName = "${employee.firstName}";
+	var lastName = "${employee.lastName}";
+	var roleName = "${employee.user.role.name}";
+	roleName = roleName.slice(5);
+	roleName = roleName.replace("_", " ");
+	$('.name').text(firstName+" "+lastName);
+	$('.name-role').text(firstName+" "+lastName+" - "+roleName);
+	$('.role').text(roleName);
+})
+</script>
 
 <header class="main-header">
     <!-- Logo -->
@@ -20,27 +35,35 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+        
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="${url}/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs name">Alexander Pierce</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header" style="background-color: #dd4b39;">
                 <img src="${url}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
-                <p>
+                <p class="name-role">
                   Alexander Pierce - Web Developer
                   <small>Member since Nov. 2012</small>
                 </p>
               </li>
               <!-- Menu Body -->
               <li class="user-footer">
-                <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                <div class="text-center">
+	                <!-- csrt for log out-->
+					<form action="${logoutUrl}" method="post" id="logoutForm">
+					  <input type="hidden"
+						name="${_csrf.headerName}"
+						value="${_csrf.token}" />
+						<input value="Sign out" type="submit" name="logout" class="btn btn-default btn-flat"/>
+					</form>
                 </div>
+                	
               </li>
             </ul>
           </li>
@@ -58,8 +81,8 @@
           <img src="${url}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <p class="name">Alexander Pierce</p>
+          <a href="#" class="role"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
       <!-- /.search form -->
@@ -88,8 +111,8 @@
                 </span>
           </a>
           <ul class="treeview-menu" style="background-color: #872619;">
-            <li id="purchase-request-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-request"><i class="fa fa-circle-o"></i> Purchase Request</a></li>
-            <li id="purchase-order-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-order"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
+            <li id="purchase-request-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-order"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
+            <li id="purchase-order-side-option"><a href="${pageContext.request.contextPath}/transaction/purchase-request"><i class="fa fa-circle-o"></i> Purchase Request</a></li>
             <li id="adjustment-side-option"><a href="${pageContext.request.contextPath}/transaction/adjustment"><i class="fa fa-circle-o"></i> Adjustment</a></li>
             <li id="transfer-stock-side-option"><a href="${pageContext.request.contextPath}/transaction/transfer-stock"><i class="fa fa-circle-o"></i> Transfer Stock</a></li>
             <li id="sales-order-side-option"><a href="${pageContext.request.contextPath}/transaction/sales-order"><i class="fa fa-circle-o"></i> Sales Order</a></li>
