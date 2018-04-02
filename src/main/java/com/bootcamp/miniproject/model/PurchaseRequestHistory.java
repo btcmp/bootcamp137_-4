@@ -13,7 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+//
 @Entity
 @Table(name = "mp_t_pr_history")
 public class PurchaseRequestHistory {
@@ -27,7 +28,7 @@ public class PurchaseRequestHistory {
 	private Long id;
 	
 	@ManyToOne
-	@JsonBackReference
+	@JsonIgnore
 	private PurchaseRequest purchaseRequest;
 	
 	private String status;
