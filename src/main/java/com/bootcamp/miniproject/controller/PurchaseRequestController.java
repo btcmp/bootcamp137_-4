@@ -19,6 +19,7 @@ import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.PurchaseRequestDetail;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
+import com.bootcamp.miniproject.service.PurchaseRequestDetailService;
 import com.bootcamp.miniproject.service.PurchaseRequestService;
 
 @Controller
@@ -29,6 +30,9 @@ public class PurchaseRequestController {
 	
 	@Autowired
 	ItemInventoryService inventoryService;
+	
+	@Autowired
+	PurchaseRequestDetailService prDetailService;
 	
 	@Autowired
 	OutletService outletService;
@@ -89,17 +93,16 @@ public class PurchaseRequestController {
 		return itemsInventory;
 	}
 	
-//	@RequestMapping(value = "/search-item1", method = RequestMethod.GET)
-//	@ResponseBody
-//	public List<ItemInventory> searchItem1(@RequestParam(value="name", defaultValue="") String search, @RequestParam(value="outletId", defaultValue="") Long outletId) {
-//		List<ItemInventory> itemsInventory = inventoryService.searchItemInventoryByItemName1(search, outletId);
-//		return itemsInventory;
-//	}
-	
 	@RequestMapping(value = "/get-item/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ItemInventory getOneItem(@PathVariable long id) {
 		ItemInventory itemInventory = inventoryService.getOne(id);
 		return itemInventory;
+	}
+	
+	@RequestMapping(value = "/findPRDetailAndQty", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Object> findPRDetailAndQty(@RequestParam(value="outletId", defaultValue="") Long outletId,@RequestParam(value="prId", defaultValue="") Long prId) {
+		return prDetailService.findPRDetailAndQty(outletId, prId);
 	}
 }

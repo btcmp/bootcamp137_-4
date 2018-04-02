@@ -1,5 +1,7 @@
 package com.bootcamp.miniproject.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,5 +24,9 @@ public class PurchaseRequestDetailService {
 	}
 	public void delete(PurchaseRequestDetail prDetail) {
 		prDetailDao.delete(prDetail);
+	}
+	public List<Object> findPRDetailAndQty(Long outletId, Long prId) {
+		// TODO Auto-generated method stub
+		return prDetailDao.findPRDetailAndQty(outletId, prId);
 	}	
 }
