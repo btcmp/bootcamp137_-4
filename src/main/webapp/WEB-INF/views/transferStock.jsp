@@ -227,7 +227,7 @@ $(document).ready(function(){
 			window.location = "${pageContext.request.contextPath}/transaction/transfer-stock/search-outlet?search="+word;
 		}
 	})
-	
+	//
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
 		var inStock = parseInt($('#inStock'+id).text());
