@@ -19,11 +19,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h2 style="text-align: center;">
-        Purchase Request
+        Purchase Order
       </h2>
       <ol class="breadcrumb">
         <li><a href="${pageContext.request.contextPath}/transaction"><i class="fa fa-dashboard"></i> Transaction</a></li>
-        <li class="active">Purchase Request</li>
+        <li class="active">Purchase Order</li>
       </ol>
     </section>
     <section class="content-header row">
@@ -40,24 +40,13 @@
           <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
                 <button name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                
           </span>
           
         </div>
       </div>
-      <div class="col-xs-2">
-		    <div class="form-group">
-		    	<select id="select-status" class="form-control">
-		    		<option value="All">All</option>
-		    		<option value="Created">Created</option>
-		    		<option value="Submitted">Submitted</option>
-		    		<option value="Approved">Approved</option>
-		    		<option value="Rejected">Rejected</option>
-		    		<option value="PO Created">PO Created</option>
-		    	</select>
-		    </div>
-	    </div>
       <div style="text-align: right;">
-      <div class="col-xs-5">
+      <div class="col-xs-7">
       	<div class="center">
       	
       	</div>
@@ -115,9 +104,9 @@
   </div>
   <!-- /.content-wrapper -->
 <div class = "container">
-		<%@include file="modal/add-purchase-request.jsp" %>
+		<%@include file="modal/edit-purchase-order.jsp" %>
 	</div>
 	<%@ include file="template/footer.jsp"%>
 
-<script type="text/javascript" src="<c:url value="/resources/js/purchase-request.js" />" charset="utf-8"></script></html>
+<script type="text/javascript" src="<c:url value="/resources/js/purchase-order.js" />" charset="utf-8"></script></html>
 

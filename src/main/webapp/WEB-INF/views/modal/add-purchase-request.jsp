@@ -14,9 +14,6 @@
       <div class="modal-body">
       		<label for="select-outlet">Outlet Login</label>
 			<select disabled class="selectpicker" name="select-outlet" id="select-outlet">
-				<c:forEach var="outlet" items="${outlets }">
-					<option value="${outlet.id }">${outlet.name }</option>
-				</c:forEach>
 			</select>
 			
       	<form class="form-all">
@@ -100,36 +97,53 @@
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Purchase Request Detail</h4>
-      </div>
-      <div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<div class="col-xs-4" style="float:right;">
+					<select id="select-pr-action" class="btn form-control">
+						<option disabled selected>More</option>
+						<option value="approve">Approve</option>	
+						<option value="reject">Reject</option>
+						<option value="print">Print</option>
+						<option value="create-po" disabled>Create PO</option>
+					</select>
+				</div>	
+				
+				<h4 class="modal-title">Purchase Request Detail</h4>
+				
+			</div>
+
+			<div class="modal-body">
       	<form class="form-all">
-			<div class="form-group" id = "add-pr-id">
+			<div class="form-group" id = "view-pr-detail-id">
 				<br>
-				<p> PR Number   : </p>
-				<p> Created By  : </p>
-				<p> Target Time : </p>
-				<p> PR Status   : </p>
-				<label for="add-pr-notes">Notes</label><br>
-				<textarea rows="4" id="add-pr-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
+				<div class="col-xs-3"> PR Number   :</div> <div id="view-prd-num" class="col-xs-9"> PR Num</div><br>
+				<div class="col-xs-3"> Created by   :</div> <div id="view-prd-created" class="col-xs-9"> PR Num</div><br>
+				<div class="col-xs-3"> Item Ready Item   :</div> <div id="view-prd-time" class="col-xs-9"> PR Num</div><br>
+				<div class="col-xs-3"> PR Status   :</div> <div id="view-prd-status" class="col-xs-9"> PR Num</div><br>
+				
+				<div class="col-xs-12">
+					<label for="add-pr-notes">Notes</label><br>
+					<textarea disabled rows="4" id="view-pr-detail-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
+				
+				</div>
 				<p></p>
 			</div>
 		</form>
-		
-			<label for="pr-detail">Purchase Request History</label>
-			<p> PR is Created</p>
-		    <label for="pr-detail">Purchase Item</label>
+			<div class="col-xs-12">
+				<label for="pr-detail">Purchase Request History</label>
+				<p> PR is Created</p>
+			    <label for="pr-detail">Purchase Item</label>
+				
+			</div>
 			<table id="table-pr-detail" class="table table-bordered table-striped">
-                <thead>
-                	<th class="col-xl-3">Item</th>
+				<thead>
+					<th class="col-xl-3">Item</th>
 					<th class="col-xl-3">In Stock</th>
-					<th class="col-xl-3">Request Quantity </th>
-		        	
+					<th class="col-xl-3">Request Quantity </th>	
 				</thead>
 				<tbody id="table-pr-detail-body">
 				</tbody>
-            </table>
+			</table>
         
       </div>
       <div class="modal-footer">

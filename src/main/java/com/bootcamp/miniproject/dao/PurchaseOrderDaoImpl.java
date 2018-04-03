@@ -77,11 +77,21 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 	public List<PurchaseOrder> searchPOByStatus(String search){
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from PurchaseOrder where status = :status";
-		List<PurchaseOrder> pos = session.createQuery(hql).setParameter("status", search).list();
-		if(pos.isEmpty()) {
+		List<PurchaseOrder> poList = session.createQuery(hql).setParameter("status", search).list();
+		if(poList.isEmpty()) {
 			return null;
 		}else {
-			return pos;
+			return poList;
 		}
+	}
+	
+	public int CountPRByMonth(int month, int year) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseOrder where MONTH(createdOn) =:month and YEAR(createdOn) =:year";
+		List<PurchaseOrder> poList = session.createQuery(hql).setParameter("month", month).setParameter("year", year).list();
+		if(poList.isEmpty()) {
+			return 0;
+		}
+		return poList.size();
 	}
 }

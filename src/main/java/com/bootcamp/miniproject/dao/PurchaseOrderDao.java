@@ -23,4 +23,6 @@ public interface PurchaseOrderDao {
 	public List<PurchaseOrder> searchPOByDate(Date startDate, Date endDate);
 	
 	public List<PurchaseOrder> searchPOByStatus(String search);
+	
+	public int CountPRByMonth(int month, int year);
 }

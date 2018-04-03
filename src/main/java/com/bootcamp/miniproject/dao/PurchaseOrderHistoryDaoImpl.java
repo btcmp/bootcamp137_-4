@@ -13,7 +13,7 @@ import com.bootcamp.miniproject.model.PurchaseOrder;
 import com.bootcamp.miniproject.model.PurchaseOrderHistory;
 
 @Repository
-public class PurchaseOrderHistoryDaoImp implements PurchaseOrderHistoryDao{
+public class PurchaseOrderHistoryDaoImpl implements PurchaseOrderHistoryDao{
 	
 	@Autowired
 	SessionFactory sessionFactory;
@@ -52,7 +52,7 @@ public class PurchaseOrderHistoryDaoImp implements PurchaseOrderHistoryDao{
 		session.createQuery(hql).setParameter("status", status).setParameter("id", id).executeUpdate();
 	}
 
-	public List<PurchaseOrderHistory> selectByPO(PurchaseOrder po) {
+	public List<PurchaseOrderHistory> getByPO(PurchaseOrder po) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		List<PurchaseOrderHistory> pohs = session.createCriteria(PurchaseOrderHistory.class)

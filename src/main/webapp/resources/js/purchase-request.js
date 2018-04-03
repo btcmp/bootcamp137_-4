@@ -9,13 +9,19 @@ $(document).ready(function(){
 	$('#create').click(function(){
 		//$('#btn-add-item').attr('state','create');
 		$(this).attr('state','create');
+		$('#btn-pr-save').attr('state','create');
 		if ($(this).attr('state') == 'create'){
 			$('#btn-pr-submit').prop('disabled', true);
 		}
 		//console.log('disini');
 		
-		$('#modal-add-pr').modal();
+		$('#modal-add-pr').modal({backdrop: 'static', keyboard: false});
 		$('#btn-pr-save').prop('disabled',true);
+	});
+	$('#btn-add-item-variant').click(function(){
+		//console.log('di button add item variant')
+		$('#search-item-variant').val('');
+		$('#table-add-item-variant-body').empty();
 	});
 	
 	function showAll(alamatUrl){
@@ -65,6 +71,10 @@ $(document).ready(function(){
 							'<td><a id='+data.id+' class="btn-update-pr btn btn-primary">Edit</a>'+
 							'<a id='+data.id+' class="btn-detail-pr btn btn-success">View</a></td>'
 					)
+					if (data.status != 'Created'){
+						$('#'+data.id+'').prop('disabled',true);
+						$('#'+data.id+'').prop('hide',true);
+					}
 				});
 		    }
 		});	
@@ -152,7 +162,9 @@ $(document).ready(function(){
 //	
 //	
 	$('body').on('click', 'button.btn-cancel-item', function(){
+		//console.log('di button cancel item')
 		var id = $(this).attr('id');
+		console.log(id);
 		$('#pr-PurchaseRequest'+id).remove();
 		$('.btn-added-item'+id).hide();
 		$('.btn-add-item'+id).show();
@@ -167,14 +179,20 @@ $(document).ready(function(){
 		}
 	})
 	$('#btn-pr-save').click(function(e){
-		
 		var state = $(this).attr('state');
+		status = 'Created';
 		console.log('clicked '+state);
 		if (state == 'create'){
-			save(e);
+			save(e, status);
 		} else{
-			update(e);
+			update(e, status);
 		}
+	});
+	$('#btn-pr-submit').click(function(e){
+		//var state = $(this).attr('state');
+		console.log('di button submit')
+		status = 'Submitted';
+		//update(e, status);
 		
 	});
 	$('#btn-pr-cancel').click(function(e){
@@ -189,7 +207,7 @@ $(document).ready(function(){
 //	}
 //	cleanPRModal();
 	//======================== Fungsi Save / Update ========================//
-	save = (e) => {
+	save = (e, prStatus) => {
 		e.preventDefault();
 		alamatUrl = window.location.href;
 		
@@ -213,12 +231,12 @@ $(document).ready(function(){
 		pr = matriks[0]+matriks[1]+matriks[2];
 		
 		var pr = {
-			prNo : 'PR'+pr,
+			prNo : 'Apalah',
 			readyTime : readyTime,
 			notes : $('#add-pr-notes').val(),
-			status : 'Created',
+			status : prStatus,
 			outlet : {
-				id : parseInt($('#select-outlet').val())
+				id : parseInt($('#select-outlet-main').val())
 			},
 			purchaseRequestDetail: purchaseRequestDetail
 		}
@@ -261,12 +279,14 @@ $(document).ready(function(){
 		function myCallback(response){
 			console.log("berhasil");
 			dataTemp = response;
-			outletId = $('#select-outlet').val();
+			outletId = $('#select-outlet-main').val();
 			tanggal = getDateFormat(dataTemp.readyTime);
 			$('#select-outlet').val(dataTemp.outlet.id);
 			$('#add-pr-notes').val(dataTemp.notes);
 			$('#add-pr-date').val(tanggal);
-			console.log(dataTemp)
+			console.log(dataTemp.notes)
+			$('#view-pr-detail-notes').val(dataTemp.notes);
+			console.log(dataTemp);
 			//createVariantTable(listVariant);
 			$.ajax({
 				type : 'GET',
@@ -276,17 +296,32 @@ $(document).ready(function(){
 					console.log(data);
 					added = [];
 					addedQty = [];
+					index = 0;
 					$.each(data, function(key, val) {
-						$('#table-add-pr-body').append('<tr prdId='+val[0].id+' id="pr-PurchaseRequest'+ val[0].id +'">'
+						$('#table-add-pr-body').append('<tr data-idx='+index+' prdId='+val[0].id+' id="pr-PurchaseRequest'+ val[1].id +'">'
 								+'<td id="'+ val[1].itemVariant.id +'">'+ val[1].itemVariant.item.name +'-'+ val[1].itemVariant.name +'</td>'
-								+'<td>'+ val[1].endingQty +'</td><td>'+ val[0].requestQty +'</td>'
+//								+'<td>'+ val[1].endingQty +'</td><td>'+ val[0].requestQty +'</td>'
+								+'<td>'+ val[1].endingQty +'</td><td><input type="number" value='+ val[0].requestQty +'></td>'
 								+'<td><button type="button" id="'+ val[1].id +'" '
 								+'class="btn-cancel-item'+ val[1].id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
+						index++;
+						$('#table-pr-detail-body').append('<tr prdId='+val[0].id+' id="pr-PurchaseRequest'+ val[0].id +'">'
+								+'<td id="'+ val[1].itemVariant.id +'">'+ val[1].itemVariant.item.name +'-'+ val[1].itemVariant.name +'</td>'
+								+'<td>'+ val[1].endingQty +'</td><td>'+ val[0].requestQty +'</td></tr>');
+								//+'<td>'+ val[1].endingQty +'</td><td><input type="number value='+ val[0].requestQty +'></td></tr>');
+						
 						added.push(val[1].id);
 						addedQty.push(val[0].requestQty);
 						//console.log('Mengeluarkan button added item'+ '.btn-added-item'+val[1].id);
 						$('.btn-add-item'+val[1].id).hide();
 						$('.btn-added-item'+val[1].id).show();
+						if ($('#table-add-pr-body tr').length > 0){
+							$('#btn-pr-save').prop('disabled',false);
+							$('#btn-pr-submit').prop('disabled',false);
+						} else{
+							$('#btn-pr-save').prop('disabled',true);
+							$('#btn-pr-submit').prop('disabled',true);
+						}
 					});
 				},
 				error : function(data){
@@ -311,25 +346,35 @@ $(document).ready(function(){
 	}
 	
 	$('#table-view-pr').on('click','.btn-update-pr',function(e){
+		resetTable();
 		
 		$(this).attr('state','update');
 		var id = $(this).attr('id');
 		
 		console.log('pr id : '+id);
 		dataku = getPurchaseRequestById(id);
-		$('#modal-add-pr').modal();
+		$('#modal-add-pr').modal({backdrop: 'static', keyboard: false});
 		$('#btn-pr-save').attr('state','update');
 		console.log('mode: ' +$(this).attr('state'));
-		if ($('#table-add-pr-body tr').length > 0){
-			$('#btn-pr-save').prop('disabled',false);
-			$('#btn-pr-submit').prop('disabled',false);
-		} else{
-			$('#btn-pr-save').prop('disabled',true);
-			$('#btn-pr-submit').prop('disabled',true);
-		}
+		
 	});
 	$('#table-view-pr').on('click','.btn-detail-pr',function(e){
-		console.log('buka modal pr-detail');
-		$('#modal-pr-detail').modal();
+		resetTable();
+		
+		var id = $(this).attr('id');
+		console.log(id);
+		dataku = getPurchaseRequestById(id);
+		
+		$('#modal-pr-detail').modal({backdrop: 'static', keyboard: false});
+		
 	});
+	$('#btn-cancel-variant').click(function(e){
+		//console.log('di button cancel')
+		$('#search-item-variant').val('');
+		$('#table-add-item-variant-body').empty();
+	});
+	function resetTable(){
+		$('#table-pr-detail-body').empty();
+		$('#table-add-pr-body').empty();
+	};
 });

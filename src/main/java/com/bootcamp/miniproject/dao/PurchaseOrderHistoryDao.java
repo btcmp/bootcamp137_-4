@@ -18,6 +18,6 @@ public interface PurchaseOrderHistoryDao {
 	
 	public void changeStatus(String status, long id);
 
-	public List<PurchaseOrderHistory> selectByPO(PurchaseOrder po);
+	public List<PurchaseOrderHistory> getByPO(PurchaseOrder po);
 }
 //

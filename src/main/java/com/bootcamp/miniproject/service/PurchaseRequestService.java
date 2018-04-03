@@ -1,14 +1,22 @@
 package com.bootcamp.miniproject.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bootcamp.miniproject.dao.PurchaseOrderDao;
+import com.bootcamp.miniproject.dao.PurchaseOrderDetailDao;
+import com.bootcamp.miniproject.dao.PurchaseOrderHistoryDao;
 import com.bootcamp.miniproject.dao.PurchaseRequestDao;
 import com.bootcamp.miniproject.dao.PurchaseRequestDetailDao;
 import com.bootcamp.miniproject.dao.PurchaseRequestHistoryDao;
+import com.bootcamp.miniproject.model.PurchaseOrder;
+import com.bootcamp.miniproject.model.PurchaseOrderDetail;
+import com.bootcamp.miniproject.model.PurchaseOrderHistory;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.PurchaseRequestDetail;
 import com.bootcamp.miniproject.model.PurchaseRequestHistory;
@@ -25,6 +33,15 @@ public class PurchaseRequestService {
 	
 	@Autowired
 	PurchaseRequestHistoryDao prHistoryDao;
+	
+	@Autowired
+	PurchaseOrderDao poDao;
+	
+	@Autowired
+	PurchaseOrderDetailDao poDetailDao;
+	
+	@Autowired
+	PurchaseOrderHistoryDao poHistoryDao;
 	
 	public List<PurchaseRequest> getAll() {
 		return prDao.getAll();
@@ -45,9 +62,31 @@ public class PurchaseRequestService {
 	}
 
 	public void save(PurchaseRequest pr) {
+		Calendar cal = Calendar.getInstance();
+		int monthInt = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		String month;
+		if (monthInt < 10) {
+			month = "0"+monthInt;
+		} else {
+			month = Integer.toString(monthInt);
+		}
+		int num = prDao.CountPRByMonth(monthInt, year)+1;
+		String no;
+		if(num < 10) {
+			no = "00"+num;
+		} else if(num < 100) {
+			no = "0"+num;
+		} else {
+			no = Integer.toString(num);
+		}
+		
+		String prNo = "PR"+year+month+no;
+		
 		System.out.println("Msuk Service");
 		List<PurchaseRequestDetail> prDetail = pr.getPurchaseRequestDetail();
 		pr.setPurchaseRequestDetail(null);
+		pr.setPrNo(prNo);
 		prDao.save(pr);
 		
 		for(PurchaseRequestDetail prd : prDetail) {
@@ -76,7 +115,10 @@ public class PurchaseRequestService {
 		}
 		
 	}
-
+	public void submit(PurchaseRequest pr) {
+		
+		
+	}
 	public void delete(PurchaseRequest pr) {
 		prDao.delete(pr);
 	}
@@ -91,16 +133,87 @@ public class PurchaseRequestService {
 
 	public void approve(long id) {
 		prDao.approve(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		PurchaseRequestHistory prh = new PurchaseRequestHistory();
+		prh.setCreatedOn(new Date());
+		prh.setPurchaseRequest(pr);
+		prh.setStatus(pr.getStatus());
+		prHistoryDao.save(prh);
 	}
 
-	public void reject(long id) {
-		prDao.reject(id);
-	}
 
 	public void createPo(long id) {
 		prDao.createPo(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		//
+		
+		
+		PurchaseRequestHistory prHist = new PurchaseRequestHistory();
+		prHist.setCreatedOn(new Date());
+		prHist.setPurchaseRequest(pr);
+		prHist.setStatus(pr.getStatus());
+		prHistoryDao.save(prHist);
+		
+		Calendar cal = Calendar.getInstance();
+		int monthInt = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		String month;
+		if (monthInt < 10) {
+			month = "0"+monthInt;
+		} else {
+			month = Integer.toString(monthInt);
+		}
+		int num = prDao.CountPRByMonth(monthInt, year)+1;
+		String no;
+		if(num < 10) {
+			no = "00"+num;
+		} else if(num < 100) {
+			no = "0"+num;
+		} else {
+			no = Integer.toString(num);
+		}
+		
+		String poNo = "PO"+year+month+no;
+		
+		PurchaseOrder purchaseOrder = new PurchaseOrder();
+		purchaseOrder.setCreatedOn(new Date());
+		purchaseOrder.setNotes(pr.getNotes());
+		purchaseOrder.setPoNo(poNo);
+		purchaseOrder.setPurchaseRequest(pr);
+		purchaseOrder.setStatus("Created");
+		purchaseOrder.setOutlet(pr.getOutlet());
+		poDao.save(purchaseOrder);
+		
+		if(pr.getPurchaseRequestDetail() == null) {
+			
+		}else {
+			for(PurchaseRequestDetail prd : pr.getPurchaseRequestDetail()) {
+				PurchaseOrderDetail poDetail = new PurchaseOrderDetail();
+				poDetail.setCreatedOn(purchaseOrder.getCreatedOn());
+				poDetail.setPurchaseOrder(purchaseOrder);
+				poDetail.setRequestQty(prd.getRequestQty());
+				poDetail.setVariant(prd.getItemVariant());
+				poDetailDao.save(poDetail);
+			}
+		}
+		
+		PurchaseOrderHistory poHistory = new PurchaseOrderHistory();
+		poHistory.setCreatedOn(purchaseOrder.getCreatedOn());
+		poHistory.setPurchaseOrder(purchaseOrder);
+		poHistory.setStatus(purchaseOrder.getStatus());
+		poHistoryDao.save(poHistory);
 	}
-
+	
+	public void reject(long id) {
+		prDao.reject(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		PurchaseRequestHistory prh = new PurchaseRequestHistory();
+		prh.setCreatedOn(new Date());
+		prh.setPurchaseRequest(pr);
+		prh.setStatus(pr.getStatus());
+		prHistoryDao.save(prh);
+		
+	}
 	public List<PurchaseRequest> getPRByStatus(String status) {
 		return prDao.searchPRByStatus(status);
 	}
