@@ -173,7 +173,8 @@ $(document).ready(function(){
 	})
 	
 	$('#btn-save').click(function(){
-		if ($('#add-from-outlet').val()==$('#add-to-outlet').val()) {
+		var outId = "${outlet.id}"
+		if (outId==$('#add-to-outlet').val()) {
 			alert("you can't transfer stock to same outlet")
 		} else {
 			var transferStockDetail=[];
@@ -183,6 +184,9 @@ $(document).ready(function(){
 						itemVariant : {
 							id : $(data).find('td').eq(0).attr('id')
 						},
+						itemInventory :{
+							id : $(data).find('td').eq(1).attr('id')
+						},
 						instock : $(data).find('td').eq(1).text(),
 						transferQty : $(data).find('td').eq(2).text()
 				}
@@ -191,7 +195,7 @@ $(document).ready(function(){
 			
 			var transferStock = {
 					fromOutlet : {
-						id : $('#add-from-outlet').val()
+						id : outId
 					},
 					toOutlet : {
 						id : $('#add-to-outlet').val()
@@ -244,7 +248,7 @@ $(document).ready(function(){
 				url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one-item/'+id,
 				dataType: 'json',
 				success : function(data){
-					$('#add-transferStock-tbl').append('<tr id="tr-transferStock'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>'
+					$('#add-transferStock-tbl').append('<tr id="tr-transferStock'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td id="'+ data.id +'">'
 							+ data.endingQty +'</td><td>'+ transQty +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
 							+ data.id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
 				},

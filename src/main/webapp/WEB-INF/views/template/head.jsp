@@ -21,9 +21,7 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="${url}/dist/css/skins/_all-skins.min.css">
-  <script type="text/javascript" src="${jq}"></script>
-  <script type="text/javascript" src="${parsley}"></script>
-
+  
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -43,6 +41,8 @@
 	<script src="${url}/dist/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="${url}/dist/js/demo.js"></script>
+	<!-- parsley -->
+	<script type="text/javascript" src="${parsley}"></script>
 	<!-- page script -->
 <!-- comment -->
 </head><!-- comment -->

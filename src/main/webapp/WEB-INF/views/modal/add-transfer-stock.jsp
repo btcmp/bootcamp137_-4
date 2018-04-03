@@ -5,7 +5,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add New Transfer Stock</h5>
+				<h4 class="modal-title" id="exampleModalLabel">Add New Transfer Stock</h4>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -14,12 +14,14 @@
 			<div class="modal-body">
 				<form class="form-all">
 					<div class="form-group">
-						<label for="add-from-outlet">From Outlet</label> <select
+						<p>Create New Transfer Stock From: <a style="font-weight: bold;">${outlet.name}</a></p>
+						
+						<%-- <label for="add-from-outlet">Create New Transfer Stock From: </label> <select
 							class="form-control" name="add-from-outlet" id="add-from-outlet">
 							<c:forEach var="outlet" items="${outlets }">
 								<option value="${outlet.id }">${outlet.name }</option>
 							</c:forEach>
-						</select>
+						</select> --%>
 					</div>
 					<div class="form-group">
 						<label for="add-to-outlet">To Outlet</label> <select

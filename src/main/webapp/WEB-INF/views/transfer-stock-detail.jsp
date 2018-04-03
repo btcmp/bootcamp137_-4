@@ -100,6 +100,7 @@ $(document).ready(function(){
 			url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one/'+id,
 			dataType: 'json',
 			success : function(data){
+				console.log(data);
 				$('#view-hidden-id').val(data.id);
 				$('#view-created-by').val(data.createdBy);
 				$('#view-status').val(data.status);

@@ -66,6 +66,7 @@
 					<th>Address</th>
 					<th>Phone</th>
 					<th>Email</th>
+					<th>Active</th>
 					<th>Action</th>
 				</thead>
 				<tbody>
@@ -75,6 +76,15 @@
 							<td>${supplier.address }</td>
 							<td>${supplier.phone }</td>
 							<td>${supplier.email }</td>
+							<td>
+								<center>
+									<script type="text/javascript">
+										if ("${supplier.active }" === "true") {
+											document.write("&#10004;");
+										}
+									</script>
+								</center>
+							</td>
 							<td>
 						<a id="${supplier.id }" class="update btn btn-primary">Update</a> |
 						<a id="${supplier.id }" class="delete btn btn-danger">Delete</a>
@@ -150,7 +160,6 @@ $(document).ready(function(){
 			url : '${pageContext.request.contextPath}/master/supplier/get-one/'+id,
 			dataType: 'json',
 			success : function(data){
-				console.log(data);
 				$('#update-id').val(data.id);
 				$('#update-name').val(data.name);
 				$('#update-address').val(data.address);
@@ -213,7 +222,6 @@ $(document).ready(function(){
 					var sameEmail = 0;
 					$(data).each(function(index, data2){
 						if (parseInt(data2.id)!==parseInt(supplier.id)) {
-							console.log(supplier.id+" "+data2.id);
 							if (supplier.name.toLowerCase()==data2.name.toLowerCase()) {
 								sameName++;
 							} else if (supplier.email.toLowerCase()==data2.email.toLowerCase()) {

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -33,6 +34,9 @@ public class TransferStockDetail {
 	@ManyToOne
 	@JoinColumn(name="item_variant")
 	private ItemVariant itemVariant;
+	@ManyToOne
+	@JoinTable(name="item_inventory")
+	private ItemInventory itemInventory;
 	@NotNull
 	@Column(name="transfer_qty")
 	private int transferQty;
@@ -45,6 +49,12 @@ public class TransferStockDetail {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	
+	public ItemInventory getItemInventory() {
+		return itemInventory;
+	}
+	public void setItemInventory(ItemInventory itemInventory) {
+		this.itemInventory = itemInventory;
+	}
 	public long getId() {
 		return id;
 	}

@@ -1,6 +1,9 @@
 package com.bootcamp.miniproject.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,9 @@ import com.bootcamp.miniproject.service.TransferStockService;
 @RequestMapping("/transaction/transfer-stock")
 public class TransferStockController {
 
+	@Autowired
+	HttpSession httpSession;
+	
 	@Autowired
 	TransferStockService transferStockService;
 	
@@ -115,8 +121,17 @@ public class TransferStockController {
 	@RequestMapping(value = "/search-item", method = RequestMethod.GET)
 	@ResponseBody
 	public List<ItemInventory> searchItem(@RequestParam(value="search", defaultValue="") String search) {
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
 		List<ItemInventory> itemsInventory = itemInventoryService.searchItemInventoryByItemName(search);
-		return itemsInventory;
+		List<ItemInventory> itemInvent = new ArrayList<>();
+		if (itemsInventory != null) {
+			for(ItemInventory invent : itemsInventory) {
+				if (invent.getOutlet().getId() == outlet.getId()) {
+					itemInvent.add(invent);
+				}
+			}
+		}
+		return itemInvent;
 	}
 	
 	@RequestMapping(value = "/get-one-item/{id}", method = RequestMethod.GET)

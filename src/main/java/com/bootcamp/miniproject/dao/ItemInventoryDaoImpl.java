@@ -116,6 +116,8 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 			return itemInventory;
 		}
 	}
+	
+	//kepake
 	@Override
 	public ItemInventory searchInventoryByVariantAndOutletId(Long variantId, Long outletId) {
 		Session session = sessionFactory.getCurrentSession();
