@@ -106,6 +106,7 @@
 		<%@ include file="modal/view-transfer-stock.jsp"%>
 		<%@ include file="modal/add-transfer-stock.jsp"%>
 		<%@ include file="modal/add-transfer-item.jsp"%>
+		<%@ include file="modal/view-transfer-stock-detail.jsp" %>
 	</div>
 
 </body>
@@ -124,7 +125,7 @@ $(document).ready(function(){
 	var addedQty = [];
 	$('.btn-added-item').hide();
 	
-	$('.view').click(function(){
+	$('.viewold').click(function(){
 		var id = $(this).attr('id');
 		$.ajax({
 			type : 'GET',
@@ -157,6 +158,91 @@ $(document).ready(function(){
 				alert('show selected transferStock data in modal failed');
 			}
 		})
+	})
+	
+	$('.view').click(function(){
+		var id = $(this).attr('id');
+		$.ajax({
+			type : 'GET',
+			url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one/'+id,
+			dataType: 'json',
+			success : function(data){
+				console.log(data);
+				$('#view-hidden-id').val(data.id);
+				$('#view-created-by').val(data.createdBy);
+				$('#view-status').val(data.status);
+				$('#view-notes').val(data.notes);
+				$('#view-status-history').val();
+				$('#view-transfer-stock-detail-tbl').empty();
+				var option = [];
+				if (data.status=="Submitted") {
+					option.push("<option value=\"Kosong\">Action</option>");
+					option.push("<option value=\"Approved\">Approve</option>");
+					option.push("<option value=\"Rejected\">Reject</option>");
+					option.push("<option value=\"Print\">Print</option>");
+				} else {
+					option.push("<option value=\"Kosong\">Action</option>");
+					option.push("<option value=\"Print\">Print</option>");
+				}
+				$('#more-option').html(option);
+				$.ajax({
+					url : '${pageContext.request.contextPath }/transaction/transfer-stock/search-transfer-stock-detail?search='+data.id,
+					type : 'GET',
+					dataType: 'json',
+					success : function(data2){
+						$.each(data2, function(key, val) {
+						$('#view-transfer-stock-detail-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
+								+ val.instock +'</td><td>'+ val.transferQty +'</td></tr>');
+						});
+						
+						$('#modal-view-transfer-stock-detail').modal();
+					}, error : function(){
+						alert('get transfer stock detail failed');
+					}
+					
+				})
+			}, 
+			error : function(){
+				alert('show selected transferStock data in modal failed');
+			}
+		})
+	})
+	
+	$('#more-option').change(function(){
+		var newStatus = $(this).val();
+		if (newStatus=="Approved") {
+			transferStockId = $('#view-hidden-id').val();
+			$.ajax({
+				url : '${pageContext.request.contextPath }/transaction/transfer-stock/update-status-and-stock/'+transferStockId,
+				type : 'PUT',
+				data : JSON.stringify(newStatus),
+				contentType : 'application/json',
+				success : function(){
+					alert('update status successfully');
+					window.location='${pageContext.request.contextPath}/transaction/transfer-stock';
+				}, error : function(){
+					alert('update status failed');
+				}
+				
+			})
+		} else if (newStatus=="Rejected") {
+			transferStockId = $('#view-hidden-id').val();
+			$.ajax({
+				url : '${pageContext.request.contextPath }/transaction/transfer-stock/update-status/'+transferStockId,
+				type : 'PUT',
+				data : JSON.stringify(newStatus),
+				contentType : 'application/json',
+				success : function(){
+					alert('update status successfully');
+					window.location='${pageContext.request.contextPath}/transaction/transfer-stock';
+				}, error : function(){
+					alert('update status failed');
+				}
+				
+			})
+		}else if (newStatus=="Print") {
+			window.location='${pageContext.request.contextPath}/transaction/transfer-stock';
+		}
 	})
 	
 	$('#create').click(function(){

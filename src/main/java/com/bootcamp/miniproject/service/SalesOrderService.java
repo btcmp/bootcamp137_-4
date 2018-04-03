@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bootcamp.miniproject.dao.ItemInventoryDao;
 import com.bootcamp.miniproject.dao.SalesOrderDao;
 import com.bootcamp.miniproject.dao.SalesOrderDetailDao;
+import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.ItemVariant;
 import com.bootcamp.miniproject.model.SalesOrder;
 import com.bootcamp.miniproject.model.SalesOrderDetail;
@@ -21,6 +23,9 @@ public class SalesOrderService {
 	
 	@Autowired
 	SalesOrderDetailDao salesOrderDetailDao;
+	
+	@Autowired
+	ItemInventoryDao itemInventoryDao;
 	
 	public void save(SalesOrder salesOrder) {
 		//salesOrderDao.save(salesOrder);
@@ -63,5 +68,14 @@ public class SalesOrderService {
 		SalesOrder salesOrder = new SalesOrder();
 		salesOrder.setId(id);
 		return salesOrderDao.getOne(salesOrder);
+	}
+
+	public void updateStock(SalesOrder salesOrder) {
+		// TODO Auto-generated method stub
+		List<SalesOrderDetail> salesOrderDetail = salesOrder.getSalesOrderDetail();
+		for(SalesOrderDetail SOD : salesOrderDetail) {
+			ItemInventory invent = itemInventoryDao.getOne(SOD.getItemInventory().getId());
+			invent.setEndingQty(invent.getEndingQty()-SOD.getQty());
+		}
 	}
 }

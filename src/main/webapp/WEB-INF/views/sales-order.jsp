@@ -113,6 +113,10 @@ $(document).ready(function(){
 		paging : true,
 		searching : false
 	});
+	
+	$("#sales-order-side-option").addClass('active');
+	$("#treeview-transaction").addClass('active');
+	
 	var added = [];
 	var addedQty = [];
 	$('.btn-added-item').hide();
@@ -197,9 +201,13 @@ $(document).ready(function(){
 	$('#charge-done').click(function(){
 		var cash = parseInt($('#charge-cash').val());
 		var total = parseInt($('#charge').text().split("Rp.")[1]);
-		$('#receipt-cash').val("Out of Rp."+cash);
-		$('#receipt-change').val("Rp."+(cash-total));
-		$('#modal-receipt-sales-order').modal();
+		if (cash<total) {
+			alert("bayarnya kurang coy!!!");
+		} else {
+			$('#receipt-cash').val("Out of Rp."+cash);
+			$('#receipt-change').val("Rp."+(cash-total));
+			$('#modal-receipt-sales-order').modal();
+		}
 	})
 	
 	$('#search').on('input',function(e){
@@ -222,14 +230,14 @@ $(document).ready(function(){
 							$('#item-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>Rp.'
 									+ val.itemVariant.price +'</td><td id="td-qty'+ val.id +'"><input type="number" class="add-item-qty'+ val.id +'" value="1" /></td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
 									+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
-									+ val.id +' btn-added-item btn">Added</button></td></tr>');
+									+ val.id +' btn-added-item btn">Added</button><input type="hidden" id="endingQty'+ val.id +'" value="'+ val.endingQty +'"/></td></tr>');
 							$('.btn-added-item'+val.id).hide();
 						} else {
 							var a = added.indexOf(val.id.toString());
 							$('#item-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>Rp.'
 									+ val.itemVariant.price +'</td><td id="td-qty'+ val.id +'">'+addedQty[a]+'</td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
 									+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
-									+ val.id +' btn-added-item btn">Added</button></td></tr>');
+									+ val.id +' btn-added-item btn">Added</button><input type="hidden" id="endingQty'+ val.id +'" value="'+ val.endingQty +'"/></td></tr>');
 							$('.btn-add-item'+val.id).hide();
 						}
 					});
@@ -245,9 +253,12 @@ $(document).ready(function(){
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
 		var transQty = $('.add-item-qty'+id).val();
+		var inStock = parseInt($('#endingQty'+id).val());
 		if (transQty<1) {
 			alert("at least 1");
-		} else {
+		} else if (transQty>inStock) {
+			alert("not enough stock");
+		}else {
 			added.push(id);
 			addedQty.push(transQty);
 			$('#td-qty'+id).html(transQty);
@@ -262,7 +273,7 @@ $(document).ready(function(){
 					if (added.length=="1") {
 						$('#salesOrder-tbl-body').empty();
 					}
-					$('#salesOrder-tbl-body').append('<tr id="tr-salesOrder'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>Rp.'
+					$('#salesOrder-tbl-body').append('<tr id="tr-salesOrder'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td id="'+ data.id +'">Rp.'
 							+ data.itemVariant.price +'</td><td>'+ transQty +'</td><td>Rp.'+ data.itemVariant.price*transQty +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
 							+ data.id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
 					$('#salesOrder-tbl-foot').empty();
@@ -404,6 +415,9 @@ $(document).ready(function(){
 					itemVariant : {
 						id : $(data).find('td').eq(0).attr('id')
 					},
+					itemInventory :{
+						id : $(data).find('td').eq(1).attr('id')
+					},
 					qty : $(data).find('td').eq(2).text(),
 					unitPrice : $(data).find('td').eq(1).text().split("Rp.")[1],
 					subTotal : $(data).find('td').eq(3).text().split("Rp.")[1]
@@ -425,7 +439,23 @@ $(document).ready(function(){
 			data : JSON.stringify(salesOrder),
 			contentType : 'application/json',
 			success : function(){
-				window.location = "${pageContext.request.contextPath}/transaction/sales-order";
+				
+				transferStockId = $('#view-hidden-id').val();
+				$.ajax({
+					url : '${pageContext.request.contextPath }/transaction/sales-order/update-stock/',
+					type : 'PUT',
+					data : JSON.stringify(salesOrder),
+					contentType : 'application/json',
+					success : function(){
+						alert('update stock successfully');
+						window.location='${pageContext.request.contextPath}/transaction/sales-order';
+					}, error : function(){
+						alert('update stock failed');
+					}
+					
+				})
+				//window.location='${pageContext.request.contextPath}/transaction/sales-order';
+				//alert("saved");
 			}, error : function(){
 				alert('save failed');
 			}
