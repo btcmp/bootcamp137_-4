@@ -7,6 +7,7 @@
 <spring:url value="/resources/js/jquery-3.3.1.js" var="jq"></spring:url>
 <spring:url value="/resources/js/parsley.js" var="parsley"></spring:url>
 <spring:url value="/resources/js/item.js" var="item"></spring:url>
+<c:url value="/j_spring_security_logout" var="logoutUrl" />
 <!DOCTYPE html>
 <html>
 <%@ include file="template/head.jsp" %>

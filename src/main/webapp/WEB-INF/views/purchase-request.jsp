@@ -29,7 +29,7 @@
     <section class="content-header row">
       <!-- search form -->
       <label for="select-outlet-main">Outlet Login</label>
-      <select class="selectpicker" name="select-outlet-main" id="select-outlet-main">
+      <select disabled class="selectpicker" name="select-outlet-main" id="select-outlet-main">
 				<%-- <c:forEach var="outlet" items="${outlets }">
 					<option value="${outlet.id }">${outlet.name }</option>
 				</c:forEach> --%>

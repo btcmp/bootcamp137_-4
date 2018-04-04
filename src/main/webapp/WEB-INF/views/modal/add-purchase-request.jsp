@@ -8,12 +8,15 @@
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button id= "btn-close-modal-add-pr" type="button" class="close" data-dismiss="modal">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span></button>
         <h4 class="modal-title">Purchase Request</h4>
       </div>
       <div class="modal-body">
       		<label for="select-outlet">Outlet Login</label>
 			<select disabled class="selectpicker" name="select-outlet" id="select-outlet">
+				<option value="${outlet.id }">${outlet.name }</option>
 			</select>
 			
       	<form class="form-all">
@@ -116,10 +119,10 @@
       	<form class="form-all">
 			<div class="form-group" id = "view-pr-detail-id">
 				<br>
-				<div class="col-xs-3"> PR Number   :</div> <div id="view-prd-num" class="col-xs-9"> PR Num</div><br>
-				<div class="col-xs-3"> Created by   :</div> <div id="view-prd-created" class="col-xs-9"> PR Num</div><br>
-				<div class="col-xs-3"> Item Ready Item   :</div> <div id="view-prd-time" class="col-xs-9"> PR Num</div><br>
-				<div class="col-xs-3"> PR Status   :</div> <div id="view-prd-status" class="col-xs-9"> PR Num</div><br>
+				<div class="col-xs-3"> PR Number   :</div> <div id="view-prd-num" class="col-xs-9"> </div><br>
+				<div class="col-xs-3"> Created by   :</div> <div id="view-prd-created" class="col-xs-9"> </div><br>
+				<div class="col-xs-3"> Item Ready Item   :</div> <div id="view-prd-time" class="col-xs-9"> </div><br>
+				<div class="col-xs-3"> PR Status   :</div> <div id="view-prd-status" class="col-xs-9"> </div><br>
 				
 				<div class="col-xs-12">
 					<label for="add-pr-notes">Notes</label><br>

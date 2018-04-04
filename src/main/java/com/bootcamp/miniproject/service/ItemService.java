@@ -59,6 +59,7 @@ public class ItemService {
 				inv.setItemVariant(ivar);
 				inv.setBeginning(inventory.getBeginning());
 				inv.setEndingQty(inventory.getBeginning());
+				inv.setAlertAtQty(inventory.getAlertAtQty());
 				inv.setOutlet(out);
 				inventoryDao.save(inv);
 			}			
@@ -78,6 +79,7 @@ public class ItemService {
 			inventory = ivar.getItemInventory().get(0);
 			ivar.getItemInventory().clear();
 			ivar.setItem(item);
+			
 			if(ivar.getId() == null) {
 				variantDao.save(ivar);
 				System.out.println(inventory.getId() == null);
@@ -96,15 +98,16 @@ public class ItemService {
 				}
 				
 			} else {
-//				variantDao.update(ivar);
+				variantDao.update(ivar);
 				System.out.println("beres update variant");
 //				
-//				for (Outlet out :outlet) {
-//					System.out.println(out.getName());
+				for (Outlet out :outlet) {
+					System.out.println(out.getName());
+					// Belum fix
 //					ItemInventory inv = new ItemInventory();
 //					inv.setAlertAtQty(inventory.getAlertAtQty());
 //					inv.setItemVariant(ivar);
-				
+//				
 //					inv.setBeginning(inventory.getBeginning());
 //					inv.setOutlet(out);
 //					if (inv.getId() == null) {
@@ -113,11 +116,12 @@ public class ItemService {
 //					} else {
 //						inventoryDao.update(inv);
 //					}
-//					
-//				}
+					
+				}
 			}
 		}
 	}
+	
 	public Item getOne(long id) {
 		return itemDao.getOne(id);
 	}

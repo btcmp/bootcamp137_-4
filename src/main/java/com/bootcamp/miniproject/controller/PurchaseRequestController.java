@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.PurchaseRequestDetail;
+import com.bootcamp.miniproject.model.PurchaseRequestHistory;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.PurchaseRequestDetailService;
+import com.bootcamp.miniproject.service.PurchaseRequestHistoryService;
 import com.bootcamp.miniproject.service.PurchaseRequestService;
 
 @Controller
@@ -33,6 +35,9 @@ public class PurchaseRequestController {
 	
 	@Autowired
 	PurchaseRequestDetailService prDetailService;
+	
+	@Autowired
+	PurchaseRequestHistoryService prHistoryService;
 	
 	@Autowired
 	OutletService outletService;
@@ -134,5 +139,11 @@ public class PurchaseRequestController {
 	@ResponseBody
 	public List<PurchaseRequest> search(@RequestParam(value="search", defaultValue="") String search){
 		return prService.search(search);
+	}
+	
+	@RequestMapping(value = "/getHistory/{prId}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<PurchaseRequestHistory> getPRHistoryByPr(@PathVariable Long prId){
+		return  prHistoryService.getPRHistoryByPr(prId);
 	}
 }

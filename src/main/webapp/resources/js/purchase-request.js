@@ -101,6 +101,8 @@ $(document).ready(function(){
 				success : function(data){
 					$('#table-add-item-variant-body').empty();
 					$.each(data, function(key, val) {
+						//console.log('---------')
+						//console.log(added);
 						if(added.indexOf(val.id.toString()) == -1) {
 							$('#table-add-item-variant-body').append('<tr id="'+val.itemVariant.id+'"><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td>'
 									+'<td id="inStock'+ val.id +'">'+ val.endingQty +'</td>'
@@ -129,7 +131,6 @@ $(document).ready(function(){
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
 		
-		console.log(id);
 		var inStock = parseInt($('#inStock'+id).text());
 		var purchaseRequestQty = parseInt($('.add-purchase-request-qty'+id).val());
 		if (purchaseRequestQty<1) {
@@ -137,6 +138,7 @@ $(document).ready(function(){
 		}else {
 			added.push(id);
 			addedQty.push(purchaseRequestQty);
+			//console.log(id);
 			$('#pr-qty'+id).html(purchaseRequestQty);
 			$(this).hide();
 			$('.btn-added-item'+id).show();
@@ -164,7 +166,7 @@ $(document).ready(function(){
 	$('body').on('click', 'button.btn-cancel-item', function(){
 		//console.log('di button cancel item')
 		var id = $(this).attr('id');
-		console.log(id);
+		//console.log(id);
 		$('#pr-PurchaseRequest'+id).remove();
 		$('.btn-added-item'+id).hide();
 		$('.btn-add-item'+id).show();
@@ -185,28 +187,28 @@ $(document).ready(function(){
 		if (state == 'create'){
 			save(e, status);
 		} else{
-			update(e, status);
+			PrNo = $('#btn-pr-save').attr('pr-no');
+			console.log('di button save'+PrNo);
+			update(e, status, PrNo);
+			
 		}
 	});
 	$('#btn-pr-submit').click(function(e){
 		//var state = $(this).attr('state');
-		console.log('di button submit')
+		//console.log('di button submit')
+		PrNo = $('#btn-pr-save').attr('pr-no');
+		//console.log('di button save'+PrNo);
 		status = 'Submitted';
-		//update(e, status);
+		update(e, status, PrNo);
 		
 	});
-	$('#btn-pr-cancel').click(function(e){
-		$('#add-pr-date').val('');
-		$('#add-pr-notes').val('');
-		$('#table-add-pr-body').empty();
-	});
-	
+
 //	function cleanPRModal(){
 //		$('#add-pr-date').val('');
 //		$('#add-pr-notes').val('');
 //	}
 //	cleanPRModal();
-	//======================== Fungsi Save / Update ========================//
+	//======================== Fungsi Save ========================//
 	save = (e, prStatus) => {
 		e.preventDefault();
 		alamatUrl = window.location.href;
@@ -214,7 +216,7 @@ $(document).ready(function(){
 		purchaseRequestDetail =[];
 		
 		$('#table-add-pr-body > tr').each(function(index, data){
-			console.log(data);
+			//console.log(data);
 			var prd = {
 					itemVariant : {
 						id : parseInt($(data).find('td').eq(0).attr('id'))
@@ -223,7 +225,7 @@ $(document).ready(function(){
 			}
 			purchaseRequestDetail.push(prd);
 		});
-		console.log(purchaseRequestDetail);
+		//console.log(purchaseRequestDetail);
 		//======= Get Date ====== //
 		matriks = $('#add-pr-date').val().split('-');
 		// yyyy-MM-dd
@@ -240,7 +242,7 @@ $(document).ready(function(){
 			},
 			purchaseRequestDetail: purchaseRequestDetail
 		}
-		console.log(pr);
+		//console.log(pr);
 		$.ajax({
 			type : "POST",
 			url : alamatUrl+'/save',
@@ -248,9 +250,10 @@ $(document).ready(function(){
 			contentType : 'application/json',
 			success : function(data){
 				console.log("berhasil save");
-				
+				purchaseRequestDetail =[];
 			}, error : function(data){
 				console.log("gagal");
+				purchaseRequestDetail =[];
 			}
 			
 		});
@@ -258,6 +261,8 @@ $(document).ready(function(){
 		showPRByOutlet();
 //		HideItemForm();
 	};
+	//======================== End of Save ========================//
+	
 	function getDateFormat(date) {
 		var d = new Date(Number(date)),
 		month = '' + (d.getMonth() + 1),
@@ -284,35 +289,53 @@ $(document).ready(function(){
 			$('#select-outlet').val(dataTemp.outlet.id);
 			$('#add-pr-notes').val(dataTemp.notes);
 			$('#add-pr-date').val(tanggal);
-			console.log(dataTemp.notes)
 			$('#view-pr-detail-notes').val(dataTemp.notes);
-			console.log(dataTemp);
+			$('#view-prd-num').html(dataTemp.prNo);
+			$('#view-prd-created').html('Belum Integrasi dengan user');
+			$('#view-prd-time').html(tanggal);
+			$('#view-prd-status').html(dataTemp.status);
+			
+			//========= Get PR History ==========//
+			$.ajax({
+				type: 'GET',
+				url : alamatUrl+'/getHistory/'+id,
+				datatype : 'json',
+				success : function(data){
+					$.each(data, function(key,val){
+						
+						//console.log('On '+ getDateFormat(val.createdOn) +' - Purchase Request '+dataTemp.prNo+ ' is '+ val.status)
+					});
+					
+				}
+			});
+			//console.log(dataTemp);
 			//createVariantTable(listVariant);
+			//========= Get PR Detail ==========//
 			$.ajax({
 				type : 'GET',
 				url : alamatUrl+'/findPRDetailAndQty?outletId='+outletId+'&prId='+id,
 				dataType: 'json',
 				success : function(data){
-					console.log(data);
+					//console.log(data);
 					added = [];
 					addedQty = [];
 					index = 0;
 					$.each(data, function(key, val) {
-						$('#table-add-pr-body').append('<tr data-idx='+index+' prdId='+val[0].id+' id="pr-PurchaseRequest'+ val[1].id +'">'
+						$('#table-add-pr-body').append('<tr data-idx='+index+' prd-Id='+val[0].id+' id="pr-PurchaseRequest'+ val[1].id +'">'
 								+'<td id="'+ val[1].itemVariant.id +'">'+ val[1].itemVariant.item.name +'-'+ val[1].itemVariant.name +'</td>'
 //								+'<td>'+ val[1].endingQty +'</td><td>'+ val[0].requestQty +'</td>'
 								+'<td>'+ val[1].endingQty +'</td><td><input type="number" value='+ val[0].requestQty +'></td>'
 								+'<td><button type="button" id="'+ val[1].id +'" '
 								+'class="btn-cancel-item'+ val[1].id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
 						index++;
-						$('#table-pr-detail-body').append('<tr prdId='+val[0].id+' id="pr-PurchaseRequest'+ val[0].id +'">'
+						$('#table-pr-detail-body').append('<tr prd-Id='+val[0].id+' id="pr-PurchaseRequest'+ val[0].id +'">'
 								+'<td id="'+ val[1].itemVariant.id +'">'+ val[1].itemVariant.item.name +'-'+ val[1].itemVariant.name +'</td>'
 								+'<td>'+ val[1].endingQty +'</td><td>'+ val[0].requestQty +'</td></tr>');
 								//+'<td>'+ val[1].endingQty +'</td><td><input type="number value='+ val[0].requestQty +'></td></tr>');
 						
-						added.push(val[1].id);
+						added.push(val[1].id.toString());
 						addedQty.push(val[0].requestQty);
-						//console.log('Mengeluarkan button added item'+ '.btn-added-item'+val[1].id);
+						//console.log(added);
 						$('.btn-add-item'+val[1].id).hide();
 						$('.btn-added-item'+val[1].id).show();
 						if ($('#table-add-pr-body tr').length > 0){
@@ -347,6 +370,10 @@ $(document).ready(function(){
 	
 	$('#table-view-pr').on('click','.btn-update-pr',function(e){
 		resetTable();
+		var row = $(this).closest("tr");
+		var PrNo = row.find('td').eq(1).text();
+		console.log('di button edit : '+ PrNo);
+		$('#btn-pr-save').attr('pr-no',PrNo);
 		
 		$(this).attr('state','update');
 		var id = $(this).attr('id');
@@ -360,7 +387,6 @@ $(document).ready(function(){
 	});
 	$('#table-view-pr').on('click','.btn-detail-pr',function(e){
 		resetTable();
-		
 		var id = $(this).attr('id');
 		console.log(id);
 		dataku = getPurchaseRequestById(id);
@@ -373,8 +399,97 @@ $(document).ready(function(){
 		$('#search-item-variant').val('');
 		$('#table-add-item-variant-body').empty();
 	});
+	
+	$('#btn-pr-cancel').click(function(e){
+		resetModalAddPr();
+	});
+	
+	function resetModalAddPr(){
+		$('#add-pr-date').val('');
+		$('#add-pr-notes').val('');
+		$('#table-add-pr-body').empty();
+	}
+	
+	$('#btn-close-modal-add-pr').click(function(){
+		console.log('di button ini')
+		resetModalAddPr();
+	});
+	
+	
 	function resetTable(){
+		console.log('mereset table')
 		$('#table-pr-detail-body').empty();
 		$('#table-add-pr-body').empty();
 	};
+	
+	//======================== Fungsi Update ========================//
+	update = (e, prStatus, getPrNo) => {
+		e.preventDefault();
+		alamatUrl = window.location.href;
+		
+		purchaseRequestDetail =[];
+		
+		$('#table-add-pr-body > tr').each(function(index, data){
+			console.log(($(data).attr('prd-id')) == null)
+			if (($(data).attr('prd-id')) == null){
+				var prd = {
+						itemVariant : {
+							id : parseInt($(data).find('td').eq(0).attr('id'))
+						},
+						requestQty : parseInt($(data).find('td').eq(2).text())
+				}
+				purchaseRequestDetail.push(prd);
+			} else{
+				var prd = {
+						id : parseInt($(data).attr('prd-id')),
+						itemVariant : {
+							id : parseInt($(data).find('td').eq(0).attr('id'))
+						},
+						requestQty : parseInt($(data).find('input').val())
+						}
+				purchaseRequestDetail.push(prd);
+			}
+			
+		});
+		console.log(purchaseRequestDetail);
+		//======= Get Date ====== //
+		matriks = $('#add-pr-date').val().split('-');
+		// yyyy-MM-dd
+		readyTime = matriks[0]+'-'+matriks[1]+'-'+matriks[2];
+		//pr = matriks[0]+matriks[1]+matriks[2];
+		prId = parseInt($('.btn-update-pr').attr('id'));
+		console.log(prId);
+		var pr = {
+			id : prId,
+			prNo : getPrNo,
+			readyTime : readyTime,
+			notes : $('#add-pr-notes').val(),
+			status : prStatus,
+			outlet : {
+				id : parseInt($('#select-outlet-main').val())
+			},
+			purchaseRequestDetail: purchaseRequestDetail
+		}
+		console.log(pr);
+		$.ajax({
+			type : "PUT",
+			url : alamatUrl+'/update',
+			data : JSON.stringify(pr),
+			contentType : 'application/json',
+			success : function(data){
+				purchaseRequestDetail = [];
+//				console.log("berhasil save");
+				alert('Success');
+			}, error : function(data){
+//				console.log("gagal");
+				purchaseRequestDetail = [];
+				alert('Failed');
+			}
+			
+		});
+		$('#modal-add-pr').modal('hide');
+		showPRByOutlet();
+//		HideItemForm();
+	};
+	//======================== End of Update ========================//
 });

@@ -1,5 +1,7 @@
 package com.bootcamp.miniproject.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +28,19 @@ public class PurchaseRequestHistoryDaoImpl implements PurchaseRequestHistoryDao 
 		session.update(prHist);
 		session.flush();
 	}
+
+	@Override
+	public List<PurchaseRequestHistory> getPRHistoryByPr(Long prId) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "From PurchaseRequestHistory prh Where prh.purchaseRequest.id =:prId";
+		List<PurchaseRequestHistory> prHistory = session.createQuery(hql).setParameter("prId", prId).list();
+		if (prHistory.isEmpty()) {
+			return null;
+		} else {
+			return prHistory;
+		}
+	}
+	
+	
 //
 }

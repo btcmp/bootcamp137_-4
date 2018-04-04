@@ -60,7 +60,7 @@ public class PurchaseRequestService {
 		}
 		return pr;
 	}
-
+	
 	public void save(PurchaseRequest pr) {
 		Calendar cal = Calendar.getInstance();
 		int monthInt = cal.get(Calendar.MONTH);
@@ -113,6 +113,20 @@ public class PurchaseRequestService {
 				prDetailDao.update(prd);
 			}
 		}
+		System.out.println(pr.getStatus());
+		System.out.println(pr.getStatus().equals("Created"));
+		if (pr.getStatus().equals("Created")) {
+			System.out.println("Status Tidak Berubah");
+
+		} else {
+			System.out.println("Status Berubah");
+			PurchaseRequestHistory prh = new PurchaseRequestHistory();
+			prh.setPurchaseRequest(pr);
+			prh.setStatus(pr.getStatus());
+			prh.setCreatedOn(pr.getCreatedOn());
+			prHistoryDao.save(prh);
+		}
+		
 		
 	}
 	public void submit(PurchaseRequest pr) {
@@ -143,6 +157,8 @@ public class PurchaseRequestService {
 
 
 	public void createPo(long id) {
+		
+		// Update Status Pr
 		prDao.createPo(id);
 		PurchaseRequest pr = prDao.getOne(id);
 		//
