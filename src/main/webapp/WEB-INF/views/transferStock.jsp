@@ -168,6 +168,7 @@ $(document).ready(function(){
 							type : 'GET',
 							dataType: 'json',
 							success : function(data3){
+								$('#view-status-history').empty();
 								$.each(data3, function(key, val) {
 								$('#view-status-history').append('<tr><td>On '+ getDateFormat(val.createdOn) +' - '+ val.status +'</td></tr>');
 								});
