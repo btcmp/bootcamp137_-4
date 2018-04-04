@@ -167,6 +167,7 @@ $(document).ready(function(){
 				$('#update-phone').val(data.phone);
 				$('#update-email').val(data.email);
 				$('#update-created-on').val(data.createdOn);
+				$('#update-created-by').val(data.createdBy.id);
 				var active = data.active;
 				if (active==true) {
 					$('#update-active').prop('checked', true);
@@ -188,10 +189,9 @@ $(document).ready(function(){
 	})
 	
 	$('#btn-update').click(function(){
-		var active = "false";
-		$('#update-active input:checked').each(function(){
-			active = $(this).val()
-		})
+		var idUser = "${employee.user.id}";
+		var active  = $('#update-active').is(':checked') ? true : false;
+		console.log(active);
 		var supplier={
 				id : $('#update-id').val(),
 				name : $('#update-name').val(),
@@ -209,7 +209,13 @@ $(document).ready(function(){
 					id : $('#update-district').val()
 				},
 				createdOn : $('#update-created-on').val(),
-				active : active
+				active : active,
+				createdBy : {
+					id : $('#update-created-by').val()
+				},
+				modifiedBy : {
+					id : idUser
+				}
 			}
 		if (supplier.name=="" || supplier.email=="" || supplier.postalCode=="" || supplier.phone=="" || supplier.email=="" || supplier.province.id=="" || supplier.region.id=="" || supplier.district.id=="") {
 			alert("fill the form completely");
@@ -261,6 +267,7 @@ $(document).ready(function(){
 	})
 	
 	$('#btn-add').click(function(){
+		var idUser = "${employee.user.id}";
 		var supplier={
 				name : $('#add-name').val(),
 				address : $('#add-address').val(),
@@ -276,7 +283,13 @@ $(document).ready(function(){
 				district : {
 					id : $('#add-district').val()
 				},
-				active : true
+				active : true,
+				createdBy : {
+					id : idUser
+				},
+				modifiedBy : {
+					id : idUser
+				}
 			}
 		if (supplier.name=="" || supplier.address=="" || supplier.postalCode=="" || supplier.phone=="" || supplier.email=="" || supplier.province.id=="" || supplier.region.id=="" || supplier.district.id=="") {
 			alert("fill the form completely");

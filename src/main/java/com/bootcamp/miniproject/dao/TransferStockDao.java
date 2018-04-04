@@ -19,4 +19,6 @@ public interface TransferStockDao {
 	public void delete(TransferStock transferStock);
 	
 	public List<TransferStock> getTransferStockByOutletId(long search);
+	
+	public List<TransferStock> getTransferStockByFromOutletId(long search);
 }

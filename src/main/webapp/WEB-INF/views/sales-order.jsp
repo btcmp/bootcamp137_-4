@@ -409,6 +409,7 @@ $(document).ready(function(){
 	})
 	
 	$('#receipt-done').click(function(){
+		var userId = "${employee.user.id}";
 		var salesOrderDetail = [];
 		$('#salesOrder-tbl-body > tr').each(function(index, data){
 			var sod = {
@@ -420,7 +421,13 @@ $(document).ready(function(){
 					},
 					qty : $(data).find('td').eq(2).text(),
 					unitPrice : $(data).find('td').eq(1).text().split("Rp.")[1],
-					subTotal : $(data).find('td').eq(3).text().split("Rp.")[1]
+					subTotal : $(data).find('td').eq(3).text().split("Rp.")[1],
+					createdBy : {
+						id : userId
+					},
+					modifiedBy : {
+						id : userId
+					}
 			}
 			salesOrderDetail.push(sod);
 		})
@@ -430,7 +437,13 @@ $(document).ready(function(){
 					id : $('.choose-customer').attr('id')
 				},
 				grandTotal : $('#charge').text().split("Rp.")[1],
-				salesOrderDetail : salesOrderDetail
+				salesOrderDetail : salesOrderDetail,
+				createdBy : {
+					id : userId
+				},
+				modifiedBy : {
+					id : userId
+				}
 		}
 		console.log(salesOrder);
 		$.ajax({

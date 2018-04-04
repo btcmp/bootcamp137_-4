@@ -15,6 +15,7 @@
 				<form class="form-edit">
 					<input type="hidden" id="update-id">
 					<input type="hidden" id="update-created-on">
+					<input type="hidden" id="update-created-by">
 					<div class="form-group">
 						<label for="update-name">Supplier Name</label> <input type="text"
 							class="form-control" id="update-name" placeholder="Supplier Name"

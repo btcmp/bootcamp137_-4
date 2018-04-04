@@ -33,6 +33,8 @@ public class SalesOrderService {
 		SalesOrder so = new SalesOrder();
 		so.setCustomer(salesOrder.getCustomer());
 		so.setGrandTotal(salesOrder.getGrandTotal());
+		so.setCreatedBy(salesOrder.getCreatedBy());
+		so.setModifiedBy(salesOrder.getModifiedBy());
 		salesOrderDao.save(so);
 		
 		for(SalesOrderDetail sod : salesOrder.getSalesOrderDetail()) {
@@ -44,6 +46,9 @@ public class SalesOrderService {
 			salesOD.setQty(sod.getQty());
 			salesOD.setSubTotal(sod.getSubTotal());
 			salesOD.setUnitPrice(sod.getUnitPrice());
+			salesOD.setCreatedBy(sod.getCreatedBy());
+			salesOD.setModifiedBy(sod.getModifiedBy());
+			salesOD.setItemInventory(sod.getItemInventory());
 			salesOrderDetailDao.save(salesOD);
 		}
 	}

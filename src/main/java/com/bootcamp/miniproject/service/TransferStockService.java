@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bootcamp.miniproject.dao.ItemInventoryDao;
 import com.bootcamp.miniproject.dao.TransferStockDao;
 import com.bootcamp.miniproject.dao.TransferStockDetailDao;
+import com.bootcamp.miniproject.dao.TransferStockHistoryDao;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.ItemVariant;
 import com.bootcamp.miniproject.model.TransferStock;
 import com.bootcamp.miniproject.model.TransferStockDetail;
+import com.bootcamp.miniproject.model.TransferStockHistory;
 
 @Service
 @Transactional
@@ -26,6 +28,9 @@ public class TransferStockService {
 	@Autowired
 	ItemInventoryDao itemInventoryDao;
 	
+	@Autowired
+	TransferStockHistoryDao transferStockHistoryDao;
+	
 	public void save(TransferStock transferStock) {
 		//transferStockDao.save(transferStock);
 		
@@ -34,6 +39,8 @@ public class TransferStockService {
 		trans.setToOutlet(transferStock.getToOutlet());
 		trans.setNotes(transferStock.getNotes());
 		trans.setStatus(transferStock.getStatus());
+		trans.setCreatedBy(transferStock.getCreatedBy());
+		trans.setModifiedBy(transferStock.getModifiedBy());
 		transferStockDao.save(trans);
 		
 		for(TransferStockDetail tsd : transferStock.getTransferStockDetail()) {
@@ -47,8 +54,15 @@ public class TransferStockService {
 			transDetail.setInstock(tsd.getInstock());
 			transDetail.setTransferQty(tsd.getTransferQty());
 			transDetail.setTransferStock(trans);
+			transDetail.setCreatedBy(tsd.getCreatedBy());
+			transDetail.setModifiedBy(tsd.getModifiedBy());
 			transferStockDetailDao.save(transDetail);
 		}
+		
+		TransferStockHistory tsh = new TransferStockHistory();
+		tsh.setStatus(trans.getStatus());
+		tsh.setTransferStock(trans);
+		transferStockHistoryDao.save(tsh);
 	}
 	
 	public void delete(TransferStock transferStock) {
@@ -65,6 +79,10 @@ public class TransferStockService {
 	
 	public void saveUpdate(TransferStock transferStock) {
 		transferStockDao.saveUpdate(transferStock);
+		TransferStockHistory tsh = new TransferStockHistory();
+		tsh.setStatus(transferStock.getStatus());
+		tsh.setTransferStock(transferStock);
+		transferStockHistoryDao.save(tsh);
 	}
 	
 	public TransferStock getOne(long id) {
@@ -77,9 +95,19 @@ public class TransferStockService {
 		// TODO Auto-generated method stub
 		return transferStockDao.getTransferStockByOutletId(search);
 	}
+	
+	public List<TransferStock> getTransferStockByFromOutletId(long search) {
+		// TODO Auto-generated method stub
+		return transferStockDao.getTransferStockByFromOutletId(search);
+	}
 
 	public void saveUpdateStatusAndStock(TransferStock transferStock) {
 		transferStockDao.saveUpdate(transferStock);
+		TransferStockHistory tsh = new TransferStockHistory();
+		tsh.setStatus(transferStock.getStatus());
+		tsh.setTransferStock(transferStock);
+		transferStockHistoryDao.save(tsh);
+		
 		long idToOutlet = transferStock.getToOutlet().getId();
 		List<TransferStockDetail> TSD = transferStockDetailDao.getTransferStockByTransferStockId(transferStock.getId());
 		for(TransferStockDetail TSDetail : TSD) {

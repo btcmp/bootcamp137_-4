@@ -103,7 +103,6 @@
 	</div>
 	<!-- ./wrapper -->
 	<div>
-		<%@ include file="modal/view-transfer-stock.jsp"%>
 		<%@ include file="modal/add-transfer-stock.jsp"%>
 		<%@ include file="modal/add-transfer-item.jsp"%>
 		<%@ include file="modal/view-transfer-stock-detail.jsp" %>
@@ -121,44 +120,14 @@ $(document).ready(function(){
 	$("#transfer-stock-side-option").addClass('active');
 	$("#treeview-transaction").addClass('active');
 	
+	var role = "${employee.user.role.name}";
+	if (role!=="ROLE_ADMIN") {
+		$("#more-option").addClass('hidden');
+	}
+	
 	var added = [];
 	var addedQty = [];
 	$('.btn-added-item').hide();
-	
-	$('.viewold').click(function(){
-		var id = $(this).attr('id');
-		$.ajax({
-			type : 'GET',
-			url : '${pageContext.request.contextPath}/transaction/transfer-stock/get-one/'+id,
-			dataType: 'json',
-			success : function(data){
-				$('#view-from-outlet').val(data.fromOutlet.name);
-				$('#view-to-outlet').val(data.toOutlet.name);
-				$('#view-notes').val(data.notes);
-				$('#view-transferStock-tbl').empty();
-				$.ajax({
-					url : '${pageContext.request.contextPath }/transaction/transfer-stock/search-transfer-stock-detail?search='+data.id,
-					type : 'GET',
-					dataType: 'json',
-					success : function(data2){
-						//console.log(data2);
-						$.each(data2, function(key, val) {
-						$('#view-transferStock-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
-								+ val.instock +'</td><td>'+ val.transferQty +'</td></tr>');
-						});
-						//call modal
-						$('#modal-view-transferStock').modal();
-					}, error : function(){
-						alert('get transfer stock detail failed');
-					}
-					
-				})
-			}, 
-			error : function(){
-				alert('show selected transferStock data in modal failed');
-			}
-		})
-	})
 	
 	$('.view').click(function(){
 		var id = $(this).attr('id');
@@ -169,8 +138,8 @@ $(document).ready(function(){
 			success : function(data){
 				console.log(data);
 				$('#view-hidden-id').val(data.id);
-				$('#view-created-by').val(data.createdBy);
-				$('#view-status').val(data.status);
+				$('#view-created-by').text("Created By : "+data.createdBy.username);
+				$('#view-status').text("Transfer Status : "+data.status);
 				$('#view-notes').val(data.notes);
 				$('#view-status-history').val();
 				$('#view-transfer-stock-detail-tbl').empty();
@@ -194,8 +163,20 @@ $(document).ready(function(){
 						$('#view-transfer-stock-detail-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
 								+ val.instock +'</td><td>'+ val.transferQty +'</td></tr>');
 						});
-						
-						$('#modal-view-transfer-stock-detail').modal();
+						$.ajax({
+							url : '${pageContext.request.contextPath }/transaction/transfer-stock/search-transfer-stock-history?search='+data.id,
+							type : 'GET',
+							dataType: 'json',
+							success : function(data3){
+								$.each(data3, function(key, val) {
+								$('#view-status-history').append('<tr><td>On '+ getDateFormat(val.createdOn) +' - '+ val.status +'</td></tr>');
+								});
+								$('#modal-view-transfer-stock-detail').modal();
+							}, error : function(){
+								alert('get transfer stock detail failed');
+							}
+							
+						})
 					}, error : function(){
 						alert('get transfer stock detail failed');
 					}
@@ -207,6 +188,22 @@ $(document).ready(function(){
 			}
 		})
 	})
+	
+	function getDateFormat(date) {
+		var d = new Date(Number(date)),
+		month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate(),
+		year = d.getFullYear();
+
+		if (month.length < 2)
+		    month = '0' + month;
+		if (day.length < 2)
+		    day = '0' + day;
+		var date = new Date();
+		date.toLocaleDateString();
+
+		return [year, month, day].join('-');
+	};
 	
 	$('#more-option').change(function(){
 		var newStatus = $(this).val();
@@ -259,7 +256,8 @@ $(document).ready(function(){
 	})
 	
 	$('#btn-save').click(function(){
-		var outId = "${outlet.id}"
+		var outId = "${outlet.id}";
+		var userId = "${employee.user.id}";
 		if (outId==$('#add-to-outlet').val()) {
 			alert("you can't transfer stock to same outlet")
 		} else {
@@ -274,7 +272,13 @@ $(document).ready(function(){
 							id : $(data).find('td').eq(1).attr('id')
 						},
 						instock : $(data).find('td').eq(1).text(),
-						transferQty : $(data).find('td').eq(2).text()
+						transferQty : $(data).find('td').eq(2).text(),
+						createdBy : {
+							id : userId
+						},
+						modifiedBy : {
+							id : userId
+						}
 				}
 				transferStockDetail.push(tsd);
 			});
@@ -288,7 +292,13 @@ $(document).ready(function(){
 					},
 					transferStockDetail : transferStockDetail,
 					notes : $('#add-notes').val(),
-					status : "Submitted"
+					status : "Submitted",
+					createdBy : {
+						id : userId
+					},
+					modifiedBy : {
+						id : userId
+					}
 			};
 			$.ajax({
 				url : '${pageContext.request.contextPath }/transaction/transfer-stock/save',

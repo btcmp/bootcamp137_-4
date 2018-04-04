@@ -17,14 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.model.TransferStock;
 import com.bootcamp.miniproject.model.TransferStockDetail;
+import com.bootcamp.miniproject.model.TransferStockHistory;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.TransferStockDetailService;
+import com.bootcamp.miniproject.service.TransferStockHistoryService;
 import com.bootcamp.miniproject.service.TransferStockService;
 
 @Controller
@@ -46,9 +49,14 @@ public class TransferStockController {
 	@Autowired
 	OutletService outletService;
 	
+	@Autowired
+	TransferStockHistoryService transferStockHistoryService;
+	
 	@RequestMapping
 	public String index(Model model) {
-		List<TransferStock> transferStocks = transferStockService.selectAll();
+		Outlet outlet = (Outlet)httpSession.getAttribute("outlet");
+		long outletId = outlet.getId();
+		List<TransferStock> transferStocks = transferStockService.getTransferStockByFromOutletId(outletId);
 		List<Outlet> outlets = outletService.selectAll();
 		List<ItemInventory> itemsInventorys= itemInventoryService.getAll();
 		model.addAttribute("transferStocks", transferStocks);
@@ -145,6 +153,13 @@ public class TransferStockController {
 	@ResponseBody
 	public List<TransferStockDetail> searchTSDByTSID(@RequestParam(value="search", defaultValue="") long search) {
 		List<TransferStockDetail> transferStockDetails = transferStockDetailService.getTransferStockDetailsByTransferStockId(search);
+		return transferStockDetails;
+	}
+	
+	@RequestMapping(value = "/search-transfer-stock-history", method = RequestMethod.GET)
+	@ResponseBody
+	public List<TransferStockHistory> searchTSHByTSID(@RequestParam(value="search", defaultValue="") long search) {
+		List<TransferStockHistory> transferStockDetails = transferStockHistoryService.getTransferStockHistorysByTransferStockId(search);
 		return transferStockDetails;
 	}
 }
