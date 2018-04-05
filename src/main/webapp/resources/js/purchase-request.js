@@ -17,6 +17,10 @@ $(document).ready(function(){
 		
 		$('#modal-add-pr').modal({backdrop: 'static', keyboard: false});
 		$('#btn-pr-save').prop('disabled',true);
+		
+		resetModalAddPr();
+		added = [];
+		addedQty = [];
 	});
 	$('#btn-add-item-variant').click(function(){
 		//console.log('di button add item variant')
@@ -48,7 +52,6 @@ $(document).ready(function(){
 		    }
 		});	
 	}
-	//showAll(alamatUrl);
 	function showPRByOutlet(){
 		outletId = $('#select-outlet-main').val();
 		$('#table-add-pr-body').empty();
@@ -101,8 +104,6 @@ $(document).ready(function(){
 				success : function(data){
 					$('#table-add-item-variant-body').empty();
 					$.each(data, function(key, val) {
-						//console.log('---------')
-						//console.log(added);
 						if(added.indexOf(val.id.toString()) == -1) {
 							$('#table-add-item-variant-body').append('<tr id="'+val.itemVariant.id+'"><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td>'
 									+'<td id="inStock'+ val.id +'">'+ val.endingQty +'</td>'
@@ -185,21 +186,23 @@ $(document).ready(function(){
 		status = 'Created';
 		console.log('clicked '+state);
 		if (state == 'create'){
+			
 			save(e, status);
 		} else{
 			PrNo = $('#btn-pr-save').attr('pr-no');
+			prId = parseInt($('#btn-pr-save').attr('pr-id'));
+			
 			console.log('di button save'+PrNo);
-			update(e, status, PrNo);
+			update(e, status, PrNo, prId);
 			
 		}
 	});
 	$('#btn-pr-submit').click(function(e){
 		//var state = $(this).attr('state');
-		//console.log('di button submit')
 		PrNo = $('#btn-pr-save').attr('pr-no');
-		//console.log('di button save'+PrNo);
+		prId = parseInt($('#btn-pr-save').attr('pr-id'));
 		status = 'Submitted';
-		update(e, status, PrNo);
+		update(e, status, PrNo, prId);
 		
 	});
 
@@ -251,14 +254,18 @@ $(document).ready(function(){
 			success : function(data){
 				console.log("berhasil save");
 				purchaseRequestDetail =[];
+				resetModalAddPr();
+				showPRByOutlet();
 			}, error : function(data){
 				console.log("gagal");
 				purchaseRequestDetail =[];
+				resetModalAddPr();
+				showPRByOutlet();
 			}
 			
 		});
 		$('#modal-add-pr').modal('hide');
-		showPRByOutlet();
+		//showPRByOutlet();
 //		HideItemForm();
 	};
 	//======================== End of Save ========================//
@@ -294,6 +301,44 @@ $(document).ready(function(){
 			$('#view-prd-created').html('Belum Integrasi dengan user');
 			$('#view-prd-time').html(tanggal);
 			$('#view-prd-status').html(dataTemp.status);
+			let option = [];
+			if (dataTemp.status == 'Created'){
+				$('#select-pr-action').attr('pr-id', id);
+				option.push('<option disabled selected value="more">More</option>');
+				option.push('<option disabled value="approve">Approve</option>');
+				option.push('<option disabled value="reject">Reject</option>');
+				option.push('<option value="print">Print</option>');
+				option.push('<option disabled disabled value="create-po" disabled>Create PO</option>');
+			} else if (dataTemp.status == 'Submitted'){
+				$('#select-pr-action').attr('pr-id', id);
+				option.push('<option disabled selected value="more">More</option>');
+				option.push('<option value="approve">Approve</option>');
+				option.push('<option value="reject">Reject</option>');
+				option.push('<option value="print">Print</option>');
+				option.push('<option disabled value="create-po" disabled>Create PO</option>');
+			} else if (dataTemp.status == 'Approved'){
+				$('#select-pr-action').attr('pr-id', id);
+				option.push('<option disabled selected value="more">More</option>');
+				option.push('<option disabled value="approve">Approve</option>');
+				option.push('<option disabled value="reject">Reject</option>');
+				option.push('<option value="print">Print</option>');
+				option.push('<option value="create-po">Create PO</option>');
+			} else if (dataTemp.status == 'Rejected'){
+				$('#select-pr-action').attr('pr-id', id);
+				option.push('<option disabled selected value="more">More</option>');
+				option.push('<option disabled value="approve">Approve</option>');
+				option.push('<option disabled value="reject">Reject</option>');
+				option.push('<option value="print">Print</option>');
+				option.push('<option disabled value="create-po" disabled>Create PO</option>');
+			} else if (dataTemp.status == 'PO Created'){
+				$('#select-pr-action').attr('pr-id', id);
+				option.push('<option disabled selected value="more">More</option>');
+				option.push('<option disabled value="approve">Approve</option>');
+				option.push('<option disabled value="reject">Reject</option>');
+				option.push('<option value="print">Print</option>');
+				option.push('<option disabled value="create-po" disabled>Create PO</option>');
+			}
+			$('#select-pr-action').html(option);
 			
 			//========= Get PR History ==========//
 			$.ajax({
@@ -302,14 +347,11 @@ $(document).ready(function(){
 				datatype : 'json',
 				success : function(data){
 					$.each(data, function(key,val){
-						
-						//console.log('On '+ getDateFormat(val.createdOn) +' - Purchase Request '+dataTemp.prNo+ ' is '+ val.status)
+						$('#table-pr-history').append('<tr><td>On '+ getDateFormat(val.createdOn) +' - Purchase Request '+dataTemp.prNo+ ' is '+ val.status.toLowerCase()+'</td> </tr>')
 					});
 					
 				}
 			});
-			//console.log(dataTemp);
-			//createVariantTable(listVariant);
 			//========= Get PR Detail ==========//
 			$.ajax({
 				type : 'GET',
@@ -324,7 +366,7 @@ $(document).ready(function(){
 						$('#table-add-pr-body').append('<tr data-idx='+index+' prd-Id='+val[0].id+' id="pr-PurchaseRequest'+ val[1].id +'">'
 								+'<td id="'+ val[1].itemVariant.id +'">'+ val[1].itemVariant.item.name +'-'+ val[1].itemVariant.name +'</td>'
 //								+'<td>'+ val[1].endingQty +'</td><td>'+ val[0].requestQty +'</td>'
-								+'<td>'+ val[1].endingQty +'</td><td><input type="number" value='+ val[0].requestQty +'></td>'
+								+'<td>'+ val[1].endingQty +'</td><td><input type="number" min="0" value='+ val[0].requestQty +'></td>'
 								+'<td><button type="button" id="'+ val[1].id +'" '
 								+'class="btn-cancel-item'+ val[1].id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
 						index++;
@@ -367,20 +409,34 @@ $(document).ready(function(){
 		
 		return dataTemp;
 	}
-	
+	function dateToday(){
+		let today = new Date();
+		let dd = today.getDate();
+		let mm = today.getMonth()+1;
+		let yyyy = today.getFullYear();
+		if(dd<10){
+			dd='0'+dd;
+		}
+		if(mm<10){
+			mm='0'+mm;
+		}
+		today = yyyy+'-'+mm+'-'+dd;
+		$('#add-pr-date').setAttribute('min', today);
+	}
 	$('#table-view-pr').on('click','.btn-update-pr',function(e){
 		resetTable();
+		//dateToday();
 		var row = $(this).closest("tr");
 		var PrNo = row.find('td').eq(1).text();
 		console.log('di button edit : '+ PrNo);
-		$('#btn-pr-save').attr('pr-no',PrNo);
-		
 		$(this).attr('state','update');
 		var id = $(this).attr('id');
 		
 		console.log('pr id : '+id);
 		dataku = getPurchaseRequestById(id);
 		$('#modal-add-pr').modal({backdrop: 'static', keyboard: false});
+		$('#btn-pr-save').attr('pr-no',PrNo);
+		$('#btn-pr-save').attr('pr-id', id)
 		$('#btn-pr-save').attr('state','update');
 		console.log('mode: ' +$(this).attr('state'));
 		
@@ -420,10 +476,11 @@ $(document).ready(function(){
 		console.log('mereset table')
 		$('#table-pr-detail-body').empty();
 		$('#table-add-pr-body').empty();
+		$('#table-pr-history').empty();
 	};
 	
 	//======================== Fungsi Update ========================//
-	update = (e, prStatus, getPrNo) => {
+	update = (e, prStatus, getPrNo, prId) => {
 		e.preventDefault();
 		alamatUrl = window.location.href;
 		
@@ -456,9 +513,6 @@ $(document).ready(function(){
 		matriks = $('#add-pr-date').val().split('-');
 		// yyyy-MM-dd
 		readyTime = matriks[0]+'-'+matriks[1]+'-'+matriks[2];
-		//pr = matriks[0]+matriks[1]+matriks[2];
-		prId = parseInt($('.btn-update-pr').attr('id'));
-		console.log(prId);
 		var pr = {
 			id : prId,
 			prNo : getPrNo,
@@ -479,17 +533,93 @@ $(document).ready(function(){
 			success : function(data){
 				purchaseRequestDetail = [];
 //				console.log("berhasil save");
-				alert('Success');
+				resetModalAddPr();
+				showPRByOutlet();
+				//alert('Success');
 			}, error : function(data){
 //				console.log("gagal");
+				resetModalAddPr();
+				showPRByOutlet();
 				purchaseRequestDetail = [];
-				alert('Failed');
+				//alert('Failed');
 			}
 			
 		});
 		$('#modal-add-pr').modal('hide');
-		showPRByOutlet();
+		//showPRByOutlet();
 //		HideItemForm();
 	};
 	//======================== End of Update ========================//
+	//======================== Select Admin Action ========================//
+	$('#select-pr-action').change(function(){
+		var action = $(this).val();
+		var id = $(this).attr('pr-id');
+		console.log('pr-id : '+id);
+		if(action == 'print'){
+			window.print();
+		}else{
+			$.ajax({
+				type : 'GET',
+				url : alamatUrl+'/'+action+'/'+id,
+				success : function(){
+					console.log('Success');
+					resetModalAddPr();
+					showPRByOutlet();
+				},
+				error : function(){
+					console.log('Failed');
+					resetModalAddPr();
+					showPRByOutlet();
+				}
+			});
+		}
+	});
+	//======================== End of Admin Action ========================//
+	
+	//======================== Search By Status Function ========================//
+	function search(url){
+		outletId = $('#select-outlet-main').val();
+		$('#table-add-pr-body').empty();
+		$('#table-view-pr-body').empty();
+		$.ajax({
+			dataType : "json",
+		    url : url,
+			headers : {
+		    	'Accept' : 'application/json',
+		        'Content-Type' : 'application/json'
+		    },
+		    type : 'GET',
+		    success : function(data){
+		    	console.log(data);
+		    	$.each(data, (key, data) =>{
+					$('#table-view-pr-body').append('<tr> <td>'+getDateFormat(data.createdOn)+'</td>'+
+							'<td>'+data.prNo+'</td>'+
+							'<td>'+data.notes+'</td>'+
+							'<td>'+data.status+'</td>'+
+							'<td><a id='+data.id+' class="btn-update-pr btn btn-primary">Edit</a>'+
+							'<a id='+data.id+' class="btn-detail-pr btn btn-success">View</a></td>'
+					)
+					if (data.status != 'Created'){
+						$('#'+data.id+'').prop('disabled',true);
+						$('#'+data.id+'').prop('hide',true);
+					}
+				});
+		    }
+		});	
+	}
+	//======================== End of Search By Status Function ========================//
+	
+	//======================== Select Toggle For Search By Status ========================//
+	$('#select-search-by-status').change(function(){
+		var status = $(this).val();
+		if(status == 'All'){
+			showPRByOutlet();
+		}else{
+			outletId = $('#select-outlet-main').val();
+			//outletId = '${outlet.id }';
+			url = alamatUrl+'/search-status?outletId='+outletId+'&status='+status;
+			search(url);
+		}
+	});
+	//======================== End of Select Toggle For Search By Status ========================//
 });

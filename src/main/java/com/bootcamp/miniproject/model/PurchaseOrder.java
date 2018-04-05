@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 
@@ -38,6 +39,7 @@ public class PurchaseOrder {
 	List<PurchaseOrderHistory> purchaseOrderHistory;
 	
 	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private PurchaseRequest purchaseRequest;
 		
 	@NotNull

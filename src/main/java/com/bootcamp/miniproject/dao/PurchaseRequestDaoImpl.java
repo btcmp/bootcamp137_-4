@@ -22,6 +22,7 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 		String hql = "FROM PurchaseRequest";
 		Query query = session.createQuery(hql);
 		List<PurchaseRequest> pr = query.list();
+		
 		if (pr.isEmpty()) {
 			return null;
 		} else {
@@ -86,10 +87,10 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 		}
 	}
 	
-	public List<PurchaseRequest> searchPRByStatus(String search){
+	public List<PurchaseRequest> searchPRByStatus(Long outletId, String search){
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from PurchaseRequest where status = :status";
-		List<PurchaseRequest> prs = session.createQuery(hql).setParameter("status", search).list();
+		String hql = "from PurchaseRequest pr where pr.status = :status AND pr.outlet.id =:outletId";
+		List<PurchaseRequest> prs = session.createQuery(hql).setParameter("outletId", outletId).setParameter("status", search).list();
 		if(prs.isEmpty()) {
 			return null;
 		}else {
@@ -119,6 +120,7 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from PurchaseRequest where MONTH(createdOn) = :month and YEAR(createdOn) = :year";
 		List<PurchaseRequest> prList = session.createQuery(hql).setParameter("month", month).setParameter("year", year).list();
+		System.out.println(prList.size());
 		if(prList.isEmpty()) {
 			return 0;
 		}

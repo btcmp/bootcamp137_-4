@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.bootcamp.miniproject.model.PurchaseOrder;
 import com.bootcamp.miniproject.model.PurchaseOrderDetail;
+import com.bootcamp.miniproject.model.PurchaseRequestDetail;
 
 @Repository
 public class PurchaseOrderDetailDaoImpl implements PurchaseOrderDetailDao{
@@ -52,6 +53,34 @@ public class PurchaseOrderDetailDaoImpl implements PurchaseOrderDetailDao{
  		}else {
  			return detail;
  		}
+	}
+
+	@Override
+	public List<PurchaseOrderDetail> getPODetailByPOIdandOutletId(Long poId) {
+		Session session = sessionFactory.getCurrentSession();
+		System.out.println("poid :"+poId);
+		String hql = "FROM PurchaseOrderDetail pod WHERE pod.purchaseOrder.id =:poId";
+		List<PurchaseOrderDetail> poDetail = session.createQuery(hql).setParameter("poId", poId).list();
+		System.out.println(poDetail.size());
+		if (poDetail.isEmpty()) {
+			return null;
+		} else {
+			return poDetail;
+		}
+	}
+	
+	@Override
+	public List<Object> findPODetailAndQty(Long outletId, Long prId) {
+		Session session = sessionFactory.getCurrentSession();
+		System.out.println(prId);
+		System.out.println(outletId);
+		String hql = "FROM PurchaseOrderDetail pod LEFT OUTER JOIN ItemInventory inv on pod.variant.id = inv.itemVariant.id where inv.outlet.id =:outletId and pod.purchaseOrder.id =:prId";
+		List<Object> prDetail = session.createQuery(hql).setParameter("prId", prId).setParameter("outletId", outletId).list();
+		if (prDetail.isEmpty()) {
+			return null;
+		} else {
+			return prDetail;
+		}
 	}
 }
 //

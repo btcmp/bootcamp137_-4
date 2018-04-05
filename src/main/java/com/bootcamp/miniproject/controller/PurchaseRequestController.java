@@ -131,8 +131,8 @@ public class PurchaseRequestController {
 	
 	@RequestMapping("/search-status")
 	@ResponseBody
-	public List<PurchaseRequest> getByStatus(@RequestParam(value="search", defaultValue="") String status){
-		return prService.getPRByStatus(status);
+	public List<PurchaseRequest> getByStatus(@RequestParam(value="outletId", defaultValue="") Long outletId, @RequestParam(value="status", defaultValue="") String status){
+		return prService.getPRByStatus(outletId, status);
 	}
 	
 	@RequestMapping("/search")

@@ -63,5 +63,17 @@ public class PurchaseOrderHistoryDaoImpl implements PurchaseOrderHistoryDao{
  			return pohs;
  		}
 	}
+
+	@Override
+	public List<PurchaseOrderHistory> getByPOid(Long poId) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseOrderHistory poh where poh.purchaseOrder.id = :poId";
+		List<PurchaseOrderHistory> pohs = session.createQuery(hql).setParameter("poId", poId).list();
+		if(pohs.isEmpty()) {
+			return null;
+		} else {
+			return pohs;
+		}
+	}
 }
 //

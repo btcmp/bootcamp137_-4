@@ -66,14 +66,14 @@
 				<label for="add-variant-name">Variant Name</label>
 				<input type="text" class="form-control" id="add-variant-name" placeholder="Item Name"> <p></p>
 				<label for="add-unit-price">Unit Price</label>
-				<input type="text" class="form-control" value= "0" id="add-unit-price" placeholder="Unit Price"> <p></p>
+				<input type="number" min="0" class="form-control" value= "0" id="add-unit-price" placeholder="Unit Price"> <p></p>
 				<label for="add-sku">SKU</label>
 				<input type="text" class="form-control" id="add-sku" placeholder="SKU"> <p></p>
 				<hr>
 				<label for="add-beginning-stock">Beginning Stock</label>
-				<input type="text" class="form-control" id="add-beginning-stock" placeholder="Beginning Stock"> <p></p>
+				<input type="number" min="0" class="form-control" id="add-beginning-stock" placeholder="Beginning Stock"> <p></p>
 				<label for="add-alert-at">Alert At</label>
-				<input type="text" class="form-control" id="add-alert-at" placeholder="Alert At">
+				<input type="number" min="0" class="form-control" id="add-alert-at" placeholder="Alert At">
 				
 			</div>
 		</form>

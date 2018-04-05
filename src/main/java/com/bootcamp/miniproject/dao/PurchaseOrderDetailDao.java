@@ -17,5 +17,8 @@ public interface PurchaseOrderDetailDao {
 	public PurchaseOrderDetail getOne(long id);
 
 	public List<PurchaseOrderDetail> getDetailByPO(PurchaseOrder po);
+
+	public List<Object> findPODetailAndQty(Long outletId, Long prId);
+	public List<PurchaseOrderDetail> getPODetailByPOIdandOutletId(Long poId);
 }
 //

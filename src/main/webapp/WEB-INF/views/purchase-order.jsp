@@ -29,7 +29,7 @@
     <section class="content-header row">
       <!-- search form -->
       <label for="select-outlet-main">Outlet Login</label>
-      <select class="selectpicker" name="select-outlet-main" id="select-outlet-main">
+      <select disabled class="selectpicker" name="select-outlet-main" id="select-outlet-main">
 				<%-- <c:forEach var="outlet" items="${outlets }">
 					<option value="${outlet.id }">${outlet.name }</option>
 				</c:forEach> --%>
@@ -40,17 +40,28 @@
           <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
                 <button name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                
           </span>
           
         </div>
       </div>
+      <div class="col-xs-2">
+		    <div class="form-group">
+		    	<select id="select-search-by-status" class="form-control">
+		    		<option value="All">All</option>
+		    		<option value="Created">Created</option>
+		    		<option value="Submitted">Submitted</option>
+		    		<option value="Approved">Approved</option>
+		    		<option value="Rejected">Rejected</option>
+		    		<option value="Processed">Processed</option>
+		    	</select>
+		    </div>
+	    </div>
       <div style="text-align: right;">
-      <div class="col-xs-7">
+      <div class="col-xs-5">
       	<div class="center">
       	
       	</div>
-      	<button id="create"  class="btn btn-primary">Create</button>
+      	<button id="create"  class="btn btn-primary invisible">Create</button>
       	
 	  </div>
 	  <div class="col-xs-1">
@@ -58,6 +69,7 @@
 	  </div>
       </div>
     </section>
+
 
     <!-- Main content -->
     <section class="content">
@@ -68,26 +80,17 @@
           <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="table-view-pr" class="table table-bordered table-striped">
+              <table id="table-view-po" class="table table-bordered table-striped">
                 <thead>
 					<th>Created Date</th>
-					<th>PR No.</th>
-					<th>Notes </th>
+					<th>Supplier </th>
+					<th>PO No.</th>
+					<th>Total</th>
 					<th>Status </th>
 					<th>#</th>
 				</thead>
-				<tbody id= "table-view-pr-body">
-					<%-- <c:forEach items="${variant }" var="var">
-						<tr>
-							<td>${var.item.name } --- <b>${var.name }</b> </td>
-							<td>${var.item.category.name }</td>
-							<td>${var.price}</td>
-							<td>
-								<a id="${var.item.id }" class="update-item btn btn-primary">Edit</a> |
-								<a id="${var.item.id }" class="delete btn btn-danger">View</a>
-							</td>
-						</tr>
-					</c:forEach> --%>
+				<tbody id= "table-view-po-body">
+					
 				</tbody>
             </table>
             </div>
@@ -104,9 +107,14 @@
   </div>
   <!-- /.content-wrapper -->
 <div class = "container">
+		
 		<%@include file="modal/edit-purchase-order.jsp" %>
 	</div>
+	
 	<%@ include file="template/footer.jsp"%>
+	<script type="text/javascript" src="<c:url value="/resources/js/purchase-order.js" />" charset="utf-8"></script>
+</div>
+</body>
+</html>
 
-<script type="text/javascript" src="<c:url value="/resources/js/purchase-order.js" />" charset="utf-8"></script></html>
 

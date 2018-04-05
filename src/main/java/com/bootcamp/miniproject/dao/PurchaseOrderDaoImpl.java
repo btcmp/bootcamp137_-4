@@ -3,12 +3,14 @@ package com.bootcamp.miniproject.dao;
 import java.sql.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bootcamp.miniproject.model.PurchaseOrder;
+import com.bootcamp.miniproject.model.PurchaseRequest;
 //
 @Repository
 public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
@@ -93,5 +95,39 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 			return 0;
 		}
 		return poList.size();
+	}
+
+	@Override
+	public void approve(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update PurchaseOrder set status='Approved' where id = :id";
+		session.createQuery(hql).setParameter("id", id).executeUpdate();
+	}
+
+	@Override
+	public void reject(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update PurchaseOrder set status='Rejected' where id = :id";
+		session.createQuery(hql).setParameter("id", id).executeUpdate();
+	}
+
+	@Override
+	public List<PurchaseOrder> getAllPOByOutlet(Long outletId) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "FROM PurchaseOrder pr WHERE pr.outlet.id =:outletId";
+		Query query = session.createQuery(hql).setParameter("outletId", outletId);
+		List<PurchaseOrder> po = query.list();
+		if (po.isEmpty()) {
+			return null;
+		} else {
+			return po;
+		}
+	}
+
+	@Override
+	public void process(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update PurchaseOrder set status='Processed' where id = :id";
+		session.createQuery(hql).setParameter("id", id).executeUpdate();
 	}
 }

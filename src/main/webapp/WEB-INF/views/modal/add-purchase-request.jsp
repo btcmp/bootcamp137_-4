@@ -103,11 +103,11 @@
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<div class="col-xs-4" style="float:right;">
 					<select id="select-pr-action" class="btn form-control">
-						<option disabled selected>More</option>
+						<!-- <option disabled selected>More</option>
 						<option value="approve">Approve</option>	
 						<option value="reject">Reject</option>
 						<option value="print">Print</option>
-						<option value="create-po" disabled>Create PO</option>
+						<option value="create-po" disabled>Create PO</option> -->
 					</select>
 				</div>	
 				
@@ -133,12 +133,12 @@
 			</div>
 		</form>
 			<div class="col-xs-12">
-				<label for="pr-detail">Purchase Request History</label>
-				<p> PR is Created</p>
-			    <label for="pr-detail">Purchase Item</label>
+				<label for="pr-history">Purchase Request History</label>
+				<table id="table-pr-history">
+				</table>
 				
-			</div>
-			<table id="table-pr-detail" class="table table-bordered table-striped">
+			    <label for="pr-detail">Purchase Item</label>
+				<table id="table-pr-detail" class="table table-bordered table-striped">
 				<thead>
 					<th class="col-xl-3">Item</th>
 					<th class="col-xl-3">In Stock</th>
@@ -146,7 +146,9 @@
 				</thead>
 				<tbody id="table-pr-detail-body">
 				</tbody>
-			</table>
+			</table>	
+			</div>
+			
         
       </div>
       <div class="modal-footer">

@@ -25,4 +25,13 @@ public interface PurchaseOrderDao {
 	public List<PurchaseOrder> searchPOByStatus(String search);
 	
 	public int CountPRByMonth(int month, int year);
+
+	public void approve(long id);
+
+	public void reject(long id);
+
+	public List<PurchaseOrder> getAllPOByOutlet(Long outletId);
+
+	public void process(long id);
+
 }

@@ -17,7 +17,7 @@ public interface PurchaseRequestDao {
 	
 	public List<PurchaseRequest> searchPR(String search);
 	
-	public List<PurchaseRequest> searchPRByStatus(String search);
+	public List<PurchaseRequest> searchPRByStatus(Long outletId, String search);
 	public int CountPRByMonth(int month, int year);
 }
 //

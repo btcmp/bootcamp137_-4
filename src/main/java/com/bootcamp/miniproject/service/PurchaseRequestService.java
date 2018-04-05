@@ -65,6 +65,7 @@ public class PurchaseRequestService {
 		Calendar cal = Calendar.getInstance();
 		int monthInt = cal.get(Calendar.MONTH);
 		int year = cal.get(Calendar.YEAR);
+		//System.out.println(cal.get(Calendar.YEAR)+ ' ' + cal.get(Calendar.MONTH));
 		String month;
 		if (monthInt < 10) {
 			month = "0"+monthInt;
@@ -179,7 +180,7 @@ public class PurchaseRequestService {
 		} else {
 			month = Integer.toString(monthInt);
 		}
-		int num = prDao.CountPRByMonth(monthInt, year)+1;
+		int num = poDao.CountPRByMonth(monthInt, year)+1;
 		String no;
 		if(num < 10) {
 			no = "00"+num;
@@ -199,7 +200,7 @@ public class PurchaseRequestService {
 		purchaseOrder.setStatus("Created");
 		purchaseOrder.setOutlet(pr.getOutlet());
 		poDao.save(purchaseOrder);
-		
+		float grandTotal = 0;
 		if(pr.getPurchaseRequestDetail() == null) {
 			
 		}else {
@@ -207,12 +208,19 @@ public class PurchaseRequestService {
 				PurchaseOrderDetail poDetail = new PurchaseOrderDetail();
 				poDetail.setCreatedOn(purchaseOrder.getCreatedOn());
 				poDetail.setPurchaseOrder(purchaseOrder);
+				poDetail.setUnitCost(prd.getItemVariant().getPrice());
+				poDetail.setSubTotal(prd.getRequestQty()*prd.getItemVariant().getPrice());
 				poDetail.setRequestQty(prd.getRequestQty());
 				poDetail.setVariant(prd.getItemVariant());
 				poDetailDao.save(poDetail);
+				grandTotal += prd.getRequestQty()*prd.getItemVariant().getPrice();
 			}
 		}
-		
+		PurchaseOrder newPo = poDao.getOne(purchaseOrder.getId());
+		System.out.println(newPo.getId());
+		newPo.setGrandTotal(grandTotal);
+		poDao.update(newPo);
+		System.out.println("hi");
 		PurchaseOrderHistory poHistory = new PurchaseOrderHistory();
 		poHistory.setCreatedOn(purchaseOrder.getCreatedOn());
 		poHistory.setPurchaseOrder(purchaseOrder);
@@ -230,8 +238,8 @@ public class PurchaseRequestService {
 		prHistoryDao.save(prh);
 		
 	}
-	public List<PurchaseRequest> getPRByStatus(String status) {
-		return prDao.searchPRByStatus(status);
+	public List<PurchaseRequest> getPRByStatus(Long outletId, String status) {
+		return prDao.searchPRByStatus(outletId, status);
 	}
 
 	public List<PurchaseRequest> search(String search) {

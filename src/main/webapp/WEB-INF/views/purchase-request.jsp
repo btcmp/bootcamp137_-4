@@ -46,7 +46,7 @@
       </div>
       <div class="col-xs-2">
 		    <div class="form-group">
-		    	<select id="select-status" class="form-control">
+		    	<select id="select-search-by-status" class="form-control">
 		    		<option value="All">All</option>
 		    		<option value="Created">Created</option>
 		    		<option value="Submitted">Submitted</option>

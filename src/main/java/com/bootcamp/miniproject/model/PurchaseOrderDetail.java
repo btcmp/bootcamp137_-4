@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "mp_t_purchase_order_detail")
@@ -22,9 +24,10 @@ public class PurchaseOrderDetail {
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private long id;
+	private Long id;
 	
 	@ManyToOne
+	@JsonIgnore
 	private PurchaseOrder purchaseOrder;
 	
 	@ManyToOne
@@ -53,11 +56,11 @@ public class PurchaseOrderDetail {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
