@@ -21,7 +21,7 @@
 						<input type="text" class="form-control" id="edit-name"  placeholder="Category Name" />
 					</div>
 				</form>
-<!--  -->
+
 			<div class="modal-footer">
 			<button style="float:left;" type="button" id="btn-delete" class="btn btn-danger" >X</button>
 			<button type="button" id="btn-reset-view" class="btn btn-secondary">Close</button>
@@ -30,3 +30,5 @@
 		</div>
 	</div>
 </div>
+
+<!-- // -->
