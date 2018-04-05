@@ -34,7 +34,7 @@
 						<a id="kosong" class="choose-customer btn btn-primary">Choose Customer</a>
 					</div>
 					<div class="col-xs-1">
-						<a class="btn btn-primary">Export</a>
+						<a id="export" class="btn btn-primary">Export</a>
 					</div>
 				</div>
 			</section>
@@ -474,6 +474,10 @@ $(document).ready(function(){
 			}
 			
 		})
+	})
+	
+	$('#export').click(function(){
+		window.location = '${pageContext.request.contextPath}/generate/sales-order'; 
 	})
 });
 </script>

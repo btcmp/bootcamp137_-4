@@ -175,8 +175,8 @@ $(document).ready(function(){
 					$('#update-active').prop('checked', false);
 				}
 				$('#update-province').val(data.province.id);
-				$('#update-region').val(data.region.id);
-				$('#update-district').val(data.district.id);
+				updateProvince(data.province.id,data.region.id);
+				updateRegion(data.region.id,data.district.id);
 				
 				//call modal
 				$('#modal-update-supplier').modal();
@@ -378,6 +378,10 @@ $(document).ready(function(){
 	
 	$('#update-province').change(function(){
 		var id = $('#update-province').val();
+		updateProvince(id)
+	});
+	
+	function updateProvince(id,id2) {
 		if (id!=="") {
 			$.ajax({
 				url : '${pageContext.request.contextPath }/additional/region/get-region?id='+id,
@@ -388,18 +392,25 @@ $(document).ready(function(){
 					region.push(reg);
 					$(data).each(function(index, data2){
 					reg = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
+					console.log("data outlet baru : "+data2.id)
 					region.push(reg);
 					})
 					$('#update-region').html(region);
+					console.log("data yang mau di set : "+id2);
+					$('#update-region').val(id2);
 				}, error : function(){
 					alert('get failed');
 				}
 			})
 		}
-	});
+	}
 	
 	$('#update-region').change(function(){
 		var id = $('#update-region').val();
+		updateRegion(id);
+	});
+	
+	function updateRegion(id,id2) {
 		if (id!=="") {
 			$.ajax({
 				url : '${pageContext.request.contextPath }/additional/district/get-district?id='+id,
@@ -413,12 +424,13 @@ $(document).ready(function(){
 					district.push(dis);
 					})
 					$('#update-district').html(district);
+					$('#update-district').val(id2);
 				}, error : function(){
 					alert('get failed');
 				}
 			})
 		}
-	});
+	}
 	
 	$('#search-btn').click(function(){
 		var word = $('#search').val();
@@ -426,7 +438,7 @@ $(document).ready(function(){
 	})
 	
 	$('#export').click(function(){
-		window.print();
+		window.location = '${pageContext.request.contextPath}/generate/supplier'; 
 	})
 });
 </script>

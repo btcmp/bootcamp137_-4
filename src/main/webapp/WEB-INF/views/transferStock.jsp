@@ -47,7 +47,7 @@
 						<a id="create" class="btn btn-primary">Create</a>
 					</div>
 					<div class="col-xs-1">
-						<a class="btn btn-primary">Export</a>
+						<a id="export" class="btn btn-primary">Export</a>
 					</div>
 				</div>
 			</section>
@@ -406,6 +406,10 @@ $(document).ready(function(){
 				}
 			})
 		}
+	})
+	
+	$('#export').click(function(){
+		window.location = '${pageContext.request.contextPath}/generate/ts'; 
 	})
 });
 </script>

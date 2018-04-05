@@ -13,7 +13,7 @@
 					<select class="form-control" name="more" id="more-option">
 					</select>
 				</div>
-				<h4 class="modal-title" id="exampleModalLabel">Transfer Stock Detail</h4>
+				<h3 class="modal-title" id="exampleModalLabel">Transfer Stock Detail</h3>
 			</div>
 			<div class="modal-body">
 				<form class="form-all">
