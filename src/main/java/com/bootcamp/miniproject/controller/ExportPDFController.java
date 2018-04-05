@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bootcamp.miniproject.model.Adjustment;
 import com.bootcamp.miniproject.model.Category;
 import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.SalesOrder;
 import com.bootcamp.miniproject.model.Supplier;
 import com.bootcamp.miniproject.model.TransferStock;
+import com.bootcamp.miniproject.service.AdjustmentService;
 import com.bootcamp.miniproject.service.CategoryService;
 import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.PurchaseRequestService;
@@ -43,6 +45,9 @@ public class ExportPDFController {
 	
 	@Autowired
 	SalesOrderService salesOrderService; 
+	
+	@Autowired
+	AdjustmentService adjustmentService;
 	
 	@RequestMapping(value = "/supplier", method = RequestMethod.GET)
 	ModelAndView generatePdf(HttpServletRequest request,
@@ -110,4 +115,17 @@ public class ExportPDFController {
 
 	return new ModelAndView("pdfViewSalesOrder","salesOrders",salesOrders);
 	}
+	
+	@RequestMapping(value = "/adjustment", method = RequestMethod.GET)
+	ModelAndView generatePdfAdjustment(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("Calling generatePdf()...");
+		//user data
+		response.setHeader("Content-Disposition", "attachment; filename=\"adjustment.pdf\"");
+		response.setContentType("application/pdf");
+		java.util.List<Adjustment> adjustments = adjustmentService.selectAll();
+
+	return new ModelAndView("pdfViewAdjustment","adjustments",adjustments);
+	}
+	
+	
 }

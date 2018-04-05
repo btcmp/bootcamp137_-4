@@ -11,5 +11,6 @@ public interface AdjustmentDetailDao {
 	public AdjustmentDetail getOne(AdjustmentDetail adjustmentDetail);
 	public void update(AdjustmentDetail adjustmentDetail);
 	public void delete(AdjustmentDetail adjustmentDetail);
+	public List<AdjustmentDetail> getAdjustmentDetailByAdjustmentId(long search);
 	
 }

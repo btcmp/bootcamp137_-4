@@ -54,7 +54,18 @@ public class AdjustmentHistoryDaoImpl implements AdjustmentHistoryDao{
 		session.delete(adjustmentHistory);
 		session.flush();
 	}
-	
-	
+
+	@Override
+	public List<AdjustmentHistory> getAdjustmentHistoryByAdjustmentId(long search) {
+		// TODO Auto-generated method stub
+		String hql = "from AdjustmentHistory adjustHis where adjustHis.adjustment.id = :search";
+		Session session = sessionFactory.getCurrentSession();
+		List<AdjustmentHistory> adjustmentHistories = session.createQuery(hql).setParameter("search", search).list();
+		if(adjustmentHistories.isEmpty()) {
+			return null;
+		} else {
+			return adjustmentHistories;
+		}
+	}
 	
 }

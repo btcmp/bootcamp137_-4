@@ -52,6 +52,15 @@ public class AdjustmentDaoImpl implements AdjustmentDao {
 		session.delete(adjustment);
 		session.flush();
 	}
+
+	@Override
+	public List<Adjustment> getAdjustmentIdByOutletId(long outletId) {
+		// TODO Auto-generated method stub
+		String hql = "from Adjustment adjust where adjust.outlet.id = :outletId";
+		Session session = sessionFactory.getCurrentSession();
+		List<Adjustment> adjust = session.createQuery(hql).setParameter("outletId", outletId).list();
+		return adjust;
+	}
 	
 	
 }

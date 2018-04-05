@@ -6,6 +6,7 @@
 <spring:url value="/resources/adminLTE" var="url"></spring:url>
 <spring:url value="/resources/js/jquery-3.3.1.js" var="jq"></spring:url>
 <spring:url value="/resources/js/parsley.js" var="parsley"></spring:url>
+<c:url value="/j_spring_security_logout" var="logoutUrl" />
 <!DOCTYPE html>
 <html>
 <%@ include file="template/head.jsp" %>
@@ -44,7 +45,7 @@
         <a id="create-adjustment" class="btn btn-primary">Create</a>
       </div>
       <div class="col-xs-1">
-        <a class="btn btn-primary">Export</a>
+        <a class="btn btn-primary" id="export">Export</a>
       </div>
       </div>
     </section>
@@ -102,7 +103,7 @@
 <div>
 	<%@ include file="modal/add-adjustment.jsp" %>
 	<%@ include file="modal/add-adjustment-item.jsp" %>
-	<%@ include file="modal/view-adjustment.jsp" %>
+	<%@ include file="modal/view-adjustment-detail.jsp" %>
 </div>
 
 
@@ -110,7 +111,7 @@
 </body>
 
 <script type="text/javascript">
-	$(function() {
+$(document).ready(function(){
 		//data-tabel
 		$('#adjust-tbl').DataTable({
 			paging : true,
@@ -120,63 +121,147 @@
 		$("#adjustment-side-option").addClass('active');
 		$("#treeview-transaction").addClass('active');
 
+//ketika role admin, muncul action | kalo selain admin, tidak muncul action
+		var role = "${employee.user.role.name}";
+		if (role!=="ROLE_ADMIN") {
+			$("#more-option").addClass('hidden');
+		}
+		
 //modal create adjustment
-		$('#create-adjustment').on('click', function() {
-			$('#modal-add-adjustment').modal();
+		$('#create-adjustment').click(function(){
+		$('#modal-add-adjustment').modal();
+		if (document.getElementById("add-adjustment-tbl").rows.length>0) {
+			document.getElementById("btn-save").disabled = false;
+		}else {
 			document.getElementById("btn-save").disabled = true;
-		})
-
+		}
+	})
+		
 //modal add item adjustment		
 		$('#btn-add-adjustment').click(function(){
 			$('#modal-add-adjustment-item').modal();
 		})
 
-	var added = [];
-	var addedQty = [];
-	$('.btn-added-item').hide();		
-		
 //view adjustment detail
-/* 	$('.view').click(function(){
+	$('.view').click(function(){
 		var id = $(this).attr('id');
 		$.ajax({
 			type : 'GET',
 			url : '${pageContext.request.contextPath}/transaction/adjustment/get-one/'+id,
 			dataType: 'json',
 			success : function(data){
-				$('#view-outlet').val(data.outlet.name);
-				$('#view-status').val(data.status);
+				console.log(data);
+				$('#view-hidden-id').val(data.id);
+				$('#view-created-by').text("Created By : "+data.createdBy.username);
+				$('#view-status').text("Adjustment Status : "+data.status);
 				$('#view-notes').val(data.notes);
-				$('#view-adjustment-tbl').empty();
+				$('#view-status-history').val();
+				$('#view-adjustment-detail-tbl').empty();
+				var option = [];
+				if (data.status=="Submitted") {
+					option.push("<option value=\"Kosong\">Action</option>");
+					option.push("<option value=\"Approved\">Approve</option>");
+					option.push("<option value=\"Rejected\">Reject</option>");
+					option.push("<option value=\"Print\">Print</option>");
+				} else {
+					option.push("<option value=\"Kosong\">Action</option>");
+					option.push("<option value=\"Print\">Print</option>");
+				}
+				$('#more-option').html(option);
 				$.ajax({
 					url : '${pageContext.request.contextPath }/transaction/adjustment/search-adjustment-detail?search='+data.id,
 					type : 'GET',
 					dataType: 'json',
 					success : function(data2){
-						//console.log(data2);
 						$.each(data2, function(key, val) {
-						$('#view-adjustment-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
+						$('#view-adjustment-detail-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
 								+ val.inStock +'</td><td>'+ val.actualStock +'</td></tr>');
 						});
-						//call modal
-						$('#modal-view-adjustment').modal();
+						$.ajax({
+							url : '${pageContext.request.contextPath }/transaction/adjustment/search-adjustment-history?search='+data.id,
+							type : 'GET',
+							dataType: 'json',
+							success : function(data3){
+								$('#view-status-history').empty();
+								$.each(data3, function(key, val) {
+								$('#view-status-history').append('<tr><td>On '+ getDateFormat(val.createdOn) +' - '+ val.status +'</td></tr>');
+								});
+								$('#modal-view-adjustment-detail').modal();
+							}, error : function(){
+								alert('get adjustment detail failed');
+							}
+							
+						})
 					}, error : function(){
-						alert('get transfer stock detail failed');
+						alert('get adjustment detail failed');
 					}
 					
-				})			
-				
+				})
 			}, 
 			error : function(){
-				alert('show selected transferStock data in modal failed');
+				alert('show selected adjustment data in modal failed');
 			}
 		})
-	}) */
+	})
 	
+	//function tanggal
+	function getDateFormat(date) {
+		var d = new Date(Number(date)),
+		month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate(),
+		year = d.getFullYear();
 
+		if (month.length < 2)
+		    month = '0' + month;
+		if (day.length < 2)
+		    day = '0' + day;
+		var date = new Date();
+		date.toLocaleDateString();
+
+		return [year, month, day].join('-');
+	};
+	
+	$('#more-option').change(function(){
+		var newStatus = $(this).val();
+		if (newStatus=="Approved") {
+			adjustmentId = $('#view-hidden-id').val();
+			$.ajax({
+				url : '${pageContext.request.contextPath }/transaction/adjustment/update-status-and-stock/'+adjustmentId,
+				type : 'PUT',
+				data : JSON.stringify(newStatus),
+				contentType : 'application/json',
+				success : function(){
+					alert('update status successfully');
+					window.location='${pageContext.request.contextPath}/transaction/adjustment';
+				}, error : function(){
+					alert('update status failed');
+				}
+				
+			})
+		} else if (newStatus=="Rejected") {
+			adjustmentId = $('#view-hidden-id').val();
+			$.ajax({
+				url : '${pageContext.request.contextPath }/transaction/adjustment/update-status/'+adjustmentId,
+				type : 'PUT',
+				data : JSON.stringify(newStatus),
+				contentType : 'application/json',
+				success : function(){
+					alert('update status successfully');
+					window.location='${pageContext.request.contextPath}/transaction/adjustment';
+				}, error : function(){
+					alert('update status failed');
+				}
+				
+			})
+		}else if (newStatus=="Print") {
+			window.location='${pageContext.request.contextPath}/transaction/adjustment';
+		}
+	})
+	
 	
 //button save 
 		$('#btn-save').click(function(){
-
+		var idUser = "${employee.user.id}"
 //isi adjustment detail
 			var adjustmentDetail=[];
 			$('#add-adjustment-tbl > tr').each(function(index, data){
@@ -185,27 +270,38 @@
 							id : $(data).find('td').eq(0).attr('id')
 						},
 						inStock : $(data).find('td').eq(1).text(),
-						actualStock : $(data).find('td').eq(2).text()
+						actualStock : $(data).find('td').eq(2).text(),
+						createdBy : {
+							id : idUser
+						},
+						modifiedBy : {
+							id : idUser
+						}
 				}
 				adjustmentDetail.push(adjDet);
 			});
 			
-//isi adjustment history			
-/* 			var adjustmentHistory = {
-				
-			} */
-			
-			
 			
 //isi adjustment
+			var idOut = "${outlet.id}";
 			var adjustment = {
 					outlet : {
-						id : $('#add-outlet').val()
+						id : idOut
 					},
 					adjustmentDetails : adjustmentDetail, 
 					notes : $('#add-notes').val(),
-					status : "Submitted"
+					status : "Submitted",
+					createdBy : {
+						id : idUser
+					},
+					modifiedBy : {
+						id : idUser
+					}
 			};
+			
+			console.log(adjustment)
+			
+			
 			$.ajax({
 				url : '${pageContext.request.contextPath }/transaction/adjustment/save',
 				type : 'POST',
@@ -213,24 +309,28 @@
 				contentType : 'application/json',
 				success : function(){
 					alert('save successfully');
-					window.location='${pageContext.request.contextPath}/transaction/adjustment';
+ 					window.location='${pageContext.request.contextPath}/transaction/adjustment'; 
 				}, error : function(){
 					alert('save failed');
 				}
 			})
 	})
 
+	
+	
+	var added = [];
+	var addedQty = [];
+	$('.btn-added-item').hide();
+	
 //button add item-variant
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
 		var inStock = parseInt($('#inStock'+id).text());
 		var actualStock = parseInt($('.add-adjustment-qty'+id).val());
-		if (actualStock > inStock) {
-			alert("not enough stock");
-		} else if (actualStock < 1) {
-			alert("at least 1");
+	 if (actualStock < 0) {
+			alert("can't minus");
 		}else {
-			added.push(id);
+ 			added.push(id);
 			addedQty.push(actualStock);
 			$('#td-qty'+id).html(actualStock);
 			$(this).hide();
@@ -243,7 +343,7 @@
 				success : function(data){
 					$('#add-adjustment-tbl').append('<tr id="tr-adjustment'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>'
 							+ data.endingQty +'</td><td>'+ actualStock +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
-							+ data.id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
+							+ data.id +' btn-cancel-item btn btn-danger">Cancel</button></td></tr>');
 				},
 				error : function(){
 					alert('get one item inventory failed');
@@ -300,26 +400,20 @@
 				}, 
 				error : function(){
 					$('#add-item-adjustment-tbl').empty();
-					//alert('show selected transferStock data in modal failed');
+					//alert('show selected adjustment data in modal failed');
 				}
 			})
 		}
 	})	
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	//export pdf
+	$('#export').click(function(){
+		window.location='${pageContext.request.contextPath}/generate/adjustment'; 
+	});	
+	
+	
+	
+	
 	});
 </script>
 

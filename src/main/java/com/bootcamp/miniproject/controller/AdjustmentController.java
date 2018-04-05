@@ -2,6 +2,8 @@ package com.bootcamp.miniproject.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,9 +18,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bootcamp.miniproject.model.Adjustment;
 import com.bootcamp.miniproject.model.AdjustmentDetail;
+import com.bootcamp.miniproject.model.AdjustmentHistory;
+import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.Outlet;
+import com.bootcamp.miniproject.model.TransferStock;
+import com.bootcamp.miniproject.model.TransferStockHistory;
 import com.bootcamp.miniproject.service.AdjustmentDetailService;
+import com.bootcamp.miniproject.service.AdjustmentHistoryService;
 import com.bootcamp.miniproject.service.AdjustmentService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
@@ -37,16 +44,24 @@ public class AdjustmentController {
 	OutletService outletService;
 	
 	@Autowired
+	HttpSession httpSession;
+	
+	@Autowired
 	ItemInventoryService itemInventoryService;
+	
+	@Autowired 
+	AdjustmentHistoryService adjustmentHistoryService;
 	
 	
 	@RequestMapping
 	public String index(Model model) {
-		List<Adjustment> adjustment = adjustmentService.selectAll();
-		List<Outlet> outlet = outletService.selectStatusActive();
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		long outletId = outlet.getId();
+		List<Adjustment> adjustment = adjustmentService.getAdjustmentIdByOutletId(outletId);
+		List<Outlet> outlets = outletService.selectStatusActive();
 		List<ItemInventory> itemInventory = itemInventoryService.getAll();
 		model.addAttribute("adjustments", adjustment);
-		model.addAttribute("outlets",outlet);
+		model.addAttribute("outlets",outlets);
 		model.addAttribute("itemInventories",itemInventory);
 		return "adjustment";
 	}
@@ -74,8 +89,24 @@ public class AdjustmentController {
 	@RequestMapping(value = "/search-item", method = RequestMethod.GET)
 	@ResponseBody
 	public List<ItemInventory> searchItem(@RequestParam(value="search", defaultValue="") String search) {
-		List<ItemInventory> itemsInventory = itemInventoryService.searchItemInventoryByItemName(search);
+		Outlet outlet = (Outlet)httpSession.getAttribute("outlet");
+		long outletId = outlet.getId();
+		List<ItemInventory> itemsInventory = itemInventoryService.searchItemInventoryByItemNameAndOutlet(outletId, search);
 		return itemsInventory;
+	}
+	
+	@RequestMapping(value = "/search-adjustment-detail", method = RequestMethod.GET)
+	@ResponseBody
+	public List<AdjustmentDetail> searchAdjustmentDetailByAdjustmentId(@RequestParam(value="search", defaultValue="") long search) {
+		List<AdjustmentDetail> adjustmentDetails = adjustmentDetailService.getAdjustmentDetailByAdjustmentId(search);
+		return adjustmentDetails;
+	}
+
+	@RequestMapping(value = "/search-adjustment-history", method = RequestMethod.GET)
+	@ResponseBody
+	public List<AdjustmentHistory> searchAdjustmentHistoryByAdjustmentId(@RequestParam(value="search", defaultValue="") long search) {
+		List<AdjustmentHistory> adjustmentHistories = adjustmentHistoryService.getAdjustmentHistoryByAdjustmentId(search);
+		return adjustmentHistories;
 	}
 	
 	
@@ -84,6 +115,23 @@ public class AdjustmentController {
 	public void update(@RequestBody Adjustment adjustment) {
 		adjustmentService.update(adjustment);
 	}
+	
+	@RequestMapping(value = "/update-status/{id}", method = RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateStatus(@RequestBody String newStatus, @PathVariable long id) {
+		Adjustment adjustment = adjustmentService.getOne(id);
+		adjustment.setStatus(newStatus);
+		adjustmentService.update(adjustment);
+	}
+	
+	@RequestMapping(value = "/update-status-and-stock/{id}", method = RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateStatusAndStock(@RequestBody String newStatus, @PathVariable long id) {
+		Adjustment adjustment = adjustmentService.getOne(id);
+		adjustment.setStatus(newStatus);
+		adjustmentService.updateStatusAndStock(adjustment);
+	}
+	
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
 	@ResponseBody

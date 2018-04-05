@@ -37,4 +37,9 @@ public class AdjustmentDetailService {
 	public void delete(AdjustmentDetail adjustmentDetail) {
 		adjustmentDetailDao.delete(adjustmentDetail);
 	}
+
+	public List<AdjustmentDetail> getAdjustmentDetailByAdjustmentId(long search) {
+		// TODO Auto-generated method stub
+		return adjustmentDetailDao.getAdjustmentDetailByAdjustmentId(search);
+	}
 }

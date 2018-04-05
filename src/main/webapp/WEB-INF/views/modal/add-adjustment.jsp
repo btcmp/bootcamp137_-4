@@ -14,11 +14,7 @@
 			<div class="modal-body">
 				<form class="form-all">
 					<div class="form-group">
-						<label for="add-outlet">Create New Adjustment</label> <select
-							class="form-control" name="add-outlet" id="add-outlet">
-							<c:forEach var="outlet" items="${outlets }">
-								<option value="${outlet.id }">${outlet.name }</option>
-							</c:forEach>
+						<label>Create New Adjustment : ${outlet.name }</label>
 						</select>
 					</div>
 					 <div class="form-group">

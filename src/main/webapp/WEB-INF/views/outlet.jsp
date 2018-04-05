@@ -391,16 +391,16 @@
 	
 	//reset form
 		$('#btn-reset').on('click', function(){
-			$('#edit-id').val('');
-			$('#edit-name').val('');
-			$('#edit-address').val('');
-			$('#edit-phone').val('');
-			$('#edit-email').val('');
-			$('#edit-province').val('');
-			$('#edit-region').val('');
-			$('#edit-district').val('');
-			$('#edit-postalCode').val('');
-			$('#edit-createdOn').val('');	
+			$('#entry-id').val('');
+			$('#entry-name').val('');
+			$('#entry-address').val('');
+			$('#entry-phone').val('');
+			$('#entry-email').val('');
+			$('#entry-province').val('');
+			$('#entry-region').val('');
+			$('#entry-district').val('');
+			$('#entry-postalCode').val('');
+			$('#entry-createdOn').val('');	
 	})
 
 	

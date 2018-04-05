@@ -11,5 +11,5 @@ public interface AdjustmentHistoryDao {
 	public AdjustmentHistory getOne(AdjustmentHistory adjustmentHistory);
 	public void update(AdjustmentHistory adjustmentHistory);
 	public void delete(AdjustmentHistory adjustmentHistory);
-	
+	public List<AdjustmentHistory> getAdjustmentHistoryByAdjustmentId(long search);
 }

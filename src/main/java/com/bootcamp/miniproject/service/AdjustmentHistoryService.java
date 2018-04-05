@@ -38,5 +38,8 @@ public class AdjustmentHistoryService {
 		adjustmentHistoryDao.delete(adjustmentHistory);
 	}
 	
+	public List<AdjustmentHistory> getAdjustmentHistoryByAdjustmentId(long search){
+		return adjustmentHistoryDao.getAdjustmentHistoryByAdjustmentId(search);
+	}
 	
 }

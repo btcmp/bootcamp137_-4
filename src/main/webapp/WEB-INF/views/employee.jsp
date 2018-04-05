@@ -254,19 +254,23 @@ $(function () {
 		 console.log(emp);
 		 		
 	
-			$.ajax({
+			 $.ajax({
 				url : '${pageContext.request.contextPath}/master/employee/get-all',	
 				type : 'GET',
 				success : function(data) {
+					console.log(data);
 					var sameName = 0;
 					var sameEmail = 0;
 					$(data).each(function(index, data2) {
-						if (data2.user !== null) {
-							 if (emp.user.username.toLowerCase() == data2.user.username.toLowerCase()) {
-							sameName++;
-						} else if (emp.email.toLowerCase() == data2.email.toLowerCase()){
-							sameEmail++;
-						} 							
+						
+						if (data2.user !== null && data2.email !== null) {
+							if (data2.user.username !== null) {
+								if (emp.user.username.toLowerCase() == data2.user.username.toLowerCase()) {
+									sameName++;
+								} else if (emp.email.toLowerCase() == data2.email.toLowerCase()){
+									sameEmail++;
+								}		
+							}				
 					}
 
 					})
@@ -275,9 +279,9 @@ $(function () {
 						alert('this name has been taken, please change!')
 					} else if (sameEmail > 0) {
 						alert('this email has been taken, please change!')
-					} else { 
+					} else {  
 						
- 				 		$.ajax({
+ 				 	 	$.ajax({
 							url : '${pageContext.request.contextPath}/master/employee/save',	
 							type : 'POST',
 							contentType : 'application/json',
@@ -288,15 +292,17 @@ $(function () {
 							}, error : function() {
 								alert('save failed!');
 							}
-						});   
+						});    
 						
-					}
+						/* alert('saved!') */
+						
+					 }
 					
 				}, error : function() {
 					alert('save failed!');
 				}
 			})  
-	
+	 
 
 	 
 	}); 
@@ -371,20 +377,10 @@ $(function () {
     			}
     		});
     	});
-    	
-    	/* var employeeOutlets=[];	
-    	$('#list-edit-outlet').find('input[type="checkbox"]:checked').each(function(){
-    		employeeOutlets.push({id : $(this).attr('id')});
-    	});
-    	$('#btn-edit-emp').attr('employeeOutlets',JSON.stringify(employeeOutlets)); */  
       	
 	}
 	
-	
 
-	
-	
-	
 	//eksekusi button
  	$('#btn-edit-emp').on('click', function(){
 		var haveAccounts  = $('#create-account').is(':checked') ? true : false;
@@ -446,60 +442,7 @@ $(function () {
 	
 	
 	
-	
-/*     $('#btn-edit').on('click', function(evt){
-    	evt.preventDefault();
-    	var account = $('#edit-account').is(':checked') ? true : false;
-    	var user = null;
-    	try{
-    		var employeeOutlets = JSON.parse($(this).attr('employeeOutlets'));
-    	} catch (ex){
-    		console.error(ex);
-    	}
-    	
-    	if(account==true){
-    		user = {
-    			username : $('#edit-username').val(),
-    			password : $('#edit-password').val(),
-    			role : {
-    				id : $('#edit-role').val()
-    			},
-    			active : true
-    		}
-    	}
-    	
-    	var employee = {
-    		id : $('#edit-id').val(),
-        	firstName : $('#edit-fname').val(),
-        	lastName : $('#edit-lname').val(),
-       		email : $('#edit-email').val(),
-       		title : $('#edit-title').val(),
-       		employeeOutlet : employeeOutlets,
-       		haveAccount : account,
-       		active : true,
-       		user : user
-        }
-    	console.log(employee);
-    	$.ajax({
-    		url : '${pageContext.request.contextPath}master/employee/update',
-   			type : 'PUT',
-   			contentType : 'application/json',
-   			data : JSON.stringify(employee),
-    		success : function(data){
-   				alert('update successfully!');
-   				window.location = '${pageContext.request.contextPath}master/employee/';
-   			},
-    		error : function(){
-   				alert('update failed!');
-   			}
-   		});
-    });
- */	
-	
-	
-	
-	
-	
+
 	
 	
 	

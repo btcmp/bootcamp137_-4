@@ -11,5 +11,6 @@ public interface AdjustmentDao {
 	public Adjustment getOne(Adjustment adjustment);
 	public void update(Adjustment adjustment);
 	public void delete(Adjustment adjustment);
+	public List<Adjustment> getAdjustmentIdByOutletId(long outletId);
 	
 }

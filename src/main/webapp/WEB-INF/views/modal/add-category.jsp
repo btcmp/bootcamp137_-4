@@ -9,10 +9,10 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="exampleModalLabel"><b>Add New Country</b></h4>
+				<h4 class="modal-title" id="exampleModalLabel"><b>Add New Category</b></h4>
 			</div>
 			<div class="modal-body">
-				<form action="#">
+				<form class="form-add-category">
 					<div class="form-group">
 						<label for="save-con">Category Name</label> 
 						<input type="text" class="form-control" id="entry-category" placeholder="Category Name" />
@@ -20,7 +20,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button"  id="btn-reset-add" class="btn btn-secondary" >Close</button>
 				<button type="button" id="btn-save" class="btn btn-primary">Save</button>
 			</div>
 		</div>

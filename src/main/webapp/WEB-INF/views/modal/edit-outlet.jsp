@@ -70,7 +70,7 @@
 			</div>
 			<div class="modal-footer">
 				<button style="float:left;" type="button" id="btn-delete" class="btn btn-danger">X</button>
-				<button type="button" id="btn-reset" class="btn btn-secondary" >Close</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<button type="button" id="btn-edit" class="btn btn-primary"
 					data-dismiss="modal">Update</button>
 			</div>

@@ -125,7 +125,10 @@ $('#btn-save').on('click', function(){
 		name : $('#entry-category').val(),
 		active : 1
 	}
-
+	
+	
+	
+	
 	$.ajax({
 		url : '${pageContext.request.contextPath}/master/category/save',
 		type : 'POST',
@@ -137,7 +140,8 @@ $('#btn-save').on('click', function(){
 		}, error : function() {
 			alert ('saving failed');
 		}
-	})		
+	})	
+
 });	
 //========================================		
 //EDIT CATEGORY
@@ -239,7 +243,11 @@ console.log(category)
 });
 //==================================
 //RESET FORM
-$('#btn-reset').on('click', function(){
+$('#btn-reset-add').on('click', function(){
+	$('#entry-category').val('');
+})
+
+$('#btn-reset-view').on('click', function(){
 	$('#edit-name').val('');
 })
 

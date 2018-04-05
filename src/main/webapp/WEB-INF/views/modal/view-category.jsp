@@ -24,7 +24,7 @@
 
 			<div class="modal-footer">
 			<button style="float:left;" type="button" id="btn-delete" class="btn btn-danger" >X</button>
-			<button type="button" id="btn-reset" class="btn btn-secondary">Close</button>
+			<button type="button" id="btn-reset-view" class="btn btn-secondary">Close</button>
 			<button type="button" id="btn-update" class="btn btn-primary float-right">Save</button>
 			</div>
 		</div>

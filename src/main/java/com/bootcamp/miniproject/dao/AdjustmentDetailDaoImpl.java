@@ -52,5 +52,18 @@ public class AdjustmentDetailDaoImpl implements AdjustmentDetailDao{
 		session.delete(adjustmentDetail);
 		session.flush();
 	}
+
+	@Override
+	public List<AdjustmentDetail> getAdjustmentDetailByAdjustmentId(long search) {  //buat nampung nilai dari service-controller-jsp-ajax (yang penting tipe data-nya sama) 
+		// TODO Auto-generated method stub
+		String hql = "from AdjustmentDetail adjustDet where adjustDet.adjustment.id = :search";
+		Session session = sessionFactory.getCurrentSession();
+		List<AdjustmentDetail> adjustmentDetails = session.createQuery(hql).setParameter("search", search).list();
+		if (adjustmentDetails.isEmpty()) {
+			return null;
+		} else {
+			return adjustmentDetails;
+		}
+	}
 	
 }

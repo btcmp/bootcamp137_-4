@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,8 +35,9 @@ public class AdjustmentHistory {
 	@NotNull
 	private String status;
 	
-	@Column(name="created_by")
-	private long createdBy;
+	@ManyToOne
+	@JoinColumn(name="created_by")
+	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column (name="created_on")
@@ -65,14 +67,6 @@ public class AdjustmentHistory {
 		this.status = status;
 	}
 
-	public long getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(long createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public Date getCreatedOn() {
 		return createdOn;
 	}
@@ -80,6 +74,15 @@ public class AdjustmentHistory {
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+	
 	
 	
 	
