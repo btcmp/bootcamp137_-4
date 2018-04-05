@@ -34,9 +34,15 @@
 					<div class="form-group">
 					<select class="form-control col-sm-4" name="outlet-search"
 						id="outlet-search">
-						<option value="kosong">Search Outlet</option>
-						<c:forEach var="outlet" items="${outlets }">
-							<option value="${outlet.id }">${outlet.name }</option>
+						<option value="kosong">Search By To Outlet</option>
+						<c:forEach var="outlets" items="${outlets }">
+							<script>
+								var fromOutletId = "${outlet.id}";
+								var toOutletId = "${outlets.id}";
+								if (fromOutletId!==toOutletId) {
+									document.write("<option value="+toOutletId+">"+"To ${outlets.name}" +"</option>");
+								}
+							</script>
 						</c:forEach>
 						<option value="all">All Outlet</option>
 					</select>
@@ -315,7 +321,10 @@ $(document).ready(function(){
 			})
 		}
 	})
-	
+	var toOutletIdSearch = "${toOutletId}";
+	if (toOutletIdSearch!=="kosong") {
+		$('#outlet-search').val(toOutletIdSearch);
+	}
 	$('#outlet-search').change(function(){
 		var word = $(this).val();
 		if (word=="all") {

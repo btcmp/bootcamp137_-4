@@ -15,19 +15,18 @@
 				<form class="form-all">
 					<div class="form-group">
 						<p>Create New Transfer Stock From: <a style="font-weight: bold;">${outlet.name}</a></p>
-						
-						<%-- <label for="add-from-outlet">Create New Transfer Stock From: </label> <select
-							class="form-control" name="add-from-outlet" id="add-from-outlet">
-							<c:forEach var="outlet" items="${outlets }">
-								<option value="${outlet.id }">${outlet.name }</option>
-							</c:forEach>
-						</select> --%>
 					</div>
 					<div class="form-group">
 						<label for="add-to-outlet">To Outlet</label> <select
 							class="form-control" name="add-to-outlet" id="add-to-outlet">
-							<c:forEach var="outlet" items="${outlets }">
-								<option value="${outlet.id }">${outlet.name }</option>
+							<c:forEach var="outlets" items="${outlets }">
+								<script>
+									var fromOutletId = "${outlet.id}";
+									var toOutletId = "${outlets.id}";
+									if (fromOutletId!==toOutletId) {
+										document.write("<option value="+toOutletId+">"+"${outlets.name}" +"</option>");
+									}
+								</script>
 							</c:forEach>
 						</select>
 					</div>

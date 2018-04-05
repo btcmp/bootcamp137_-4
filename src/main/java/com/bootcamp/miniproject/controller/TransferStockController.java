@@ -62,6 +62,7 @@ public class TransferStockController {
 		model.addAttribute("transferStocks", transferStocks);
 		model.addAttribute("outlets", outlets);
 		model.addAttribute("itemInventorys", itemsInventorys);
+		model.addAttribute("toOutletId", "kosong");
 		return "transferStock";
 	}
 	
@@ -116,13 +117,16 @@ public class TransferStockController {
 	}
 	
 	@RequestMapping(value = "/search-outlet", method = RequestMethod.GET)
-	public String indexMainSearch(Model model, @RequestParam(value="search", defaultValue="") long search) {
-		List<TransferStock> transferStocks = transferStockService.getTransferStockByOutletId(search);
+	public String indexMainSearch(Model model, @RequestParam(value="search", defaultValue="") long toOutletId) {
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		long fromOutletId = outlet.getId();
+		List<TransferStock> transferStocks = transferStockService.getTransferStockByFromOutletAndToOutletId(fromOutletId, toOutletId);
 		List<Outlet> outlets = outletService.selectAll();
 		List<ItemInventory> itemsInventorys= itemInventoryService.getAll();
 		model.addAttribute("transferStocks", transferStocks);
 		model.addAttribute("outlets", outlets);
 		model.addAttribute("itemInventorys", itemsInventorys);
+		model.addAttribute("toOutletId", toOutletId);
 		return "transferStock";
 	}
 	

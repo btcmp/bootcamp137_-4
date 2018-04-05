@@ -21,4 +21,6 @@ public interface TransferStockDao {
 	public List<TransferStock> getTransferStockByOutletId(long search);
 	
 	public List<TransferStock> getTransferStockByFromOutletId(long search);
+
+	public List<TransferStock> getTransferStockByFromOutletAndToOutletId(long fromOutletId, long toOutletId);
 }

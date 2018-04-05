@@ -101,6 +101,11 @@ public class TransferStockService {
 		return transferStockDao.getTransferStockByFromOutletId(search);
 	}
 
+	public List<TransferStock> getTransferStockByFromOutletAndToOutletId(long fromOutletId, long toOutletId) {
+		// TODO Auto-generated method stub
+		return transferStockDao.getTransferStockByFromOutletAndToOutletId(fromOutletId, toOutletId);
+	}
+
 	public void saveUpdateStatusAndStock(TransferStock transferStock) {
 		transferStockDao.saveUpdate(transferStock);
 		TransferStockHistory tsh = new TransferStockHistory();
