@@ -41,14 +41,14 @@ public class ItemVariant {
 	private long categoryId;
 	
 	@Column(name = "created_by")
-	private long createdBy;
+	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "created_on")
 	private Date createdOn;
 	
 	@Column(name = "modified_by")
-	private long modifiedBy;
+	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "modified_on")
@@ -107,11 +107,11 @@ public class ItemVariant {
 		this.categoryId = categoryId;
 	}
 
-	public long getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(long createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 
@@ -123,11 +123,11 @@ public class ItemVariant {
 		this.createdOn = createdOn;
 	}
 
-	public long getModifiedBy() {
+	public User getModifiedBy() {
 		return modifiedBy;
 	}
 
-	public void setModifiedBy(long modifiedBy) {
+	public void setModifiedBy(User modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 

@@ -34,7 +34,7 @@ public class PurchaseRequestHistory {
 	private String status;
 	
 	@Column(name="created_by")
-	private long createdBy;
+	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="created_on")
@@ -64,11 +64,11 @@ public class PurchaseRequestHistory {
 		this.status = status;
 	}
 
-	public long getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(long createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 
