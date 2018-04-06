@@ -5,7 +5,7 @@
 
     
 <div class="modal fade" id="modal-edit-po" data-modal-index="1">
-  <div class="modal-dialog modal-md">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -14,47 +14,47 @@
       <div class="modal-body">
       		<label for="select-outlet">Outlet Login</label>
 			<select disabled class="selectpicker" name="select-outlet" id="select-outlet">
-				<c:forEach var="outlet" items="${outlets }">
-					<option value="${outlet.id }">${outlet.name }</option>
-				</c:forEach>
+				
 			</select>
 			
       	<form class="form-all">
 			<div class="form-group" id = "edit-po-id">
                 <br>
-                <label for="select-outlet">Select Supplier</label>
-                <select disabled class="selectpicker" name="select-supplier" id="select-supplier">
+                <label for="select-supplier">Select Supplier</label>
+                <select class="selectpicker" name="select-supplier" id="select-supplier">
                     <c:forEach var="supplier" items="${suppliers }">
                         <option value="${supplier.id }">${supplier.name }</option>
                     </c:forEach>
                 </select>
 				<p></p>
-				<label for="add-pr-notes">PR Notes</label><br>
-				<textarea rows="4" id="add-pr-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
+				<label for="edit-po-notes">PO Notes</label><br>
+				<textarea rows="4" id="edit-po-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
 				<p></p>
 			</div>
 		</form>
-		    <label for="add-pr">Purchase Request</label>
-			<table id="table-add-pr" class="table table-bordered table-striped">
+		    <label for="edit-po">Purchase Order</label>
+			<table id="table-edit-po" class="table table-bordered table-striped">
                 <thead>
                 	<th class="col-xl-3">Item</th>
 					<th class="col-xl-3">In Stock</th>
-					<th class="col-xl-3">Request Quantity </th>
-					<th class="col-xl-3"> # </th>
-                	
+					<th class="col-xl-3">Quantity </th>
+					<th class="col-xl-3">Unit Cost </th>
+					<th class="col-xl-3">Sub Total</th>
+			
 				</thead>
-				<tbody id="table-add-pr-body">
+				<tbody id="table-edit-po-body">
 				</tbody>
+            </table> 
+            <table id="table-edit-po-body-total" class="table table-bordered table-striped">
             </table>
-        <button id="btn-add-item-variant" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-add-item-variant">Add Item</button>
-        
+            
       </div>
       <div class="modal-footer">
-        <button id="btn-pr-submit" state="create" type="button " class="btn btn-success">Submit</button>
+        <button id="btn-po-submit" state="create" type="button " class="btn btn-success">Submit</button>
         
-        <button id="btn-pr-save" state="create" type="button" class="btn btn-primary">Save changes</button>
+        <button id="btn-po-save" state="create" type="button" class="btn btn-primary">Save changes</button>
         
-        <button id="btn-pr-cancel" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="btn-po-cancel" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -62,44 +62,77 @@
 
 <!-- ================================================================================================================ -->
 
-<div class="modal fade" id="modal-pr-detail" data-modal-index="1">
-  <div class="modal-dialog modal-md">
+<div class="modal fade" id="modal-po-detail" data-modal-index="1">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Purchase Request Detail</h4>
-      </div>
-      <div class="modal-body">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<div class="col-xs-4" style="float:right;">
+					<select id="select-po-action" class="btn form-control">
+						<!-- <option disabled selected>More</option>
+						<option value="approve">Approve</option>	
+						<option value="reject">Reject</option>
+						<option value="print">Print</option>
+						<option value="create-po" disabled>Create PO</option> -->
+					</select>
+				</div>	
+				
+				<h4 class="modal-title">Purchase Order Detail</h4>
+				
+			</div>
+
+			<div class="modal-body">
       	<form class="form-all">
-			<div class="form-group" id = "add-pr-id">
+			<div class="form-group" id = "view-po-detail-id">
+				<div id="detail-supplier-name" class="col-xs-12">Hi</div>
+				<div id="detail-supplier-phone" class="col-xs-6"></div><div id="detail-supplier-email" class="col-xs-6"></div>
+				<div id="detail-supplier-address" class="col-xs-12"></div>
+				<div id="detail-supplier-region" class="col-xs-4"></div>
+				<div id="detail-supplier-province" class="col-xs-4"></div>
+				<div id="detail-supplier-postalCode" class="col-xs-4"></div>
 				<br>
-				<p> PR Number   : </p>
-				<p> Created By  : </p>
-				<p> Target Time : </p>
-				<p> PR Status   : </p>
-				<label for="add-pr-notes">Notes</label><br>
-				<textarea rows="4" id="add-pr-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
+				<div class="col-xs-12">
+					<label for="add-po-notes">Notes</label><br>
+					<textarea disabled rows="4" id="view-po-detail-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
+					
+					
+				</div>
+					<div class="col-xs-3"> Created by   :</div> <div id="view-pod-created" class="col-xs-9"> </div><br>
+					<!-- <div class="col-xs-3"> Email  :</div> <div id="view-pod-email" class="col-xs-9"> </div><br>
+					<div class="col-xs-3"> Outlet   :</div> <div id="view-pod-outlet" class="col-xs-9"> </div><br>
+					<div class="col-xs-3"> Phone  :</div> <div id="view-pod-phone" class="col-xs-9"> </div><br>
+					<div class="col-xs-3"> Address   :</div> <div id="view-pod-address" class="col-xs-9"> </div><br>
+					 -->
+					 <div class="col-xs-3"> PO Status   :</div> <div id="view-pod-status" class="col-xs-9"> </div><br>
+
 				<p></p>
 			</div>
+			
+			<label for="po-history">Status History</label>
+			<div class="container">
+				
+				<table id="table-po-history" class="table table-bordered">
+				
+				</table>
+				
+			</div>
+				
+			    <label for="po-detail">Purchase Item</label>
+				<table id="table-po-detail" class="table table-bordered table-striped">
+					<thead>
+						<th class="col-xl-3">Item</th>
+						<th class="col-xl-3">In Stock</th>
+						<th class="col-xl-3">Request Quantity </th>	
+					</thead>
+					<tbody id="table-po-detail-body">
+					</tbody>
+				</table>	
 		</form>
-		
-			<label for="pr-detail">Purchase Request History</label>
-			<p> PR is Created</p>
-		    <label for="pr-detail">Purchase Item</label>
-			<table id="table-pr-detail" class="table table-bordered table-striped">
-                <thead>
-                	<th class="col-xl-3">Item</th>
-					<th class="col-xl-3">In Stock</th>
-					<th class="col-xl-3">Request Quantity </th>
-		        	
-				</thead>
-				<tbody id="table-pr-detail-body">
-				</tbody>
-            </table>
+				
+			
         
       </div>
       <div class="modal-footer">
-        
         <button id="btn-pr-cancel" type="button" class="btn btn-default" data-dismiss="modal">Done</button>
       </div>
     </div><!-- /.modal-content -->
