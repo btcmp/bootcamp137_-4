@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -17,7 +18,6 @@ import javax.persistence.TemporalType;
 public class ItemInventory {
 	
 	public ItemInventory() {
-		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
 	
@@ -43,15 +43,15 @@ public class ItemInventory {
 	
 	@Column(name = "ending_qty")
 	private int endingQty;
-	
-	@Column(name = "created_by")
+	@ManyToOne
+	@JoinColumn(name="created_by")
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "created_on")
 	private Date createdOn;
-	
-	@Column(name = "modified_by")
+	@ManyToOne
+	@JoinColumn(name="modified_by")
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)

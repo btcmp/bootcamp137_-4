@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -59,15 +60,15 @@ public class PurchaseOrder {
 	
 	@Column(name = "grand_total")
 	private float grandTotal;
-	
-	@Column(name="created_by")
+	@ManyToOne
+	@JoinColumn(name="created_by")
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="created_on")
 	private Date createdOn;
-	
-	@Column(name="modified_by")
+	@ManyToOne
+	@JoinColumn(name="modified_by")
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -138,11 +139,11 @@ public class PurchaseOrder {
 		this.grandTotal = grandTotal;
 	}
 
-	public long getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(long createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 

@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,7 +23,6 @@ import javax.validation.constraints.NotNull;
 public class ItemVariant {
 	
 	public ItemVariant() {
-		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
 	
@@ -40,14 +40,15 @@ public class ItemVariant {
 	@Column(name = "category_id")
 	private long categoryId;
 	
-	@Column(name = "created_by")
+	@ManyToOne
+	@JoinColumn(name="created_by")
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "created_on")
 	private Date createdOn;
-	
-	@Column(name = "modified_by")
+	@ManyToOne
+	@JoinColumn(name="modified_by")
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)

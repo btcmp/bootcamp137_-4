@@ -7,13 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.bootcamp.miniproject.model.User;
+
 
 @Entity
 @Table(name = "mp_t_po_history")
@@ -31,10 +33,9 @@ public class PurchaseOrderHistory {
 	private PurchaseOrder purchaseOrder;
 	
 	private String status;
-	
-	@Column(name="created_by")
+	@ManyToOne
+	@JoinColumn(name="created_by")
 	private User createdBy;
-	
 	@Temporal(TemporalType.DATE)
 	@Column(name="created_on")
 	private Date createdOn;
