@@ -220,7 +220,6 @@ $(function () {
 	 $('#btn-save-emp').on('click', function(){
 /* 		var formAllEmployee = $('#form-all-employee').parsley().validate(); */
 		var idUser = "${employee.user.id}";
-
 //=========================================
 //HAVE ACCOUNT?		 
 		var haveAccounts  = $('#create-account').is(':checked') ? true : false;
@@ -256,7 +255,6 @@ $(function () {
 					  employeeOutlets.push(employeeOutlet);
 		});
 /* console.log(employeeOutlet); */
-
 //=========================================
 //EMPLOYEE		 
 		 var emp = {
@@ -296,7 +294,6 @@ $(function () {
 								}		
 							}				
 					}
-
 					})
 					
 					if (sameName > 0) {
@@ -309,7 +306,6 @@ $(function () {
 						alert('assign outlet dulu gan ')
 					}else {  
 /*  					alert('saved');  */
-
  				 			$.ajax({
 							url : '${pageContext.request.contextPath}/master/employee/save',	
 							type : 'POST',
@@ -351,7 +347,6 @@ $(function () {
 		
 	});
 	
-
 //========================================================================================
 //EDIT DATA
 	$('.edit').on('click', function() {
@@ -381,7 +376,6 @@ $(function () {
 		$('#edit-email').val(emp.email),
 		$('#edit-createdOn-emp').val(emp.createdOn)
 		$('#edit-createdBy-emp').val(emp.createdBy.id)
-
  		if(emp.haveAccount==true){
 			$('#form-edit-user').show();
         	$('#edit-account').prop('checked',true);
@@ -402,7 +396,6 @@ $(function () {
     	
       	$.each(emp.employeeOutlets, function(index, empOutlet){
     		$.each($('#list-edit-outlet > tr > td > input[type="checkbox"]'), function(){
-
     			if($(this).attr('id') == empOutlet.outlet.id){
     				
     				$(this).prop('checked', true);
@@ -412,7 +405,6 @@ $(function () {
       	
 	}
 	
-
 	//eksekusi button
  	$('#btn-edit-emp').on('click', function(){
  		var idUser = "${employee.user.id}";		
@@ -439,7 +431,7 @@ $(function () {
 				 },
 				createdOn : $('#edit-createdOn-user').val(),
 				createdBy : {
-					id : $('#edit-createdBy-user').val(),
+					id : idUser
 				},
 				modifiedBy : {						
 					id : idUser
@@ -455,48 +447,18 @@ $(function () {
 			email : $('#edit-email').val(), 
 			createdOn : $('#edit-createdOn-emp').val(),
 			createdBy : {
-				id : $('#edit-createdBy-emp').val(),
+				id : idUser
 			},
 			modifiedBy : {
 				id : idUser
 			},
-
  			user : users, 			
  			employeeOutlets : employeeOutlets,  
 			haveAccount : haveAccounts,
 			active : 1
 		}
 		
-
 		console.log(emp)
-/* 			 $.ajax({
-				url : '${pageContext.request.contextPath}/master/employee/get-all',	
-				type : 'GET',
-				success : function(data) {
-					console.log(data);
-					var sameName = 0;
-					var sameEmail = 0;
-					$(data).each(function(index, data2){
-						if (parseInt(data2.id)!==parseInt(emp.id)) {
-							if (emp.name.toLowerCase()==data2.name.toLowerCase()) {
-								sameName++;
-							} else if (emp.email.toLowerCase()==data2.email.toLowerCase()) {
-								sameEmail++;
-							}
-						}
-					})
-
-					
-					if (sameName > 0) {
-						alert('this name has been taken, please change!')
-					} else if (sameEmail > 0) {
-						alert('this email has been taken, please change!')
-					}else if (emp.firstName == "") {
-						alert('employee gak boleh kosong')
-					}else if (emp.user.username != "" && emp.employeeOutlets.length == 0) {
-						alert('assign outlet dulu gan ')
-					}else {  
- */
 					 	$.ajax({
 							url : '${pageContext.request.contextPath}/master/employee/update',
 							type : 'PUT',
@@ -511,15 +473,8 @@ $(function () {
 							
 						}) 		
 												
-	 			/* 	 }
-					
-				}, error : function() {
-					alert('get all employee failed!');
-				}
-			})   */
  
 	});
-
 	
 	
 //========================================================================================
@@ -579,7 +534,6 @@ $(function () {
 		})
 		
 	});
-
 	
 //==================================
 //BUTTON ADD OUTLET dari modal add-assign-outlet	
@@ -591,7 +545,6 @@ $(function () {
 	    	$('#btn-save-emp').attr('employeeOutlets',JSON.stringify(employeeOutlets));
 	    	$('#save-assign-outlet').modal('hide');
 	    });	
-
 //==================================
 //BUTTON EDIT OUTLET dari modal edit-assign-outlet	
 	 $('#btn-edit-outlet').on('click', function(){

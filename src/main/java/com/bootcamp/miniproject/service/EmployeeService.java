@@ -74,6 +74,8 @@ public class EmployeeService {
 		emp.setTitle(employee.getTitle());
 		emp.setHaveAccount(employee.isHaveAccount());
 		emp.setActive(employee.isActive());
+		emp.setCreatedBy(employee.getCreatedBy());
+		emp.setModifiedBy(employee.getModifiedBy());
 		employeeDao.update(emp);
 		
 		
@@ -102,6 +104,8 @@ public class EmployeeService {
 			user.setRole(employee.getUser().getRole());
 			user.setUsername(employee.getUser().getUsername());
 			user.setPassword(employee.getUser().getPassword());
+			user.setCreatedBy(employee.getUser().getCreatedBy());
+			user.setModifiedBy(employee.getUser().getModifiedBy());
 			userDao.saveOrUpdate(user);
 		}else {
 			System.out.println("delete cuy");
