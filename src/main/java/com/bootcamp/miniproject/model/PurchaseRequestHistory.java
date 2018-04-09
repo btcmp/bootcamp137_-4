@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 //
 @Entity
@@ -35,6 +34,7 @@ public class PurchaseRequestHistory {
 	private String status;
 	@ManyToOne
 	@JoinColumn(name="created_by")
+	@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)

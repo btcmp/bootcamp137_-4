@@ -13,7 +13,6 @@ $(document).ready(function(){
 		if ($(this).attr('state') == 'create'){
 			$('#btn-pr-submit').prop('disabled', true);
 		}
-		//console.log('disini');
 		
 		$('#modal-add-pr').modal({backdrop: 'static', keyboard: false});
 		$('#btn-pr-save').prop('disabled',true);

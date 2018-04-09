@@ -35,6 +35,7 @@ public class PurchaseOrderHistory {
 	private String status;
 	@ManyToOne
 	@JoinColumn(name="created_by")
+	@JsonIgnore
 	private User createdBy;
 	@Temporal(TemporalType.DATE)
 	@Column(name="created_on")

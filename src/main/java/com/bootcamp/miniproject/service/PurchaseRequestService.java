@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import com.bootcamp.miniproject.model.PurchaseOrderHistory;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.PurchaseRequestDetail;
 import com.bootcamp.miniproject.model.PurchaseRequestHistory;
+import com.bootcamp.miniproject.model.User;
 
 @Service
 @Transactional
@@ -43,6 +46,9 @@ public class PurchaseRequestService {
 	@Autowired
 	PurchaseOrderHistoryDao poHistoryDao;
 	
+	@Autowired
+	HttpSession httpSession;
+	
 	public List<PurchaseRequest> getAll() {
 		return prDao.getAll();
 	}
@@ -62,6 +68,8 @@ public class PurchaseRequestService {
 	}
 	
 	public void save(PurchaseRequest pr) {
+		User user = (User) httpSession.getAttribute("userLogin");
+		
 		Calendar cal = Calendar.getInstance();
 		int monthInt = cal.get(Calendar.MONTH);
 		int year = cal.get(Calendar.YEAR);
@@ -88,34 +96,45 @@ public class PurchaseRequestService {
 		List<PurchaseRequestDetail> prDetail = pr.getPurchaseRequestDetail();
 		pr.setPurchaseRequestDetail(null);
 		pr.setPrNo(prNo);
+		pr.setCreatedBy(user);
+		pr.setCreatedOn(new Date());
+		pr.setModifiedBy(user);
 		prDao.save(pr);
 		
 		for(PurchaseRequestDetail prd : prDetail) {
 			prd.setPurchaseRequest(pr);
+			prd.setCreatedBy(user);
+			prd.setModifiedBy(user);
+			prd.setCreatedOn(new Date());
 			prDetailDao.save(prd);
 		}
 		PurchaseRequestHistory prh = new PurchaseRequestHistory();
 		prh.setPurchaseRequest(pr);
 		prh.setStatus(pr.getStatus());
 		prh.setCreatedOn(pr.getCreatedOn());
+		prh.setCreatedBy(user);
 		prHistoryDao.save(prh);
 	}
 
 	public void update(PurchaseRequest pr) {
+		User user = (User) httpSession.getAttribute("userLogin");
 		List<PurchaseRequestDetail> prDetail = pr.getPurchaseRequestDetail();
 		pr.setPurchaseRequestDetail(null);
+		pr.setModifiedBy(user);
 		prDao.update(pr);
 		
 		for(PurchaseRequestDetail prd : prDetail) {
 			prd.setPurchaseRequest(pr);
 			if (prd.getId() == null) {
+				prd.setCreatedBy(user);
+				prd.setModifiedBy(user);
+				prd.setCreatedOn(new Date());
 				prDetailDao.save(prd);
 			} else {
+				prd.setModifiedBy(user);
 				prDetailDao.update(prd);
 			}
 		}
-		System.out.println(pr.getStatus());
-		System.out.println(pr.getStatus().equals("Created"));
 		if (pr.getStatus().equals("Created")) {
 			System.out.println("Status Tidak Berubah");
 
@@ -125,6 +144,7 @@ public class PurchaseRequestService {
 			prh.setPurchaseRequest(pr);
 			prh.setStatus(pr.getStatus());
 			prh.setCreatedOn(pr.getCreatedOn());
+			prh.setCreatedBy(user);
 			prHistoryDao.save(prh);
 		}
 		
@@ -147,10 +167,13 @@ public class PurchaseRequestService {
 	}
 
 	public void approve(long id) {
+		User user = (User) httpSession.getAttribute("userLogin");
+		
 		prDao.approve(id);
 		PurchaseRequest pr = prDao.getOne(id);
 		PurchaseRequestHistory prh = new PurchaseRequestHistory();
 		prh.setCreatedOn(new Date());
+		prh.setCreatedBy(user);
 		prh.setPurchaseRequest(pr);
 		prh.setStatus(pr.getStatus());
 		prHistoryDao.save(prh);
@@ -158,6 +181,7 @@ public class PurchaseRequestService {
 
 
 	public void createPo(long id) {
+		User user = (User) httpSession.getAttribute("userLogin");
 		
 		// Update Status Pr
 		prDao.createPo(id);
@@ -169,6 +193,7 @@ public class PurchaseRequestService {
 		prHist.setCreatedOn(new Date());
 		prHist.setPurchaseRequest(pr);
 		prHist.setStatus(pr.getStatus());
+		prHist.setCreatedBy(user);
 		prHistoryDao.save(prHist);
 		
 		Calendar cal = Calendar.getInstance();
@@ -198,6 +223,9 @@ public class PurchaseRequestService {
 		purchaseOrder.setPoNo(poNo);
 		purchaseOrder.setPurchaseRequest(pr);
 		purchaseOrder.setStatus("Created");
+		purchaseOrder.setCreatedBy(user);
+		purchaseOrder.setModifiedBy(user);
+		purchaseOrder.setCreatedOn(new Date());
 		purchaseOrder.setOutlet(pr.getOutlet());
 		poDao.save(purchaseOrder);
 		float grandTotal = 0;
@@ -212,6 +240,8 @@ public class PurchaseRequestService {
 				poDetail.setSubTotal(prd.getRequestQty()*prd.getItemVariant().getPrice());
 				poDetail.setRequestQty(prd.getRequestQty());
 				poDetail.setVariant(prd.getItemVariant());
+				poDetail.setCreatedBy(user);
+				poDetail.setModifiedBy(user);
 				poDetailDao.save(poDetail);
 				grandTotal += prd.getRequestQty()*prd.getItemVariant().getPrice();
 			}
@@ -225,16 +255,20 @@ public class PurchaseRequestService {
 		poHistory.setCreatedOn(purchaseOrder.getCreatedOn());
 		poHistory.setPurchaseOrder(purchaseOrder);
 		poHistory.setStatus(purchaseOrder.getStatus());
+		poHistory.setCreatedBy(user);
 		poHistoryDao.save(poHistory);
 	}
 	
 	public void reject(long id) {
+		User user = (User) httpSession.getAttribute("userLogin");
+		
 		prDao.reject(id);
 		PurchaseRequest pr = prDao.getOne(id);
 		PurchaseRequestHistory prh = new PurchaseRequestHistory();
 		prh.setCreatedOn(new Date());
 		prh.setPurchaseRequest(pr);
 		prh.setStatus(pr.getStatus());
+		prh.setCreatedBy(user);
 		prHistoryDao.save(prh);
 		
 	}

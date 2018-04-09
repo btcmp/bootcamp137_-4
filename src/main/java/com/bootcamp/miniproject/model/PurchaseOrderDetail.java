@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "mp_t_purchase_order_detail")
 public class PurchaseOrderDetail {
 	public PurchaseOrderDetail() {
-		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
 	@Id
@@ -44,6 +43,7 @@ public class PurchaseOrderDetail {
 	private float subTotal;
 	@ManyToOne
 	@JoinColumn(name="created_by")
+	@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -51,6 +51,7 @@ public class PurchaseOrderDetail {
 	private Date createdOn;
 	@ManyToOne
 	@JoinColumn(name="modified_by")
+	@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)

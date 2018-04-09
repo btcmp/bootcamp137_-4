@@ -18,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -39,6 +40,7 @@ public class Category {
 	
 	@ManyToOne
 	@JoinColumn(name="created_by")
+	@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -47,6 +49,7 @@ public class Category {
 	
 	@ManyToOne
 	@JoinColumn(name="modified_by")
+	@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)

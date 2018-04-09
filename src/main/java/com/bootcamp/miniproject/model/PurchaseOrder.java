@@ -26,7 +26,6 @@ import com.sun.istack.Nullable;
 @Table(name = "mp_t_purchase_order")
 public class PurchaseOrder {
 	public PurchaseOrder() {
-		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
 	@Id
@@ -62,6 +61,7 @@ public class PurchaseOrder {
 	private float grandTotal;
 	@ManyToOne
 	@JoinColumn(name="created_by")
+	@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -69,6 +69,7 @@ public class PurchaseOrder {
 	private Date createdOn;
 	@ManyToOne
 	@JoinColumn(name="modified_by")
+	@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)

@@ -20,14 +20,13 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "mp_t_purchase_request")
 public class PurchaseRequest {
 	
 	public PurchaseRequest() {
-		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
 	
@@ -49,8 +48,10 @@ public class PurchaseRequest {
 	private String notes;
 	@NotEmpty
 	private String status;
+	
 	@ManyToOne
 	@JoinColumn(name="created_by")
+	@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -58,6 +59,7 @@ public class PurchaseRequest {
 	private Date createdOn;
 	@ManyToOne
 	@JoinColumn(name="modified_by")
+	@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)
