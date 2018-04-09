@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "mp_mst_item_inventory")
 public class ItemInventory {
@@ -45,6 +47,7 @@ public class ItemInventory {
 	private int endingQty;
 	@ManyToOne
 	@JoinColumn(name="created_by")
+	@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -52,6 +55,7 @@ public class ItemInventory {
 	private Date createdOn;
 	@ManyToOne
 	@JoinColumn(name="modified_by")
+	@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)

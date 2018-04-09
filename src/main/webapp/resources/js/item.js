@@ -1,14 +1,28 @@
 $(document).ready(function(){
 	var alamatUrl = window.location.href;
 	listVariant = [];
+	var tbi = $('#table-item').DataTable({
+		'searching' : false,
+		'paging' : true, 
+		'info' : false
+	});
 	$("#item-side-option").addClass('active');
 	$("#treeview-master").addClass('active');
+	
+	$('#btn-export').click(function(){
+		console.log('clicked');
+		window.location = '/miniproject/generate/item';
+	});
+	showAll(alamatUrl);
 	function showAll(alamatUrl){
+		outletId = $('#select-outlet-main').val();
+		console.log(outletId)
 		$("#table-body-item").empty();
 		$.ajax({
 			dataType : "json",
-		    url : alamatUrl+'/getAllVariants',
+		    //url : alamatUrl+'/getAllVariants',
 //		    url : alamatUrl+'/get-all-item-inventories',
+		    url : alamatUrl+'/getInventory?outletId='+outletId,
 			headers : {
 		    	'Accept' : 'application/json',
 		        'Content-Type' : 'application/json'
@@ -17,24 +31,23 @@ $(document).ready(function(){
 		    success : function(data){
 		    	//console.log(data);
 		    	$.each(data, (key, data) =>{
-		    		$('#table-body-item').append('<tr> <td>'+data.item.name+' -- '+data.name+'</td>'+
-							'<td>'+data.item.category.name+'</td>'+
-							'<td>'+data.price+'</td>'+
-							'<td>'+'---'+'</td>'+
-							'<td><a id='+data.item.id+' class="update-item btn btn-primary">Update</a>'
-					)
-//					$('#table-body-item').append('<tr> <td>'+data.itemVariant.item.name+' -- '+data.itemVariant.name+'</td>'+
-//							'<td>'+data.itemVariant.item.category.name+'</td>'+
-//							'<td>'+data.itemVariant.price+'</td>'+
-//							'<td>'+data.endingQty+'</td>'+
-//							'<td><a id='+data.itemVariant.item.id+' class="update-item btn btn-primary">Update</a>'
+//		    		$('#table-body-item').append('<tr> <td>'+data.item.name+' -- '+data.name+'</td>'+
+//							'<td>'+data.item.category.name+'</td>'+
+//							'<td>'+data.price+'</td>'+
+//							'<td>'+'---'+'</td>'+
+//							'<td><a id='+data.item.id+' class="update-item btn btn-primary">Update</a>'
 //					)
+					$('#table-body-item').append('<tr> <td>'+data.itemVariant.item.name+' -- '+data.itemVariant.name+'</td>'+
+							'<td>'+data.itemVariant.item.category.name+'</td>'+
+							'<td>'+data.itemVariant.price+'</td>'+
+							'<td>'+data.endingQty+'</td>'+
+							'<td><a id='+data.itemVariant.item.id+' class="update-item btn btn-primary">Update</a>'
+					)
 				});
 		    }
 		});	
 	}
 	
-	showAll(alamatUrl);
 	
 	$('#create').click(function(){
 		$('#btn-add-item').attr('state','create');
@@ -45,9 +58,7 @@ $(document).ready(function(){
 		$('#modal-addItem').modal();
 	});
 	
-	$('#btn-export').click(function(){
-		console.log('clicked');
-	});
+	
 	$('#btn-clear').click(function(){
 		listVariant = [];
 	});

@@ -2,6 +2,8 @@ package com.bootcamp.miniproject.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.ItemVariant;
+import com.bootcamp.miniproject.model.User;
 import com.bootcamp.miniproject.service.CategoryService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.ItemService;
@@ -41,12 +44,18 @@ public class ItemController {
 	
 	@Autowired
 	ItemInventoryService inventoryService;
+	
+	@Autowired
+	HttpSession httpSession;
+	
 	@RequestMapping
 	public String home(Model model) {
 		model.addAttribute("items", itemService.getAll());
 		model.addAttribute("variant", variantService.getAll());
 		model.addAttribute("categories", categoryService.selectAll());
 		model.addAttribute("outlets", outletService.selectAll());
+		model.addAttribute("inventories", inventoryService.getAll());
+		User user = (User) httpSession.getAttribute("userLogin");
 		return "item";
 	}
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -114,7 +123,12 @@ public class ItemController {
 	
 	@RequestMapping(value = "/getItemInventory", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ItemInventory> getInvetoryByItemIdandOutletId(@RequestParam ("itemId") Long id, @RequestParam ("outletId") Long outletId) {
-		return inventoryService.getInvetoryByItemIdandOutletId(id, outletId);
+	public List<ItemInventory> getInventoryByItemIdandOutletId(@RequestParam ("itemId") Long id, @RequestParam ("outletId") Long outletId) {
+		return inventoryService.getInventoryByItemIdandOutletId(id, outletId);
+	}
+	@RequestMapping(value = "/getInventory", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> getInventoryOutletId(@RequestParam ("outletId") Long outletId) {
+		return inventoryService.getInventoryandOutletId(outletId);
 	}
 }

@@ -31,9 +31,11 @@
       <!-- search form -->
       <label for="select-outlet-main">Outlet Login</label>
       <select class="selectpicker" name="select-outlet-main" id="select-outlet-main">
-				<c:forEach var="outlet" items="${outlets }">
+				<%-- <c:forEach var="outlet" items="${outlets }">
 					<option value="${outlet.id }">${outlet.name }</option>
-				</c:forEach>
+				 	</c:forEach>
+				 --%>
+				 <option value="${outlet.id }">${outlet.name }</option>
 		</select>
       <div class="col-xs-4">
         <div class="input-group ">
@@ -75,7 +77,7 @@
 					<th>Item Stock </th>
 					<th>Action</th>
 				</thead>
-				<tbody id= "table-body-item">
+				<tbody id= "table-body-item" ><!--  -->
 					<%-- <c:forEach items="${variant }" var="var">
 						<tr>
 							<td>${var.item.name } --- <b>${var.name }</b> </td>

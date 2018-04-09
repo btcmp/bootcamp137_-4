@@ -154,5 +154,10 @@ public class EmployeeService {
 		// TODO Auto-generated method stub
 		employeeDao.update(employee);
 	}
+	public User getUserByEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		return userDao.getUserByEmployee(employee);
+	}
 	
+
 }

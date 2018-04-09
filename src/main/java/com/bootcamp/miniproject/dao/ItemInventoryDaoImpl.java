@@ -144,5 +144,18 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 			return itemInventory;
 		}
 	}
+	@Override
+	public List<ItemInventory> getInventoryOutletId(Long outletId) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemInventory inv where inv.outlet.id =:outletId";
+		List <ItemInventory> itemInventory = session.createQuery(hql).setParameter("outletId", outletId).list();
+		if (itemInventory.isEmpty()) {
+			System.out.println("Kosong");
+			return null;
+		} else {
+			System.out.println("Ada");
+			return itemInventory;
+		}
+	}
 
 }

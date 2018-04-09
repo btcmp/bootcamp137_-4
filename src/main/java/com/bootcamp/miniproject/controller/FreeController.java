@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.EmployeeOutlet;
 import com.bootcamp.miniproject.model.Outlet;
+import com.bootcamp.miniproject.model.User;
 import com.bootcamp.miniproject.service.EmployeeService;
 import com.bootcamp.miniproject.service.OutletService;
 
@@ -42,12 +43,15 @@ public class FreeController {
 	public String chooseOutlet(Model model, Principal principal) {
 		String username = principal.getName();
 		List<Employee> employee = employeeService.getOneByUsername(username);
+		
 		Employee empl = new Employee();
 		for(Employee emp : employee) {
 			empl = emp;
 		}
+		User user = employeeService.getUserByEmployee(empl);
 		httpSession.setAttribute("username", username);
 		httpSession.setAttribute("employee", empl);
+		httpSession.setAttribute("userLogin", user);
 		List<EmployeeOutlet> empOutlets = empl.getEmployeeOutlets();
 		List<Outlet> outlets = new ArrayList<>();
 		for(EmployeeOutlet eo : empOutlets) {
