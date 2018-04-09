@@ -41,11 +41,8 @@
         </div>
       </div>
       <div style="text-align: right;">
-        <div class="col-xs-7">
-        <a id="create-outlet" class="btn btn-primary">Create</a>
-      </div>
-      <div class="col-xs-1">
-        <a class="btn btn-primary">Export</a>
+        <div class="col-xs-8">
+        <a id="create-outlet" class="btn btn-primary col-xs-3" style="float:right;">Create</a>
       </div>
       </div>
     </section>
@@ -128,6 +125,8 @@
 	
 	//execute button add/save
 	$('#btn-entry').on('click', function() {
+		var formAddOutlet = $('#form-add-outlet').parsley().validate();
+		var idUser = "${employee.user.id}";
 		var out = {
 			name : $('#entry-name').val(),
 			address : $('#entry-address').val(),
@@ -143,24 +142,54 @@
 				id : $('#entry-district').val()
 			},
 			postalCode : $('#entry-postalCode').val(),
-			active : 1
+			active : 1,
+			createdBy : {
+				id : idUser
+			},
+			modifiedBy : {
+				id : idUser
+			}
 		}
 		
+		if (formAddOutlet == true) {  //validasi parsley
+  			$.ajax({
+				url : '${pageContext.request.contextPath }/master/outlet/get-all',
+				type : 'GET',
+				success : function(data){
+					var sameName = 0;
+					var sameEmail = 0;
+					$(data).each(function(index, data2){
+						if (out.name.toLowerCase() == data2.name.toLowerCase()) {
+							sameName++;
+						} else if (out.email.toLowerCase() == data2.email.toLowerCase()) {
+							sameEmail++;
+						}
+					})
+					if (sameName>0) {
+						alert("This name has been taken, please change it!");
+					} else if (sameEmail>0) {
+						alert("This email has been used, please change it!");
+					} else { 
+ 							$.ajax({
+								url : '${pageContext.request.contextPath}/master/outlet/save',
+								type : 'POST',
+								contentType : 'application/json',
+								data : JSON.stringify(out),
+								success : function() {
+									alert('save successfully');
+									window.location = '${pageContext.request.contextPath}/master/outlet';
+								}, error : function() {
+									alert('save failed!');
+								}
+							});
+ 	 				}
+				}, error : function(){
+					alert('get all outlet failed');
+				}
+			})  
+		} //end validasi parsley 
 		
-		$.ajax({
-			url : '${pageContext.request.contextPath}/master/outlet/save',
-			type : 'POST',
-			contentType : 'application/json',
-			data : JSON.stringify(out),
-			success : function() {
-				alert('save successfully');
-				window.location = '${pageContext.request.contextPath}/master/outlet';
-			}, error : function() {
-				alert('save failed!');
-			}
-		})
-		
-	})
+	});
 	
 	//===add province, region, district
 	$('#entry-province').change(function(){
@@ -206,7 +235,6 @@
 			})
 		}
 	});
-
 //================================================== UPDATE DATA	
 	$('.edit').on('click', function(){
 		var id = $(this).attr('id');
@@ -236,12 +264,14 @@
 		$('#edit-district').val(outlet.district.id);
 		$('#edit-postalCode').val(outlet.postalCode);
 		$('#edit-createdOn').val(outlet.createdOn);
-		
+		$('#edit-createdBy').val(outlet.createdBy.id);
 	}
-	
 
+	
 	//eksekusi button update/edit
 	$('#btn-edit').on('click', function() {
+		var formEditOutlet = $('#form-edit-outlet').parsley().validate();
+		var idUser = "${employee.user.id}";
 		var outlet = {
 			id : $('#edit-id').val(),
 			name : $('#edit-name').val(),
@@ -259,21 +289,73 @@
 			},
 			postalCode : $('#edit-postalCode').val(),
 			createdOn : $('#edit-createdOn').val(),
+			createdBy : {
+				id : $('#edit-createdBy').val(),
+			},
+			modifiedBy : {
+				id : idUser
+			},
 			active : 1
 		}
-		
-		$.ajax({
-			url : '${pageContext.request.contextPath}/master/outlet/update',
-			type : 'PUT',
-			data : JSON.stringify(outlet),
-			contentType : 'application/json',
-			success : function () {
-				alert('update successfully');
-				window.location='${pageContext.request.contextPath}/master/outlet';
-			}, error : function() {
-				alert('updated failed')
-			}
-		});		
+/* 		console.log(outlet); */
+
+ 		if (formEditOutlet == true) { 
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath }/master/outlet/get-all',
+				type : 'GET',
+				success : function(data){
+					var sameName = 0;
+					var sameEmail = 0;
+					$(data).each(function(index, data2){
+						if (parseInt(data2.id)!==parseInt(outlet.id)) {
+							if (outlet.name.toLowerCase()==data2.name.toLowerCase()) {
+								sameName++;
+							} else if (outlet.email.toLowerCase()==data2.email.toLowerCase()) {
+								sameEmail++;
+							}
+						}
+					})
+					if (sameName>0) {
+						alert("This name has been taken, please change it!");
+					} else if (sameEmail>0) {
+						alert("This email has been used, please change it!");
+					} else {
+						
+						$.ajax({
+							url : '${pageContext.request.contextPath}/master/outlet/update',
+							type : 'PUT',
+							data : JSON.stringify(outlet),
+							contentType : 'application/json',
+							success : function () {
+								alert('update successfully');
+								window.location='${pageContext.request.contextPath}/master/outlet';
+							}, error : function() {
+								alert('updated failed')
+							}
+						});
+						
+		 			 }
+				}, error : function() {
+					alert('get all outlet failed');
+				}
+			});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+	
 	});
 	
 	
@@ -321,8 +403,6 @@
 			})
 		}
 	});
-
-
 	//delete
 /* 	$('.delete').on('click', function(){
 		var id = $(this).attr('id');
@@ -347,6 +427,7 @@
 	
 	//Delete di Table. Data pada Database masih dan Mengubah Status Active-nya menjadi 1 (0 = active. 1 = tidak active);
 	$('#btn-delete').on('click', function(){
+		var idUser = "${employee.user.id}";
 		var outlet = {
 			id : $('#edit-id').val(),
 			name : $('#edit-name').val(),
@@ -364,6 +445,12 @@
 			},
 			postalCode : $('#edit-postalCode').val(),
 			createdOn : $('#edit-createdOn').val(),
+			createdBy : {
+				id : $('#edit-createdBy').val(),
+			},
+			modifiedBy : {
+				id : idUser
+			},
 			active : 0
 			
 		}
@@ -402,7 +489,6 @@
 			$('#entry-postalCode').val('');
 			$('#entry-createdOn').val('');	
 	})
-
 	
 	
 	//searching by outlet name
@@ -418,4 +504,3 @@
 </script>
 
 </html>
-

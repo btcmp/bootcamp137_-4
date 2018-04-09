@@ -12,7 +12,7 @@
 				<h4 class="modal-title" id="exampleModalLabel"><b>Add New Assign Outlet</b></h4>
 			</div>
 			<div class="modal-body">
-				<form action="#">
+				<form id="form-add-outlet" action="#">
 					<table class="table" id="outlet-table">
 							<tbody id="list-add-outlet">
 								<c:forEach items="${outlets}" var="outlet">

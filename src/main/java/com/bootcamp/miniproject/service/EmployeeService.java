@@ -35,6 +35,8 @@ public class EmployeeService {
 		emp.setTitle(employee.getTitle());
 		emp.setHaveAccount(employee.isHaveAccount());
 		emp.setActive(employee.isActive());
+		emp.setCreatedBy(employee.getCreatedBy());
+		emp.setModifiedBy(employee.getModifiedBy());
 		employeeDao.save(emp);
 		
 		System.out.println(employee.getEmployeeOutlets());
@@ -55,6 +57,8 @@ public class EmployeeService {
 			user.setRole(employee.getUser().getRole());
 			user.setUsername(employee.getUser().getUsername());
 			user.setPassword(employee.getUser().getPassword());
+			user.setCreatedBy(employee.getUser().getCreatedBy());
+			user.setModifiedBy(employee.getUser().getModifiedBy());
 			userDao.save(user);
 		}
 	}
@@ -71,7 +75,6 @@ public class EmployeeService {
 		emp.setHaveAccount(employee.isHaveAccount());
 		emp.setActive(employee.isActive());
 		employeeDao.update(emp);
-
 		
 		
 		List<EmployeeOutlet> empout = employeeOutletDao.getEmployeeOutletByEmployee(emp);
@@ -89,8 +92,9 @@ public class EmployeeService {
 				employeeOutletDao.save(empo);
 			}
 		}
-		
+		System.out.println("haveAccount: "+ employee.isHaveAccount());
 		if(employee.isHaveAccount()) {
+			System.out.println("gak didelete");
 			User user = new User();
 			user.setId(employee.getUser().getId());
 			user.setEmployee(emp);
@@ -99,7 +103,13 @@ public class EmployeeService {
 			user.setUsername(employee.getUser().getUsername());
 			user.setPassword(employee.getUser().getPassword());
 			userDao.saveOrUpdate(user);
-		}	
+		}else {
+			System.out.println("delete cuy");
+			User user = new User();
+			user.setId(employee.getUser().getId());
+			userDao.delete(user);
+
+		}
 	}
 
 	

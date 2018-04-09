@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,21 +31,23 @@ public class Category {
 	
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private long id;
 	
 	@NotNull
 	private String name;
 	
-	@Column(name="created_by")
-	private long createdBy;
+	@ManyToOne
+	@JoinColumn(name="created_by")
+	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column (name="created_on")
 	private Date createdOn;
 	
-	@Column (name="modified_by")
-	private long modifiedBy;
+	@ManyToOne
+	@JoinColumn(name="modified_by")
+	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
@@ -72,23 +76,11 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(long createdBy) {
-		this.createdBy = createdBy;
-	}
 	public Date getCreatedOn() {
 		return createdOn;
 	}
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
-	}
-	public long getModifiedBy() {
-		return modifiedBy;
-	}
-	public void setModifiedBy(long modifiedBy) {
-		this.modifiedBy = modifiedBy;
 	}
 	public Date getModifiedOn() {
 		return modifiedOn;
@@ -114,7 +106,18 @@ public class Category {
 	public void setItemStock(int itemStock) {
 		this.itemStock = itemStock;
 	}
+	public User getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+	public User getModifiedBy() {
+		return modifiedBy;
+	}
+	public void setModifiedBy(User modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 	
-	//updated
 	
 }

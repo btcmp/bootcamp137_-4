@@ -121,26 +121,68 @@ $('#create-category').click(function(){
 
 //EXECUTE
 $('#btn-save').on('click', function(){
+	var formAddCategory = $('#form-add-category').parsley().validate();
+	var idUser = "${employee.user.id}";
 	var category = {
 		name : $('#entry-category').val(),
+		createdBy : {
+			id : idUser
+		},
+		modifiedBy : {
+			id : idUser
+		},
 		active : 1
 	}
 	
-	
-	
-	
-	$.ajax({
-		url : '${pageContext.request.contextPath}/master/category/save',
-		type : 'POST',
-		contentType : 'application/json',
-		data : JSON.stringify(category),
-		success : function(data) {
-			alert('save successfully');
-			window.location = '${pageContext.request.contextPath}/master/category';
-		}, error : function() {
-			alert ('saving failed');
-		}
-	})	
+	if (formAddCategory == true) {
+
+		$.ajax({
+				url : '${pageContext.request.contextPath}/master/category/get-all',	
+				type : 'GET',
+				success : function(data) {
+					console.log(data);
+					var sameName = 0;
+					$(data).each(function(index, data2) {
+						if (data2.name !== null) {
+							if (category.name.toLowerCase() == data2.name.toLowerCase()) {
+								sameName++;
+							} 	
+						}		
+
+					})
+					
+					if (sameName > 0) {
+						alert('this name has been taken, please change!')
+					}else { 
+						
+						/* alert('saveed'); */
+
+		
+ 		$.ajax({
+			url : '${pageContext.request.contextPath}/master/category/save',
+			type : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(category),
+			success : function(data) {
+				alert('save successfully');
+				window.location = '${pageContext.request.contextPath}/master/category';
+			}, error : function() {
+				alert ('saving failed');
+			}
+		});
+ 		
+				 }
+					
+				}, error : function() {
+					alert('save failed!');
+				}
+			});
+		
+		
+		
+		
+		
+	}
 
 });	
 //========================================		
@@ -168,34 +210,72 @@ $('.edit').on('click', function(evt){
 		$('#edit-id').val(category.id);
 		$('#edit-name').val(category.name);
 		$('#edit-createdOn').val(category.createdOn);
+		$('#edit-createdBy').val(category.createdBy.id);
+		
 	}
 
 
 //EKSEKUSI BUTTON SAVE
 $('#btn-update').on('click', function(){
+	var formViewCategory = $('#form-view-category').parsley().validate();
+	var idUser = "${employee.user.id}";
 	var category = {
 		id : $('#edit-id').val(),
 		name : $('#edit-name').val(),	
 		createdOn : $('#edit-createdOn').val(),
+		createdBy : {
+			id : $('#edit-createdBy').val(),
+		},
+		modifiedBy : {
+			id : idUser
+		},
 		active : 1
+
 	}
 
-	$.ajax({
-		url : '${pageContext.request.contextPath}/master/category/update',
-		type : 'PUT',
-		data : JSON.stringify(category),
-		contentType : 'application/json',
+	if (formViewCategory == true) {		
 		
-		success : function(data){
-			alert('update successfully!')
-			window.location = '${pageContext.request.contextPath}/master/category';
-		},
-		error : function () {
-			alert('update failed')
-		}
-	
-	});
-	
+		$.ajax({
+			url : '${pageContext.request.contextPath}/master/category/get-all',	
+			type : 'GET',
+			success : function(data) {
+				console.log(data);
+				var sameName = 0;
+				$(data).each(function(index, data2) {
+					if (parseInt(data2.id) !== parseInt(category.id)) {
+						if (data2.name !== null) {
+							if (category.name.toLowerCase() == data2.name.toLowerCase()) {
+								sameName++;
+							} 	
+						}		
+						
+					}
+
+				})
+				if (sameName > 0) {
+					alert('this name has been taken, please change!')
+				}else { 
+ 					$.ajax({
+						url : '${pageContext.request.contextPath}/master/category/update',
+						type : 'PUT',
+						data : JSON.stringify(category),
+						contentType : 'application/json',
+						
+						success : function(data){
+							alert('update successfully!')
+							window.location = '${pageContext.request.contextPath}/master/category';
+						},
+						error : function () {
+							alert('update failed')
+						}
+					
+					});
+ 			 }
+			}, error : function() {
+				alert('save failed!');
+			}
+		});
+	}
 });
 //===============================	
 //DELETE IN TABLE and DATABASE
@@ -217,10 +297,17 @@ $('#btn-update').on('click', function(){
 
 //Delete di Table. Data pada Database masih dan Mengubah Status Active-nya menjadi 0 (1 = active. 0 = tidak active);
 $('#btn-delete').on('click', function(){
+	var idUser = "${employee.user.id}";
 	var category = {
 		id : $('#edit-id').val(),
 		name : $('#edit-name').val(),	
 		createdOn : $('#edit-createdOn').val(),
+		createdBy : {
+			id : $('#edit-createdBy').val(),
+		},
+		modifiedBy : {
+			id : idUser
+		},
 		active : 0
 	}
 console.log(category)

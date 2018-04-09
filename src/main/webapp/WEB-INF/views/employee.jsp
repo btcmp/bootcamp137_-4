@@ -32,58 +32,65 @@
     <section class="content-header row">   
     <!-- FORM EMPLOYEE -->   
         <div class="col-xs-12">
-      	<div class="row">
+<%--         <form id="form-all-employee"> --%>
+      	<form id="form-add-employee" class="row" >
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="text" class="form-control"
-					id="add-firstName" placeholder="First Name">
+					id="add-firstName" placeholder="First Name" required="">
 			</div>
 		</div>
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="text" class="form-control"
-					id="add-lastName" placeholder="Last Name">
+					id="add-lastName" placeholder="Last Name" required>
 			</div>
 		</div>
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="text" class="form-control" id="add-email"
-					placeholder="Email">
+					placeholder="Email" required>
 			</div>
 		</div>
 		<div class="col-md-3">
 			<div class="form-group">
 				<select name="title" id="add-title"
-					class="custom-select custom-select-md form-control">
+					class="custom-select custom-select-md form-control" required>
 					<option value="">Title</option>
 					<option value="Mr.">Mr.</option>
 					<option value="Mrs.">Mrs.</option>
 				</select>
 			</div>
 		</div>
-	</div>
+	</form>
 
 	<!-- BUTTON ASSIGN OUTLET -->	
-      <div class="row">
+	<div class="row" >
+      <form id="form-add-assign-outlet" >
 		<div class="col-md-3">
 			<div class="form-group">
 				<button type="button" id="btn-assign-outlet"
 					class="add-outlet btn btn-primary btn-block">Assign Outlet</button>
 			</div>
 		</div>
+	</form> 
+
+		
 		
 		<!-- CHECK BOX - CREATE ACCOUNT? -->
+	  <form id="form-create-account" >
  		<div>	
 			<input type="checkbox" id="create-account" name="create-account" ></input> Create Account?</a><br><br>
 		</div> 		
-	  </div>
-	
+	  </form>
+
+</div>
 	
 	<!-- FORM USER -->
-	<div class="row" id="form-user" style="display: none">
+	<form id="form-add-user" class="row" style="display: none">
 		<div class="col-md-3">
 			<div class="form-group">
-				<select name="role" id="add-role" class="form-control custom-select custom-select-md" placeholder="Role">
+				<select name="role" id="add-role" class="form-control custom-select custom-select-md" placeholder="Role" required>
 					<option value="">Role</option>
 					<c:forEach var="role" items="${roles }">
 						<option value="${role.id }">${role.name }</option>
@@ -94,34 +101,37 @@
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="text" class="form-control" id="add-username"
-					placeholder="Username">
+					placeholder="Username" required>
 			</div>
-		</div>
+		</div> 
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="password" class="form-control" id="add-password"
-					placeholder="Password">
+					placeholder="Password" required>
 			</div>
 		</div>
-	</div>
+<%-- 		</form> <!-- end form-all -->
+ --%>	</form>
 
 	<!-- BUTTON ACTION -->	
-	<div>
+	<div style="float: right;">
 		<a id="btn-reset" class="btn btn-danger" style="color:white;">Cancel</a>
 		<a id="btn-save-emp" class="btn btn-primary" style="color:white;">Save</a>
 	</div>
-
+	
+</div> 
     </section> 
 
     <!-- Main content -->
     <section class="content"  style="background-color: ;">
+	<div><h3><b>Staff List</b></h3></div>
       <div class="row">
         <div class="col-xs-12">
           <!-- /.box -->
           <div class="box">
             <!-- /.box-header -->
             
-            
+			            
             <div class="box-body">
               <table id="emp-tbl" class="table table-bordered table-striped">
 					<thead>
@@ -136,7 +146,7 @@
 								<tbody>
 								<tr>
 									<td>
-										<a>${emp.title } ${emp.firstName } ${emp.lastName }</a>
+										<a>${emp.firstName } ${emp.lastName }</a>
 									</td>
 									<td>${emp.email }</td>
 									<%-- <td>${emp.haveAccount }</td> --%>
@@ -208,8 +218,12 @@ $(function () {
 //========================================================================================
 //ADD DATA EMPLOYEE
 	 $('#btn-save-emp').on('click', function(){
-		/* if($('#create-account').is(":checked")){ */
-			var haveAccounts  = $('#create-account').is(':checked') ? true : false;
+/* 		var formAllEmployee = $('#form-all-employee').parsley().validate(); */
+		var idUser = "${employee.user.id}";
+
+//=========================================
+//HAVE ACCOUNT?		 
+		var haveAccounts  = $('#create-account').is(':checked') ? true : false;
 		
 //=========================================		 
 //USERS
@@ -219,9 +233,14 @@ $(function () {
 			 role : {
 				 id :  $('#add-role').val()
 			 },
-			 active : 1
+			createdBy : {
+				id : idUser
+			},
+			modifiedBy : {
+				id : idUser
+			},
+			active : 1
 		}	
-	/* }; */
 /* console.log(user); */
 		 
 //=========================================
@@ -246,14 +265,19 @@ $(function () {
 			lastName : $('#add-lastName').val(),
 			email : $('#add-email').val(),
 			haveAccount : haveAccounts,
-			active : 1,
 			user : users,
-			employeeOutlets : employeeOutlets
-			 
+			employeeOutlets : employeeOutlets,
+			createdBy : {
+				id : idUser
+			},
+			modifiedBy : {
+				id : idUser
+			},
+			active : 1
 		}
 		 console.log(emp);
 		 		
-	
+/* if (formAllEmployee == true) { */  //validasi parsley	
 			 $.ajax({
 				url : '${pageContext.request.contextPath}/master/employee/get-all',	
 				type : 'GET',
@@ -279,9 +303,14 @@ $(function () {
 						alert('this name has been taken, please change!')
 					} else if (sameEmail > 0) {
 						alert('this email has been taken, please change!')
-					} else {  
-						
- 				 	 	$.ajax({
+					}else if (emp.firstName == "") {
+						alert('employee gak boleh kosong')
+					}else if (emp.user.username != "" && emp.employeeOutlets.length == 0) {
+						alert('assign outlet dulu gan ')
+					}else {  
+/*  					alert('saved');  */
+
+ 				 			$.ajax({
 							url : '${pageContext.request.contextPath}/master/employee/save',	
 							type : 'POST',
 							contentType : 'application/json',
@@ -292,18 +321,16 @@ $(function () {
 							}, error : function() {
 								alert('save failed!');
 							}
-						});    
-						
-						/* alert('saved!') */
-						
-					 }
+						});      
+												
+ 					 }
 					
 				}, error : function() {
-					alert('save failed!');
+					alert('get failed!');
 				}
-			})  
+			});
 	 
-
+	// } //end validasi parsley
 	 
 	}); 
 	
@@ -320,7 +347,7 @@ $(function () {
 		$('#add-password').val(''),
 		$('#add-role').val(''),	
 		$('input[name="create-account"]').prop('checked', false),
-		$('#form-user').fadeOut('fast')
+		$('#form-add-user').fadeOut('fast')
 		
 	});
 	
@@ -347,25 +374,30 @@ $(function () {
 	//set data
 	function setEditEmp(emp) {
 		console.log(emp);
-		$('#edit-id').val(emp.id),
+		$('#edit-id-emp').val(emp.id),
 		$('#edit-title').val(emp.title),
 		$('#edit-firstName').val(emp.firstName),
 		$('#edit-lastName').val(emp.lastName),
 		$('#edit-email').val(emp.email),
-		$('#edit-createdOn').val(emp.createdOn)
+		$('#edit-createdOn-emp').val(emp.createdOn)
+		$('#edit-createdBy-emp').val(emp.createdBy.id)
 
  		if(emp.haveAccount==true){
- 			
+			$('#form-edit-user').show();
         	$('#edit-account').prop('checked',true);
     	} else {
+			$('#form-edit-user').hide();
     		$('#edit-account').prop('checked',false);
     	}
     	
      	if(emp.user != null){
-    		$('#edit-role').val(emp.user.role.id);
+           	$('#edit-id-user').val(emp.user.id);
+     		$('#edit-role').val(emp.user.role.id);
         	$('#edit-username').val(emp.user.username);
         	$('#edit-password').val(emp.user.password);
-        	$('#edit-id-user').val(emp.user.id);
+      		$('#edit-createdOn-user').val(emp.user.createdOn);
+    		$('#edit-createdBy-user').val(emp.user.createdBy.id);  
+     	
      	}
     	
       	$.each(emp.employeeOutlets, function(index, empOutlet){
@@ -383,7 +415,8 @@ $(function () {
 
 	//eksekusi button
  	$('#btn-edit-emp').on('click', function(){
-		var haveAccounts  = $('#create-account').is(':checked') ? true : false;
+ 		var idUser = "${employee.user.id}";		
+		var haveAccounts  = $('#edit-account').is(':checked') ? true : false;
 		
 	  var employeeOutlets = [];
 		 $('#list-edit-outlet input:checked').each(function() {
@@ -404,46 +437,89 @@ $(function () {
 				 role : {
 					 id :  $('#edit-role').val()
 				 },
-				 active : 1
+				createdOn : $('#edit-createdOn-user').val(),
+				createdBy : {
+					id : $('#edit-createdBy-user').val(),
+				},
+				modifiedBy : {						
+					id : idUser
+				},
+				active : 1
 			}	
   		
 		var emp = {
-			id : $('#edit-id').val(),
+			id : $('#edit-id-emp').val(),
 			title : $('#edit-title').val(),
 			firstName : $('#edit-firstName').val(),
 			lastName : $('#edit-lastName').val(),
 			email : $('#edit-email').val(), 
-			createdOn : $('#edit-createdOn').val(),
+			createdOn : $('#edit-createdOn-emp').val(),
+			createdBy : {
+				id : $('#edit-createdBy-emp').val(),
+			},
+			modifiedBy : {
+				id : idUser
+			},
+
  			user : users, 			
  			employeeOutlets : employeeOutlets,  
-			active : 1 ,
-			
-			 haveAccount : 1 
+			haveAccount : haveAccounts,
+			active : 1
 		}
 		
 
 		console.log(emp)
-	$.ajax({
-			url : '${pageContext.request.contextPath}/master/employee/update',
-			type : 'PUT',
-			data : JSON.stringify(emp),
-			contentType : 'application/json',
-			success : function () {
-				alert('update successfuly!');
-				window.location = '${pageContext.request.contextPath}/master/employee';
-			}, error : function () {
-				alert('update failed!');
-			}
-			
-		}) 
-		
+/* 			 $.ajax({
+				url : '${pageContext.request.contextPath}/master/employee/get-all',	
+				type : 'GET',
+				success : function(data) {
+					console.log(data);
+					var sameName = 0;
+					var sameEmail = 0;
+					$(data).each(function(index, data2){
+						if (parseInt(data2.id)!==parseInt(emp.id)) {
+							if (emp.name.toLowerCase()==data2.name.toLowerCase()) {
+								sameName++;
+							} else if (emp.email.toLowerCase()==data2.email.toLowerCase()) {
+								sameEmail++;
+							}
+						}
+					})
+
+					
+					if (sameName > 0) {
+						alert('this name has been taken, please change!')
+					} else if (sameEmail > 0) {
+						alert('this email has been taken, please change!')
+					}else if (emp.firstName == "") {
+						alert('employee gak boleh kosong')
+					}else if (emp.user.username != "" && emp.employeeOutlets.length == 0) {
+						alert('assign outlet dulu gan ')
+					}else {  
+ */
+					 	$.ajax({
+							url : '${pageContext.request.contextPath}/master/employee/update',
+							type : 'PUT',
+							data : JSON.stringify(emp),
+							contentType : 'application/json',
+							success : function () {
+								alert('update successfuly!');
+								window.location = '${pageContext.request.contextPath}/master/employee';
+							}, error : function () {
+								alert('update failed!');
+							}
+							
+						}) 		
+												
+	 			/* 	 }
+					
+				}, error : function() {
+					alert('get all employee failed!');
+				}
+			})   */
+ 
 	});
 
-	
-	
-	
-
-	
 	
 	
 //========================================================================================
@@ -467,7 +543,7 @@ $(function () {
 	
 	//set data
 	function setEditEmpNonActive(emp) {
-		$('#edit-id').val(emp.id),
+		$('#edit-id-emp').val(emp.id),
 		$('#edit-title').val(emp.title),
 		$('#edit-firstName').val(emp.firstName),
 		$('#edit-lastName').val(emp.lastName),
@@ -478,7 +554,7 @@ $(function () {
 	//eksekusi button
 	$('#btn-delete').on('click', function(){
 		var emp = {
-			id : $('#edit-id').val(),			//val() artinya dia lagi ngambil value/data dari id yang udah di-set tadi
+			id : $('#edit-id-emp').val(),			//val() artinya dia lagi ngambil value/data dari id yang udah di-set tadi
 			title : $('#edit-title').val(),
 			firstName : $('#edit-firstName').val(),
 			lastName : $('#edit-lastName').val(),
@@ -548,10 +624,10 @@ $(function () {
 	$('#create-account').val('false');
 	$('#create-account').change(function() {
 		if (this.checked) {
-			$('#form-user').show(1000);           //1000 milidetik= 1detik,  maksudnya waktu transisi dalam milidetik
+			$('#form-add-user').show(1000);           //1000 milidetik= 1detik,  maksudnya waktu transisi dalam milidetik
 			$('#create-account').val('true');
 		} else {
-			$('#form-user').hide(1000);
+			$('#form-add-user').hide(1000);
 			$('#create-account').val('false');
 		}
 	});
@@ -560,10 +636,10 @@ $(function () {
 //CHECK BOX (SHOW - HIDE) - EDIT ACCOUNT	
 $('#edit-account').on('click',function(){
 		if(this.checked){
-			$('#form-user-edit').show(1000);
+			$('#form-edit-user').show(1000);
 			$('#edit-account').val('true');
 		} else {
-			$('#form-user-edit').hide(1000);
+			$('#form-edit-user').hide(1000);
 			$('#edit-account').val('false');
 		}
     });

@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bootcamp.miniproject.model.Category;
-import com.bootcamp.miniproject.model.Item;
 import com.bootcamp.miniproject.service.CategoryService;
-import com.bootcamp.miniproject.service.ItemService;
 
 @Controller
 @RequestMapping("master/category")
@@ -69,5 +67,11 @@ public class CategoryController {
 		return "redirect:/category";
 	}
 	
+	@RequestMapping("/get-all")
+	@ResponseBody
+	public List<Category> getAll(){
+		return categoryService.selectStatusActive();
+	}
+
 	
 }

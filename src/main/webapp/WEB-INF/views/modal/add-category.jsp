@@ -12,10 +12,10 @@
 				<h4 class="modal-title" id="exampleModalLabel"><b>Add New Category</b></h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-add-category">
+				<form id="form-add-category">
 					<div class="form-group">
 						<label for="save-con">Category Name</label> 
-						<input type="text" class="form-control" id="entry-category" placeholder="Category Name" />
+						<input type="text" class="form-control" id="entry-category" placeholder="Category Name" required/>
 					</div>
 				</form>
 			</div>

@@ -13,12 +13,13 @@
 				<h4 class="modal-title" id="exampleModalLabel"><b>Update Category</b></h4>
 			</div>
 			<div class="modal-body">
-				<form action="#">
-					<input type="hidden" name="edit-createdOn" id="edit-createdOn"/>
-					<input type="hidden" name="edit-id" id="edit-id"/>
+				<form id="form-view-category" action="#">
+					<input type="hidden"  id="edit-id"/>
+					<input type="hidden"  id="edit-createdOn"/>
+					<input type="hidden"  id="edit-createdBy"/>					
 					<div class="form-group" id="form-categoryName">
 						<label for="edit-name">Category Name</label> 
-						<input type="text" class="form-control" id="edit-name"  placeholder="Category Name" />
+						<input type="text" class="form-control" id="edit-name"  placeholder="Category Name" required/>
 					</div>
 				</form>
 

@@ -14,9 +14,9 @@
 			</div>
 			<div class="modal-body">
 				<form class="form-all">
-					<input type="hidden" id="edit-id">
-					<input type="hidden" id="edit-id-user">
-					<input type="hidden" id="edit-createdOn">
+					<input type="hidden" id="edit-id-emp">
+					<input type="hidden" id="edit-createdOn-emp">
+					<input type="hidden" id="edit-createdBy-emp">
 					<div class="form-group">
 						<label for="edit-firstName">First Name</label> <input type="text"
 							class="form-control" id="edit-firstName" placeholder="First Name">
@@ -51,9 +51,12 @@
 					
 <!-- style="display: none" -->					
 						<!-- FORM USER -->
-	<div class="row" id="form-user-edit">
+	<div class="row" id="form-edit-user">
 		<div class="col-md-4">
 			<div class="form-group">
+					<input type="hidden" id="edit-id-user">
+					<input type="hidden" id="edit-createdOn-user">
+					<input type="hidden" id="edit-createdBy-user">
 				<select name="edit-role" id="edit-role" class="form-control custom-select custom-select-md" placeholder="Role">
 					<option selected>Role</option>
 					<c:forEach var="role" items="${roles }">

@@ -12,28 +12,29 @@
 				<h4 class="modal-title" id="exampleModalLabel"><b>Edit Outlet</b></h4> 
 			</div>
 			<div class="modal-body">
-				<form class="form-all">
+				<form id="form-edit-outlet" class="form-all">
 					<input type="hidden" id="edit-id">
 					<input type="hidden" id="edit-createdOn">
+					<input type="hidden" id="edit-createdBy">
 					<div class="form-group">
 						<label for="edit-name">Outlet Name</label> <input type="text"
-							class="form-control" id="edit-name" placeholder="Oulet Name">
+							class="form-control" id="edit-name" placeholder="Oulet Name" required>
 					</div>
 					<div class="form-group">
 						<label for="edit-address">Address</label> <input type="text"
-							class="form-control" id="edit-address" placeholder="Address">
+							class="form-control" id="edit-address" placeholder="Address" required>
 					</div>
 					<div class="form-group">
-						<label for="edit-phone">Phone</label> <input type="text"
-							class="form-control" id="edit-phone" placeholder="Phone">
+						<label for="edit-phone">Phone</label> <input type="number"
+							class="form-control" id="edit-phone" placeholder="Phone" required data-parsley-length="[11, 14]">
 					</div>
 					<div class="form-group">
 						<label for="edit-email">Email</label> <input type="text"
-							class="form-control" id="edit-email" placeholder="Email">
+							class="form-control" id="edit-email" placeholder="Email" required data-parsley-type="email">
 					</div>
 					<div class="form-group">
 						<label for="edit-province">Province</label> <select
-							class="form-control" name="edit-province" id="edit-province">
+							class="form-control" name="edit-province" id="edit-province" required>
 							<option value="">Choose Province</option>
 							<c:forEach var="province" items="${provinces }">
 								<option value="${province.id }">${province.name }</option>
@@ -42,7 +43,7 @@
 					</div>
 					<div class="form-group">
 						<label for="edit-region">Region</label> <select
-							class="form-control" name="edit-region" id="edit-region">
+							class="form-control" name="edit-region" id="edit-region" required>
 							<option value="">Choose Region</option>
 							<c:forEach var="region" items="${regions }">
 								<option value="${region.id }">${region.name }</option>
@@ -51,7 +52,7 @@
 					</div>
 					<div class="form-group">
 						<label for="edit-district">District</label> <select
-							class="form-control" name="edit-district" id="edit-district">
+							class="form-control" name="edit-district" id="edit-district" required>
 							<option value="">Choose District</option>
 							<c:forEach var="district" items="${districts }">
 								<option value="${district.id }">${district.name }</option>
@@ -60,7 +61,7 @@
 					</div>
 					<div class="form-group">
 						<label for="edit-postalCode">Postal Code</label> <input type="text"
-							class="form-control" id="edit-postalCode" placeholder="Postal Code">
+							class="form-control" id="edit-postalCode" placeholder="Postal Code" required data-parsley-maxlength="6">
 					</div>
 <!-- 					<div class="checkbox">
 						<label for="edit-active"><input id="edit-active" type="checkbox"
@@ -71,8 +72,7 @@
 			<div class="modal-footer">
 				<button style="float:left;" type="button" id="btn-delete" class="btn btn-danger">X</button>
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" id="btn-edit" class="btn btn-primary"
-					data-dismiss="modal">Update</button>
+				<button type="button" id="btn-edit" class="btn btn-primary">Update</button>
 			</div>
 		</div>
 	</div>

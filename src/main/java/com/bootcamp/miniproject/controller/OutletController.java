@@ -93,5 +93,12 @@ public class OutletController {
 		return "redirect:/outlet";
 	}
 	
+	@RequestMapping(value="/get-all", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Outlet> getAllOutlet() {
+		List<Outlet> outlets = outletService.selectAll();
+		return outlets;
+	}
 	
 }
+

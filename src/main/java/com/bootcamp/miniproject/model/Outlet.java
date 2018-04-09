@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -51,15 +52,17 @@ public class Outlet {
 	@Column(name="postal_code")
 	private String postalCode;
 	
-	@Column(name="created_by")
-	private long createdBy;
+	@ManyToOne
+	@JoinColumn(name="created_by")
+	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="created_on")
 	private Date createdOn;
 	
-	@Column(name="modified_by")
-	private long modifiedBy;
+	@ManyToOne
+	@JoinColumn(name="modified_by")
+	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
@@ -141,23 +144,11 @@ public class Outlet {
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
-	public long getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(long createdBy) {
-		this.createdBy = createdBy;
-	}
 	public Date getCreatedOn() {
 		return createdOn;
 	}
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
-	}
-	public long getModifiedBy() {
-		return modifiedBy;
-	}
-	public void setModifiedBy(long modifiedBy) {
-		this.modifiedBy = modifiedBy;
 	}
 	public Date getModifiedOn() {
 		return modifiedOn;
@@ -189,9 +180,18 @@ public class Outlet {
 	public void setPurchaseDetail(List<PurchaseOrder> purchaseDetail) {
 		this.purchaseDetail = purchaseDetail;
 	}
+	public User getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+	public User getModifiedBy() {
+		return modifiedBy;
+	}
+	public void setModifiedBy(User modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 
-	
-	//updated
-	
 	
 }
