@@ -55,7 +55,10 @@ public class TransferStockController {
 	@RequestMapping
 	public String index(Model model) {
 		Outlet outlet = (Outlet)httpSession.getAttribute("outlet");
-		long outletId = outlet.getId();
+		long outletId = 1;
+		if (outlet != null) {
+			outletId = outlet.getId();
+		}
 		List<TransferStock> transferStocks = transferStockService.getTransferStockByFromOutletId(outletId);
 		List<Outlet> outlets = outletService.selectAll();
 		List<ItemInventory> itemsInventorys= itemInventoryService.getAll();

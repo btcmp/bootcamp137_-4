@@ -131,8 +131,8 @@ public class TransferStockService {
 				ivNew.setEndingQty(TSDetail.getTransferQty());
 				ivNew.setItemVariant(TSDetail.getItemVariant());
 				ivNew.setOutlet(transferStock.getToOutlet());
-				ivNew.setCreatedBy(0);
-				ivNew.setModifiedBy(0);
+				/*ivNew.setCreatedBy(0);
+				ivNew.setModifiedBy(0);*/
 				ivNew.setPurchaseQty(0);
 				ivNew.setSalesOrderQty(0);
 				ivNew.setTransferStockQty(0);

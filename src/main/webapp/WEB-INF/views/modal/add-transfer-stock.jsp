@@ -31,8 +31,8 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="add-name">Notes</label> <input type="text"
-							class="form-control" id="add-notes" placeholder="input notes">
+						<label for="add-name">Notes</label> <textarea type="text"
+							class="form-control" id="add-notes"  rows="5" placeholder="Notes. . ."></textarea>
 					</div>
 					<div>
 						<table class="table table-striped table-bordered" cellspacing="0" width="100%">

@@ -144,8 +144,8 @@ $(document).ready(function(){
 			success : function(data){
 				console.log(data);
 				$('#view-hidden-id').val(data.id);
-				$('#view-created-by').text("Created By : "+data.createdBy.username);
-				$('#view-status').text("Transfer Status : "+data.status);
+				$('#view-created-by').text(data.createdBy.username);
+				$('#view-status').text(data.status);
 				$('#view-notes').val(data.notes);
 				$('#view-status-history').val();
 				$('#view-transfer-stock-detail-tbl').empty();

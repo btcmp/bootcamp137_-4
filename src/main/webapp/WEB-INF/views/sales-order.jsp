@@ -30,14 +30,18 @@
 
 			<section class="content-header row">
 				<div style="text-align: right;">
-					<div class="col-xs-11">
+					<div class="col-xs-12">
 						<a id="kosong" class="choose-customer btn btn-primary">Choose Customer</a>
 					</div>
-					<div class="col-xs-1">
+					<!-- <div class="col-xs-1">
 						<a id="export" class="btn btn-primary">Export</a>
-					</div>
+					</div> -->
 				</div>
 			</section>
+			
+			<div>
+			<input id="email-customer" type="hidden"></input>
+			</div>
 
 			<!-- Main content -->
 			<section class="content" style="background-color:;">
@@ -195,18 +199,6 @@ $(document).ready(function(){
 					alert('get all supplier failed');
 				}
 			})	
-		}
-	})
-	
-	$('#charge-done').click(function(){
-		var cash = parseInt($('#charge-cash').val());
-		var total = parseInt($('#charge').text().split("Rp.")[1]);
-		if (cash<total) {
-			alert("bayarnya kurang coy!!!");
-		} else {
-			$('#receipt-cash').val("Out of Rp."+cash);
-			$('#receipt-change').val("Rp."+(cash-total));
-			$('#modal-receipt-sales-order').modal();
 		}
 	})
 	
@@ -389,7 +381,7 @@ $(document).ready(function(){
 					$('#search-customer-tbl').empty();
 					$.each(data, function(key, val) {
 						$('#search-customer-tbl').append('<tr><td id="customer-name'+ val.id+'">'+ val.name +'</td><td>'
-								+ val.phone +'</td><td>'+ val.email +'</td><td><button type="button" id="'+ val.id +'" class="btn-choose-customer'
+								+ val.phone +'</td><td id="customer-email'+ val.id+'">'+ val.email +'</td><td><button type="button" id="'+ val.id +'" class="btn-choose-customer'
 								+ val.id +' btn-choose-customer btn btn-primary"  data-dismiss="modal">Choose</button></td></tr>');
 					});
 				}, 
@@ -404,11 +396,39 @@ $(document).ready(function(){
 	$('body').on('click', 'button.btn-choose-customer', function(){
 		var id = $(this).attr('id');
 		var name = $('#customer-name'+id).text();
+		$('#email-customer').val($('#customer-email'+id).text());
 		$('.choose-customer').text(name);
 		$('.choose-customer').attr("id",id);
 	})
 	
 	$('#receipt-done').click(function(){
+		window.location='${pageContext.request.contextPath}/transaction/sales-order';
+	})
+	
+	$('#receipt-print').click(function(){
+		//window.location = '${pageContext.request.contextPath}/generate/sales-order';
+		window.location='${pageContext.request.contextPath}/transaction/sales-order';
+	})
+	
+	$('#receipt-email-btn').click(function(){
+		window.location='${pageContext.request.contextPath}/transaction/sales-order';
+	})
+	
+	$('#charge-done').click(function(){
+		var cash = parseInt($('#charge-cash').val());
+		var total = parseInt($('#charge').text().split("Rp.")[1]);
+		if (cash<total) {
+			alert("bayarnya kurang coy!!!");
+		} else {
+			$('#receipt-cash').text("Out of Rp."+cash);
+			$('#receipt-change').val("Rp."+(cash-total));
+			var emailCust = $('#email-customer').val();
+			$('#receipt-email').val(emailCust);
+			done();
+		}
+	})
+	
+	function done(){
 		var userId = "${employee.user.id}";
 		var salesOrderDetail = [];
 		$('#salesOrder-tbl-body > tr').each(function(index, data){
@@ -460,8 +480,7 @@ $(document).ready(function(){
 					data : JSON.stringify(salesOrder),
 					contentType : 'application/json',
 					success : function(){
-						alert('update stock successfully');
-						window.location='${pageContext.request.contextPath}/transaction/sales-order';
+						$('#modal-receipt-sales-order').modal({backdrop: 'static', keyboard: false});
 					}, error : function(){
 						alert('update stock failed');
 					}
@@ -474,7 +493,7 @@ $(document).ready(function(){
 			}
 			
 		})
-	})
+	}
 	
 	$('#export').click(function(){
 		window.location = '${pageContext.request.contextPath}/generate/sales-order'; 

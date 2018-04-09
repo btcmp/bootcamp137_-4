@@ -18,24 +18,22 @@
 			<div class="modal-body">
 				<form class="form-all">
 					<input type="hidden" id="view-hidden-id">
-					<!-- <div class="form-group">
-						<label for="view-created-by">Created By</label> <input type="text"
-							class="form-control" id="view-created-by" disabled>
-					</div>
-					<div class="form-group">
-						<label for="view-status">Transfer Status</label> <input type="text"
-							class="form-control" id="view-status" disabled>
-					</div> -->
 					<div>
 						<table>
-							<tr><td id="view-created-by"></td></tr>
-							<tr><td id="view-status"></td></tr>
+							<tr>
+								<td style="font-weight: bold;">Created By </td>
+								<td> : </td>
+								<td id="view-created-by"></td></tr>
+							<tr>
+								<td style="font-weight: bold;">Transfer Status </td>
+								<td> : </td>
+								<td id="view-status"></td></tr>
 						</table>
 						<br/>
 					</div>
 					<div class="form-group">
-						<label for="view-name">Notes</label> <input type="text"
-							class="form-control" id="view-notes" disabled>
+						<label for="view-name">Notes</label> <textarea type="text"
+							class="form-control" id="view-notes" disabled></textarea>
 					</div>
 					<div class="form-group">
 						<label for="view-status-history">Status History</label>
