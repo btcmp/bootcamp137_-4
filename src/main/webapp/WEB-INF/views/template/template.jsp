@@ -9,9 +9,10 @@ $(document).ready(function(){
 	var roleName = "${employee.user.role.name}";
 	roleName = roleName.slice(5);
 	roleName = roleName.replace("_", " ");
+	var outlet = "${outlet.name}";
 	$('.name').text(firstName+" "+lastName);
 	$('.name-role').text(firstName+" "+lastName+" - "+roleName);
-	$('.role').text(roleName);
+	$('.role').text(roleName+"-"+outlet);
 })
 </script>
 <!-- comment -->

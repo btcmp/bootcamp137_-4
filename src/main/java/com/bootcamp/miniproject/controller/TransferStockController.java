@@ -60,7 +60,7 @@ public class TransferStockController {
 			outletId = outlet.getId();
 		}
 		List<TransferStock> transferStocks = transferStockService.getTransferStockByFromOutletId(outletId);
-		List<Outlet> outlets = outletService.selectAll();
+		List<Outlet> outlets = outletService.selectStatusActive();
 		List<ItemInventory> itemsInventorys= itemInventoryService.getAll();
 		model.addAttribute("transferStocks", transferStocks);
 		model.addAttribute("outlets", outlets);

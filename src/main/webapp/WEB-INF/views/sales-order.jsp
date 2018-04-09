@@ -187,8 +187,17 @@ $(document).ready(function(){
 							data : JSON.stringify(customer),
 							contentType : 'application/json',
 							success : function(){
-								var word = $('#search-customer').val();
-								searchCustomer(word);
+								$('#search-customer').val(customer.name);
+								searchCustomer(customer.name);
+								alert("new customer "+customer.name+" saved")
+								$('#add-name').val("");
+								$('#add-address').val("");
+								$('#add-phone').val("");
+								$('#add-email').val("");
+								$('#add-dob').val("");
+								$('#add-province').val("");
+								$('#add-region').val("");
+								$('#add-district').val("");
 								$('#modal-add-customer-sales-order').modal('toggle');
 							}, error : function(){
 								alert('save new customer failed');
