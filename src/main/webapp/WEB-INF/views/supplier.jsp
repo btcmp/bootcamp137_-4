@@ -66,7 +66,6 @@
 					<th>Address</th>
 					<th>Phone</th>
 					<th>Email</th>
-					<th>Active</th>
 					<th>Action</th>
 				</thead>
 				<tbody>
@@ -77,17 +76,7 @@
 							<td>${supplier.phone }</td>
 							<td>${supplier.email }</td>
 							<td>
-								<center>
-									<script type="text/javascript">
-										if ("${supplier.active }" === "true") {
-											document.write("&#10004;");
-										}
-									</script>
-								</center>
-							</td>
-							<td>
-						<a id="${supplier.id }" class="update btn btn-primary">Update</a> |
-						<a id="${supplier.id }" class="delete btn btn-danger">Delete</a>
+						<a id="${supplier.id }" class="update btn btn-primary">Update</a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -189,9 +178,16 @@ $(document).ready(function(){
 	})
 	
 	$('#btn-update').click(function(){
+		update(true);
+	})
+	
+	$('#btn-deactivated').click(function(){
+		update(false);
+	})
+		
+	function update(activeStatus) {
 		var idUser = "${employee.user.id}";
-		var active  = $('#update-active').is(':checked') ? true : false;
-		console.log(active);
+		/* var active  = $('#update-active').is(':checked') ? true : false; */
 		var supplier={
 				id : $('#update-id').val(),
 				name : $('#update-name').val(),
@@ -209,7 +205,7 @@ $(document).ready(function(){
 					id : $('#update-district').val()
 				},
 				createdOn : $('#update-created-on').val(),
-				active : active,
+				active : activeStatus,
 				createdBy : {
 					id : $('#update-created-by').val()
 				},
@@ -221,9 +217,10 @@ $(document).ready(function(){
 			alert("fill the form completely");
 		} else {
 			$.ajax({
-				url : '${pageContext.request.contextPath }/master/supplier/get-all',
+				url : '${pageContext.request.contextPath }/master/supplier/get-status-active',
 				type : 'GET',
 				success : function(data){
+					console.log(data)
 					var sameName = 0;
 					var sameEmail = 0;
 					$(data).each(function(index, data2){
@@ -259,7 +256,7 @@ $(document).ready(function(){
 				}
 			})
 		}
-		})
+	}
 	
 	//add
 	$('#create').click(function(){
@@ -295,7 +292,7 @@ $(document).ready(function(){
 			alert("fill the form completely");
 		} else {
 			$.ajax({
-				url : '${pageContext.request.contextPath }/master/supplier/get-all',
+				url : '${pageContext.request.contextPath }/master/supplier/get-status-active',
 				type : 'GET',
 				success : function(data){
 					var sameName = 0;

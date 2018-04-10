@@ -41,7 +41,7 @@ public class SupplierController {
 	
 	@RequestMapping
 	public String index(Model model) {
-		List<Supplier> suppliers = supplierService.selectAll();
+		List<Supplier> suppliers = supplierService.selectStatusActive();
 		List<Province> provinces = provinceService.selectAll();
 		List<Region> regions = regionService.selectAll();
 		List<District> districts = districtService.selectAll();
@@ -96,6 +96,13 @@ public class SupplierController {
 	@ResponseBody
 	public List<Supplier> getAllSupplier() {
 		List<Supplier> supplier = supplierService.selectAll();
+		return supplier;
+	}
+	
+	@RequestMapping(value = "/get-status-active", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Supplier> getStatusActive() {
+		List<Supplier> supplier = supplierService.selectStatusActive();
 		return supplier;
 	}
 }

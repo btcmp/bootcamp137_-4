@@ -481,22 +481,7 @@ $(document).ready(function(){
 			data : JSON.stringify(salesOrder),
 			contentType : 'application/json',
 			success : function(){
-				
-				transferStockId = $('#view-hidden-id').val();
-				$.ajax({
-					url : '${pageContext.request.contextPath }/transaction/sales-order/update-stock/',
-					type : 'PUT',
-					data : JSON.stringify(salesOrder),
-					contentType : 'application/json',
-					success : function(){
-						$('#modal-receipt-sales-order').modal({backdrop: 'static', keyboard: false});
-					}, error : function(){
-						alert('update stock failed');
-					}
-					
-				})
-				//window.location='${pageContext.request.contextPath}/transaction/sales-order';
-				//alert("saved");
+				$('#modal-receipt-sales-order').modal({backdrop: 'static', keyboard: false});
 			}, error : function(){
 				alert('save failed');
 			}
