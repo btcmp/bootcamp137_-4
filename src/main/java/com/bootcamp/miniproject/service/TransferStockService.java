@@ -2,6 +2,8 @@ package com.bootcamp.miniproject.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import com.bootcamp.miniproject.dao.ItemInventoryDao;
 import com.bootcamp.miniproject.dao.TransferStockDao;
 import com.bootcamp.miniproject.dao.TransferStockDetailDao;
 import com.bootcamp.miniproject.dao.TransferStockHistoryDao;
+import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.ItemVariant;
 import com.bootcamp.miniproject.model.TransferStock;
@@ -19,6 +22,10 @@ import com.bootcamp.miniproject.model.TransferStockHistory;
 @Service
 @Transactional
 public class TransferStockService {
+	
+	@Autowired
+	HttpSession httpSession;
+	
 	@Autowired
 	TransferStockDao transferStockDao;
 	
@@ -119,20 +126,23 @@ public class TransferStockService {
 			long variantId = TSDetail.getItemVariant().getId();
 			ItemInventory invent = TSDetail.getItemInventory();
 			invent.setEndingQty(invent.getEndingQty()-TSDetail.getTransferQty());
+			invent.setTransferStockQty(invent.getTransferStockQty()+TSDetail.getTransferQty());
 			
 			ItemInventory iv = itemInventoryDao.searchInventoryByVariantAndOutletId(variantId, idToOutlet);
 			if (iv != null) {
 				iv.setEndingQty(iv.getEndingQty()+TSDetail.getTransferQty());
+				iv.setAdjustmentQty(iv.getAdjustmentQty()+TSDetail.getTransferQty());
 			} else {
 				ItemInventory ivNew = new ItemInventory();
-				ivNew.setAdjustmentQty(0);
 				ivNew.setAlertAtQty(1);
-				ivNew.setBeginning(TSDetail.getTransferQty());
+				ivNew.setBeginning(0);
+				ivNew.setAdjustmentQty(TSDetail.getTransferQty());
 				ivNew.setEndingQty(TSDetail.getTransferQty());
 				ivNew.setItemVariant(TSDetail.getItemVariant());
 				ivNew.setOutlet(transferStock.getToOutlet());
-				/*ivNew.setCreatedBy(0);
-				ivNew.setModifiedBy(0);*/
+				Employee emp = (Employee) httpSession.getAttribute("employee");
+				ivNew.setCreatedBy(emp.getUser());
+				ivNew.setModifiedBy(emp.getUser());
 				ivNew.setPurchaseQty(0);
 				ivNew.setSalesOrderQty(0);
 				ivNew.setTransferStockQty(0);

@@ -1,5 +1,6 @@
 package com.bootcamp.miniproject.controller;
 
+import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.view.document.AbstractPdfView;
 import com.bootcamp.miniproject.model.TransferStock;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
+import com.lowagie.text.html.simpleparser.HTMLWorker;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
@@ -37,6 +39,12 @@ public class TransferStockPDFView extends AbstractPdfView {
 				table.addCell(tsss.getToOutlet().getName());
 				table.addCell(tsss.getNotes());
 			}
+			HTMLWorker htmlWorker = new HTMLWorker(doc);
+		      String str = "<html><head></head><body>"+
+		        "<h1 style='text-align: center;'>Transfer Stock List</h1>" +
+		        "<br/>" +
+		        "</body></html>";
+		      htmlWorker.parse(new StringReader(str));
 			doc.add(table);
 	}
 }

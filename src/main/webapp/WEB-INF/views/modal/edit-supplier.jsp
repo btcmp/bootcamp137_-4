@@ -68,13 +68,14 @@
 							</c:forEach>
 						</select>
 					</div>
-					<div class="checkbox">
+					<!-- <div class="checkbox">
 						<label for="update-active"><input id="update-active" type="checkbox"
 							value="true">Active</label>
-					</div>
+					</div> -->
 				</form>
 			</div>
 			<div class="modal-footer">
+				<button style="float:left;" type="button" id="btn-deactivated" class="btn btn-danger">Deactivated</button>
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<input type="hidden" id="btn-update"/>
 				<button type="button" id="btn-update1" class="btn btn-primary">Update</button>

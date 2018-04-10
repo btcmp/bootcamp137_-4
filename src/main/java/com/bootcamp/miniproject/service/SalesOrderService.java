@@ -51,6 +51,14 @@ public class SalesOrderService {
 			salesOD.setItemInventory(sod.getItemInventory());
 			salesOrderDetailDao.save(salesOD);
 		}
+		
+		List<SalesOrderDetail> salesOrderDetail = salesOrder.getSalesOrderDetail();
+		for(SalesOrderDetail SOD : salesOrderDetail) {
+			ItemInventory invent = itemInventoryDao.getOne(SOD.getItemInventory().getId());
+			invent.setEndingQty(invent.getEndingQty()-SOD.getQty());
+			invent.setSalesOrderQty(invent.getSalesOrderQty()+SOD.getQty());
+		}
+		
 	}
 	
 	public void delete(SalesOrder salesOrder) {
@@ -81,6 +89,7 @@ public class SalesOrderService {
 		for(SalesOrderDetail SOD : salesOrderDetail) {
 			ItemInventory invent = itemInventoryDao.getOne(SOD.getItemInventory().getId());
 			invent.setEndingQty(invent.getEndingQty()-SOD.getQty());
+			invent.setSalesOrderQty(invent.getSalesOrderQty()+SOD.getQty());
 		}
 	}
 }

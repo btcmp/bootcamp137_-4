@@ -77,7 +77,7 @@ public class ExportPDFController {
 		//user data
 		response.setHeader("Content-Disposition", "attachment; filename=\"suppliers.pdf\"");
 		response.setContentType("application/pdf");
-		java.util.List<Supplier> suppliers = supplierService.selectAll();
+		java.util.List<Supplier> suppliers = supplierService.selectStatusActive();
 
 	return new ModelAndView("pdfViewSupplier","suppliers",suppliers);
  	}

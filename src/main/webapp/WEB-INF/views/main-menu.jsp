@@ -20,7 +20,7 @@
 
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-				<h2 style="text-align: center;">Transfer Stock</h2>
+				<h2 style="text-align: center;">Main Menu</h2>
 				<ol class="breadcrumb">
 					<li><a href="${pageContext.request.contextPath}/master"><i
 							class="fa fa-dashboard"></i> Master</a></li>
