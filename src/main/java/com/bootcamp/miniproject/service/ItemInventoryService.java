@@ -59,6 +59,10 @@ public class ItemInventoryService {
 	public List<ItemInventory> getInventoryandOutletId(Long outletId) {
 		return itemInventoryDao.getInventoryOutletId(outletId);
 	}
+
+	public List<ItemInventory> searchInventoryByOutlet(String search, Long outletId) {
+		return itemInventoryDao.searchItemInventoryByItemNameAndOutlet(outletId, search);
+	}
 	
 
 }

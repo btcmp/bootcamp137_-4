@@ -47,7 +47,30 @@ $(document).ready(function(){
 		    }
 		});	
 	}
-	
+	$('#search').on('input', function(e){
+		var keyword = $(this).val();
+		outletId = $('#select-outlet-main').val();
+		$.ajax({
+			dataType : "json",
+		    url : alamatUrl+'/search?outletId='+outletId+'&search='+keyword,
+			headers : {
+		    	'Accept' : 'application/json',
+		        'Content-Type' : 'application/json'
+		    },
+		    type : 'GET',
+		    success : function(data){
+		    	$("#table-body-item").empty();
+		    	$.each(data, (key, data) =>{
+		    		$('#table-body-item').append('<tr> <td>'+data.itemVariant.item.name+' -- '+data.itemVariant.name+'</td>'+
+							'<td>'+data.itemVariant.item.category.name+'</td>'+
+							'<td>'+data.itemVariant.price+'</td>'+
+							'<td>'+data.endingQty+'</td>'+
+							'<td><a id='+data.itemVariant.item.id+' class="update-item btn btn-primary">Update</a>'
+					)
+				});
+		    }
+		});
+	});
 	
 	$('#create').click(function(){
 		$('#btn-add-item').attr('state','create');

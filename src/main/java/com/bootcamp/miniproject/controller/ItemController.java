@@ -102,7 +102,7 @@ public class ItemController {
 		itemService.delete(item);
 	}
 	
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	@RequestMapping(value = "/search1", method = RequestMethod.GET)
 	public String indexBySearch(@RequestParam ("search") String search, Model model) {
 		System.out.println(search);
 		List<Item> items = itemService.getItemBySearchName(search);
@@ -130,5 +130,11 @@ public class ItemController {
 	@ResponseBody
 	public List<ItemInventory> getInventoryOutletId(@RequestParam ("outletId") Long outletId) {
 		return inventoryService.getInventoryandOutletId(outletId);
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> searchInventoryOutlet(@RequestParam ("search") String search, @RequestParam ("outletId") Long outletId) {
+		return inventoryService.searchInventoryByOutlet(search,outletId);
 	}
 }

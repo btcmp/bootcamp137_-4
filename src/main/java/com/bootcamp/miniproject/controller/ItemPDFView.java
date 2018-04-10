@@ -14,7 +14,7 @@ import com.lowagie.text.Element;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class ItemPDFViewController extends AbstractPdfView {
+public class ItemPDFView extends AbstractPdfView {
 
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document doc, PdfWriter writer, HttpServletRequest request,

@@ -1,7 +1,10 @@
 package com.bootcamp.miniproject.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,12 +14,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bootcamp.miniproject.model.Adjustment;
 import com.bootcamp.miniproject.model.Category;
+import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.Outlet;
+import com.bootcamp.miniproject.model.PurchaseOrder;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.SalesOrder;
 import com.bootcamp.miniproject.model.Supplier;
 import com.bootcamp.miniproject.model.TransferStock;
+import com.bootcamp.miniproject.model.User;
 import com.bootcamp.miniproject.service.AdjustmentService;
 import com.bootcamp.miniproject.service.CategoryService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
@@ -30,7 +36,10 @@ import com.bootcamp.miniproject.service.TransferStockService;
 @Controller
 @RequestMapping("/generate")
 public class ExportPDFController {
-
+	
+	@Autowired
+	HttpSession httpSession;
+	
 	@Autowired
 	SupplierService supplierService;
 	
@@ -149,4 +158,24 @@ public class ExportPDFController {
 	return new ModelAndView("pdfViewItem","inventories",inv);
 	}
 	
+	@RequestMapping(value = "/purchase-request", method = RequestMethod.GET)
+	ModelAndView generatePdfPurchaseRequest(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		System.out.println("Calling generatePdf()...");
+		//user data
+		response.setHeader("Content-Disposition", "attachment; filename=\"purchase request.pdf\"");
+		response.setContentType("application/pdf");
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		List<PurchaseRequest> pr = prService.getAllPrByOutlet(outlet.getId());
+		return new ModelAndView("pdfViewPR", "purchaseRequest", pr);
+	}
+	@RequestMapping(value = "/purchase-order", method = RequestMethod.GET)
+	ModelAndView generatePdfPurchaseOrder(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		System.out.println("Calling generatePdf()...");
+		//user data
+		response.setHeader("Content-Disposition", "attachment; filename=\"purchase request.pdf\"");
+		response.setContentType("application/pdf");
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		List<PurchaseOrder> po = poService.getAllPoByOutlet(outlet.getId());
+		return new ModelAndView("pdfViewPR", "purchaseOrder", po);
+	}
 }
