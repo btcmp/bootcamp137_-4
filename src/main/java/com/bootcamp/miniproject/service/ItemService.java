@@ -122,9 +122,25 @@ public class ItemService {
 				ivar.setModifiedBy(user);
 				variantDao.update(ivar);
 				System.out.println("beres update variant");
-//				
+				List<ItemInventory> oldInv = inventoryDao.getInventoryByVariant(ivar.getId());
 				for (Outlet out :outlet) {
-					System.out.println(out.getName());
+					
+					for (ItemInventory old: oldInv) {
+						if (out.getId() == old.getOutlet().getId()) {
+							
+						} else {
+							ItemInventory inv = new ItemInventory();
+							inv.setItemVariant(ivar);
+							inv.setAlertAtQty(inventory.getAlertAtQty());
+							inv.setBeginning(inventory.getBeginning());
+							inv.setEndingQty(inventory.getBeginning());
+							inv.setOutlet(out);
+							inv.setCreatedBy(user);
+							inv.setModifiedBy(user);
+							inv.setCreatedOn(new Date());
+							inventoryDao.save(inv);
+						}
+					}
 					// Belum fix
 //					ItemInventory inv = new ItemInventory();
 //					inv.setAlertAtQty(inventory.getAlertAtQty());

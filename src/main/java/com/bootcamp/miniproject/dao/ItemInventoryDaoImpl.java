@@ -157,5 +157,18 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 			return itemInventory;
 		}
 	}
+	@Override
+	public List<ItemInventory> getInventoryByVariant(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemInventory inv where inv.itemVariant.id =:varId";
+		List <ItemInventory> itemInventory = session.createQuery(hql).setParameter("varId", id).list();
+		if (itemInventory.isEmpty()) {
+			System.out.println("Kosong");
+			return null;
+		} else {
+			System.out.println("Ada");
+			return itemInventory;
+		}
+	}
 
 }

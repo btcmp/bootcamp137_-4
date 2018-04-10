@@ -28,4 +28,6 @@ public interface ItemInventoryDao {
 	public List<ItemInventory> getInvetoryByItemIdandOutletId(Long id, Long outletId);
 
 	public List<ItemInventory> getInventoryOutletId(Long outletId);
+
+	public List<ItemInventory> getInventoryByVariant(Long id);
 }
