@@ -163,7 +163,6 @@ public class ItemService {
 	public Item getOne(long id) {
 		return itemDao.getOne(id);
 	}
-
 	public void delete(Item item) {
 		itemDao.delete(item);
 	}

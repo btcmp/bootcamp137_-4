@@ -170,5 +170,4 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 			return itemInventory;
 		}
 	}
-
 }
