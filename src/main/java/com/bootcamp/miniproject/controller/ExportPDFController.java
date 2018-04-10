@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +21,7 @@ import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.model.PurchaseOrder;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.SalesOrder;
+import com.bootcamp.miniproject.model.SalesOrderDetail;
 import com.bootcamp.miniproject.model.Supplier;
 import com.bootcamp.miniproject.model.TransferStock;
 import com.bootcamp.miniproject.model.User;
@@ -126,15 +128,17 @@ public class ExportPDFController {
 	return new ModelAndView("pdfViewCategory","categories",categories);
  	}
 	
-	@RequestMapping(value = "/sales-order", method = RequestMethod.GET)
-	ModelAndView generatePdfSalesOrder(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "/sales-order/{id}", method = RequestMethod.GET)
+	ModelAndView generatePdfSalesOrder(HttpServletRequest request, HttpServletResponse response,@PathVariable long id) throws Exception {
 		System.out.println("Calling generatePdf()...");
 		//user data
 		response.setHeader("Content-Disposition", "attachment; filename=\"sales-order.pdf\"");
 		response.setContentType("application/pdf");
-		java.util.List<SalesOrder> salesOrders = salesOrderService.selectAll();
+		SalesOrder salesOrders = salesOrderService.getOne(id);
+		long soId = salesOrders.getId();
+		List<SalesOrderDetail> salesOrderDetails = salesOrderService.getSODBySOId(soId);
 
-	return new ModelAndView("pdfViewSalesOrder","salesOrders",salesOrders);
+	return new ModelAndView("pdfViewSalesOrder","salesOrderDetails",salesOrderDetails);
 	}
 	
 	@RequestMapping(value = "/adjustment", method = RequestMethod.GET)

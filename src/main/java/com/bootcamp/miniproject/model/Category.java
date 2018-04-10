@@ -40,7 +40,7 @@ public class Category {
 	
 	@ManyToOne
 	@JoinColumn(name="created_by")
-	@JsonIgnore
+	//@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -49,7 +49,7 @@ public class Category {
 	
 	@ManyToOne
 	@JoinColumn(name="modified_by")
-	@JsonIgnore
+	//@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)

@@ -17,4 +17,6 @@ public interface SalesOrderDetailDao {
 	public void saveUpdate(SalesOrderDetail salesOrderDetail);
 	
 	public void delete(SalesOrderDetail salesOrderDetail);
+
+	public List<SalesOrderDetail> getSODBySOId(long id);
 }

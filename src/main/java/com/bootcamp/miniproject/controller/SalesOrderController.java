@@ -22,6 +22,7 @@ import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.model.Province;
 import com.bootcamp.miniproject.model.SalesOrder;
+import com.bootcamp.miniproject.model.SalesOrderDetail;
 import com.bootcamp.miniproject.service.CustomerService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.ProvinceService;
@@ -53,6 +54,13 @@ public class SalesOrderController {
 		model.addAttribute("salesOrders", salesOrders);
 		model.addAttribute("provinces", provinces);
 		return "sales-order";
+	}
+	
+	@RequestMapping(value = "/get-all", method = RequestMethod.GET)
+	@ResponseBody
+	public List<SalesOrder> getAll() {
+		List<SalesOrder> salesOrder = salesOrderService.selectAll();
+		return salesOrder;
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -116,5 +124,12 @@ public class SalesOrderController {
 	public List<Customer> searchCustomer(@RequestParam(value="search", defaultValue="") String search) {
 		List<Customer> customers = customerService.getCustomerBySearchName(search);
 		return customers;
+	}
+	
+	@RequestMapping(value = "/get-sod", method = RequestMethod.GET)
+	@ResponseBody
+	public List<SalesOrderDetail> getSODBySOId(@RequestParam(value="search", defaultValue="") long id){
+		List<SalesOrderDetail> sod = salesOrderService.getSODBySOId(id);
+		return sod;
 	}
 }

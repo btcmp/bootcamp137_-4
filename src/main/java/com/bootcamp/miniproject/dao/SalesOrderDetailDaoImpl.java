@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bootcamp.miniproject.model.SalesOrderDetail;
+import com.bootcamp.miniproject.model.TransferStockDetail;
 
 @Repository
 public class SalesOrderDetailDaoImpl implements SalesOrderDetailDao{
@@ -53,5 +54,20 @@ public class SalesOrderDetailDaoImpl implements SalesOrderDetailDao{
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(salesOrderDetail);
 		session.flush();
+	}
+
+	@Override
+	public List<SalesOrderDetail> getSODBySOId(long id) {
+		// TODO Auto-generated method stub
+		System.out.println("111111");
+		String hql = "from SalesOrderDetail SOD where SOD.salesOrder.id = :id";
+		Session session = sessionFactory.getCurrentSession();
+		List<SalesOrderDetail> salesOrderDetails = session.createQuery(hql).setParameter("id", id).list();
+		System.out.println("22222");
+		if (salesOrderDetails.isEmpty()) {
+			return null;
+		} else {
+			return salesOrderDetails;
+		}
 	}
 }

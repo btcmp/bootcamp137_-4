@@ -20,7 +20,7 @@
 
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-				<h2 style="text-align: center;">Transfer Stock</h2>
+				<h2 style="text-align: center;">Sales Order</h2>
 				<ol class="breadcrumb">
 					<li><a href="${pageContext.request.contextPath}/master"><i
 							class="fa fa-dashboard"></i> Master</a></li>
@@ -415,8 +415,23 @@ $(document).ready(function(){
 	})
 	
 	$('#receipt-print').click(function(){
-		//window.location = '${pageContext.request.contextPath}/generate/sales-order';
-		window.location='${pageContext.request.contextPath}/transaction/sales-order';
+		$.ajax({
+			type : 'GET',
+			url : '${pageContext.request.contextPath}/transaction/sales-order/get-all',
+			dataType: 'json',
+			success : function(data){
+				var a = 0;
+				$.each(data, function(key, val) {
+					if (val.id>a) {
+						a = val.id;
+					}
+				});
+				window.location = '${pageContext.request.contextPath}/generate/sales-order/'+a; 
+			}, 
+			error : function(){
+				alert('get all supplier failed');
+			}
+		})
 	})
 	
 	$('#receipt-email-btn').click(function(){
@@ -490,7 +505,8 @@ $(document).ready(function(){
 	}
 	
 	$('#export').click(function(){
-		window.location = '${pageContext.request.contextPath}/generate/sales-order'; 
+		var a = 270;
+		window.location = '${pageContext.request.contextPath}/generate/sales-order/'+a; 
 	})
 });
 </script>

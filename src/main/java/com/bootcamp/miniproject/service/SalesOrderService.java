@@ -92,4 +92,9 @@ public class SalesOrderService {
 			invent.setSalesOrderQty(invent.getSalesOrderQty()+SOD.getQty());
 		}
 	}
+
+	public List<SalesOrderDetail> getSODBySOId(long id) {
+		// TODO Auto-generated method stub
+		return salesOrderDetailDao.getSODBySOId(id);
+	}
 }

@@ -52,7 +52,7 @@ public class User {
 	
 	@ManyToOne
 	@JoinColumn(name="created_by")
-	@JsonIgnore
+	//@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -61,7 +61,7 @@ public class User {
 	
 	@ManyToOne
 	@JoinColumn(name="modified_by")
-	@JsonIgnore
+	//@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)
