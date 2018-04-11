@@ -12,7 +12,7 @@
 				<h3 class="modal-title" id="exampleModalLabel">Add New Transfer Stock</h3>
 			</div>
 			<div class="modal-body">
-				<form class="form-all">
+				<form class="form-add-ts">
 					<div class="form-group">
 						<p>Create New Transfer Stock From: <a style="font-weight: bold;">${outlet.name}</a></p>
 					</div>
@@ -32,7 +32,7 @@
 					</div>
 					<div class="form-group">
 						<label for="add-name">Notes</label> <textarea type="text"
-							class="form-control" id="add-notes"  rows="5" placeholder="Notes. . ."></textarea>
+							class="form-control" id="add-notes"  rows="5" placeholder="Notes. . ." required=""></textarea>
 					</div>
 					<div>
 						<table class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -53,8 +53,18 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<input type="hidden" id="btn-save1"/>
 				<button type="button" id="btn-save" class="btn btn-primary">Save & Submit</button>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$('#btn-save').click(function(){
+		var ok = $('.form-add-ts').parsley().validate();
+		if(ok){
+			$('#btn-save1').click();
+		}
+	})
+</script>

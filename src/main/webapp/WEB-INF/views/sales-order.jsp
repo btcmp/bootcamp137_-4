@@ -426,7 +426,15 @@ $(document).ready(function(){
 						a = val.id;
 					}
 				});
-				window.location = '${pageContext.request.contextPath}/generate/sales-order/'+a; 
+				$('.btn-cancel-item').click();
+				$('#search').val("");
+				$('#item-tbl').empty();
+				$('#search-customer').val("");
+				$('#search-customer-tbl').empty();
+				$('.choose-customer').text("Choose Customer");
+				$('.choose-customer').attr("id","kosong");
+				$('#modal-charge-sales-order').modal('toggle');
+				window.location = '${pageContext.request.contextPath}/generate/sales-order/'+a;
 			}, 
 			error : function(){
 				alert('get all supplier failed');

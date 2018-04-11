@@ -24,6 +24,7 @@ import com.bootcamp.miniproject.model.SalesOrder;
 import com.bootcamp.miniproject.model.SalesOrderDetail;
 import com.bootcamp.miniproject.model.Supplier;
 import com.bootcamp.miniproject.model.TransferStock;
+import com.bootcamp.miniproject.model.TransferStockDetail;
 import com.bootcamp.miniproject.model.User;
 import com.bootcamp.miniproject.service.AdjustmentService;
 import com.bootcamp.miniproject.service.CategoryService;
@@ -33,6 +34,7 @@ import com.bootcamp.miniproject.service.PurchaseOrderService;
 import com.bootcamp.miniproject.service.PurchaseRequestService;
 import com.bootcamp.miniproject.service.SalesOrderService;
 import com.bootcamp.miniproject.service.SupplierService;
+import com.bootcamp.miniproject.service.TransferStockDetailService;
 import com.bootcamp.miniproject.service.TransferStockService;
 
 @Controller
@@ -50,6 +52,9 @@ public class ExportPDFController {
 	
 	@Autowired
 	TransferStockService tsService;
+	
+	@Autowired
+	TransferStockDetailService tsdService;
 	
 	@Autowired
 	OutletService outletService; 
@@ -96,7 +101,7 @@ public class ExportPDFController {
  	}
 	
 	@RequestMapping(value = "/ts", method = RequestMethod.GET)
-	ModelAndView generatePdfs(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	ModelAndView generatePdfTransferStock(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("Calling generatePdf()...");
 		//user data
 		response.setHeader("Content-Disposition", "attachment; filename=\"transfer_stock.pdf\"");
@@ -104,6 +109,17 @@ public class ExportPDFController {
 		java.util.List<TransferStock> tss = tsService.selectAll();
 
 	return new ModelAndView("pdfViewTS","tss",tss);
+ 	}
+	
+	@RequestMapping(value = "/ts-detail/{id}", method = RequestMethod.GET)
+	ModelAndView generatePdfTransferStockDetail(HttpServletRequest request, HttpServletResponse response,@PathVariable long id) throws Exception {
+		System.out.println("Calling generatePdf()...");
+		//user data
+		response.setHeader("Content-Disposition", "attachment; filename=\"transfer_stock_detail.pdf\"");
+		response.setContentType("application/pdf");
+		List<TransferStockDetail> transferStockDetails = tsdService.getTransferStockDetailsByTransferStockId(id);
+
+	return new ModelAndView("pdfViewTransferStockDetail","transferStockDetails",transferStockDetails);
  	}
 	
 	@RequestMapping(value = "/outlet", method = RequestMethod.GET)
@@ -134,9 +150,7 @@ public class ExportPDFController {
 		//user data
 		response.setHeader("Content-Disposition", "attachment; filename=\"sales-order.pdf\"");
 		response.setContentType("application/pdf");
-		SalesOrder salesOrders = salesOrderService.getOne(id);
-		long soId = salesOrders.getId();
-		List<SalesOrderDetail> salesOrderDetails = salesOrderService.getSODBySOId(soId);
+		List<SalesOrderDetail> salesOrderDetails = salesOrderService.getSODBySOId(id);
 
 	return new ModelAndView("pdfViewSalesOrder","salesOrderDetails",salesOrderDetails);
 	}

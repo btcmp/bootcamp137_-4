@@ -7,13 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
-import com.bootcamp.miniproject.model.SalesOrder;
 import com.bootcamp.miniproject.model.SalesOrderDetail;
-import com.bootcamp.miniproject.service.SalesOrderService;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.html.simpleparser.HTMLWorker;
@@ -21,9 +18,6 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 @Controller
 public class SalesOrderPDFView extends AbstractPdfView {
-
-	@Autowired
-	SalesOrderService salesOrderService;
 	
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document doc, PdfWriter writer, HttpServletRequest request,
@@ -47,10 +41,10 @@ public class SalesOrderPDFView extends AbstractPdfView {
 				        "<br/>" +
 				        "</body></html>";
 				      htmlWorker.parse(new StringReader(str));
-						table.addCell("Name");
+						table.addCell("Item");
 						table.addCell("Price ");
-						table.addCell("Quantity");
-						table.addCell("Sub Total");
+						table.addCell("Qty.");
+						table.addCell("Subtotal");
 				}
 						table.addCell(sod.getItemVariant().getItem().getName()+"-"+sod.getItemVariant().getName());
 						table.addCell(String.valueOf(sod.getUnitPrice())); 

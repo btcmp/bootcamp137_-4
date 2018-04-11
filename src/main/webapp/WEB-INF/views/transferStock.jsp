@@ -128,7 +128,7 @@ $(document).ready(function(){
 	
 	var role = "${employee.user.role.name}";
 	if (role!=="ROLE_ADMIN") {
-		$("#more-option").addClass('hidden');
+		$(".more-option").addClass('hidden');
 	}
 	
 	var added = [];
@@ -159,7 +159,8 @@ $(document).ready(function(){
 					option.push("<option value=\"Kosong\">Action</option>");
 					option.push("<option value=\"Print\">Print</option>");
 				}
-				$('#more-option').html(option);
+				$('.more-option').html(option);
+				$('.more-option').attr("id",id);
 				$.ajax({
 					url : '${pageContext.request.contextPath }/transaction/transfer-stock/search-transfer-stock-detail?search='+data.id,
 					type : 'GET',
@@ -212,8 +213,9 @@ $(document).ready(function(){
 		return [year, month, day].join('-');
 	};
 	
-	$('#more-option').change(function(){
+	$('.more-option').change(function(){
 		var newStatus = $(this).val();
+		var id = $(this).attr('id');
 		if (newStatus=="Approved") {
 			transferStockId = $('#view-hidden-id').val();
 			$.ajax({
@@ -245,7 +247,7 @@ $(document).ready(function(){
 				
 			})
 		}else if (newStatus=="Print") {
-			window.location='${pageContext.request.contextPath}/transaction/transfer-stock';
+			window.location = '${pageContext.request.contextPath}/generate/ts-detail/'+id; 
 		}
 	})
 	
@@ -262,7 +264,7 @@ $(document).ready(function(){
 		$('#modal-add-transfer-item').modal();
 	})
 	
-	$('#btn-save').click(function(){
+	$('#btn-save1').click(function(){
 		var outId = "${outlet.id}";
 		var userId = "${employee.user.id}";
 		if (outId==$('#add-to-outlet').val()) {
