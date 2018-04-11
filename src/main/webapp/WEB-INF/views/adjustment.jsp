@@ -124,7 +124,7 @@ $(document).ready(function(){
 //ketika role admin, muncul action | kalo selain admin, tidak muncul action
 		var role = "${employee.user.role.name}";
 		if (role!=="ROLE_ADMIN") {
-			$("#more-option").addClass('hidden');
+			$(".more-option").addClass('hidden');
 		}
 		
 //modal create adjustment
@@ -143,7 +143,7 @@ $(document).ready(function(){
 		})
 
 //view adjustment detail
-	$('.view').click(function(){
+	$('body').on('click','a.view', function(){    //dikasih body agar saat pindah page bisa keluar modal
 		var id = $(this).attr('id');
 		$.ajax({
 			type : 'GET',
@@ -167,7 +167,8 @@ $(document).ready(function(){
 					option.push("<option value=\"Kosong\">Action</option>");
 					option.push("<option value=\"Print\">Print</option>");
 				}
-				$('#more-option').html(option);
+				$('.more-option').html(option);
+				$('.more-option').attr('id',id);
 				$.ajax({
 					url : '${pageContext.request.contextPath }/transaction/adjustment/search-adjustment-detail?search='+data.id,
 					type : 'GET',
@@ -221,8 +222,10 @@ $(document).ready(function(){
 		return [year, month, day].join('-');
 	};
 	
-	$('#more-option').change(function(){
+	$('.more-option').change(function(){
 		var newStatus = $(this).val();
+		var id = $(this).attr('id');
+		console.log('id');
 		if (newStatus=="Approved") {
 			adjustmentId = $('#view-hidden-id').val();
 			$.ajax({
@@ -254,13 +257,14 @@ $(document).ready(function(){
 				
 			})
 		}else if (newStatus=="Print") {
-			window.location='${pageContext.request.contextPath}/transaction/adjustment';
+			window.location='${pageContext.request.contextPath}/generate/adjustment-detail/'+id;
 		}
 	})
 	
 	
 //button save 
 		$('#btn-save').click(function(){
+		var formAddNotes = $('#add-notes').parsley().validate();	
 		var idUser = "${employee.user.id}"
 //isi adjustment detail
 			var adjustmentDetail=[];
@@ -301,19 +305,23 @@ $(document).ready(function(){
 			
 			console.log(adjustment)
 			
+			if (formAddNotes == true) {
+				
+				$.ajax({
+					url : '${pageContext.request.contextPath }/transaction/adjustment/save',
+					type : 'POST',
+					data : JSON.stringify(adjustment),
+					contentType : 'application/json',
+					success : function(){
+						alert('save successfully');
+	 					window.location='${pageContext.request.contextPath}/transaction/adjustment'; 
+					}, error : function(){
+						alert('save failed');
+					}
+				});
+			}
 			
-			$.ajax({
-				url : '${pageContext.request.contextPath }/transaction/adjustment/save',
-				type : 'POST',
-				data : JSON.stringify(adjustment),
-				contentType : 'application/json',
-				success : function(){
-					alert('save successfully');
- 					window.location='${pageContext.request.contextPath}/transaction/adjustment'; 
-				}, error : function(){
-					alert('save failed');
-				}
-			})
+
 	})
 
 	

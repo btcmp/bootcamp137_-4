@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bootcamp.miniproject.model.Adjustment;
+import com.bootcamp.miniproject.model.AdjustmentDetail;
 import com.bootcamp.miniproject.model.Category;
 import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.ItemInventory;
@@ -26,6 +27,7 @@ import com.bootcamp.miniproject.model.Supplier;
 import com.bootcamp.miniproject.model.TransferStock;
 import com.bootcamp.miniproject.model.TransferStockDetail;
 import com.bootcamp.miniproject.model.User;
+import com.bootcamp.miniproject.service.AdjustmentDetailService;
 import com.bootcamp.miniproject.service.AdjustmentService;
 import com.bootcamp.miniproject.service.CategoryService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
@@ -67,6 +69,9 @@ public class ExportPDFController {
 	
 	@Autowired
 	AdjustmentService adjustmentService;
+	
+	@Autowired
+	AdjustmentDetailService adjustmentDetailService;
 	
 	@Autowired
 	ItemInventoryService inventoryService;
@@ -165,6 +170,19 @@ public class ExportPDFController {
 
 	return new ModelAndView("pdfViewAdjustment","adjustments",adjustments);
 	}
+	
+	@RequestMapping(value = "/adjustment-detail/{id}", method = RequestMethod.GET)
+	ModelAndView generatePdfAdjustmentDetail(HttpServletRequest request, HttpServletResponse response,@PathVariable long id) throws Exception {
+		System.out.println("Calling generatePdf()...");
+		//user data
+		response.setHeader("Content-Disposition", "attachment; filename=\"adjusment_detail.pdf\"");
+		response.setContentType("application/pdf");
+		List<AdjustmentDetail> adjustmentDetails = adjustmentDetailService.getAdjustmentDetailByAdjustmentId(id);
+
+	return new ModelAndView("pdfViewAdjustmentDetail","adjustmentDetails",adjustmentDetails);
+ 	}
+	
+	
 	@RequestMapping(value = "/item", method = RequestMethod.GET)
 	ModelAndView generatePdfItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("Calling generatePdf()...");

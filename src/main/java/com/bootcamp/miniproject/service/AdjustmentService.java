@@ -91,18 +91,21 @@ public class AdjustmentService {
 	}
 
 	public void updateStatusAndStock(Adjustment adjustment) {
-		adjustmentDao.update(adjustment);
-		AdjustmentHistory adjustHis = new AdjustmentHistory();
-		adjustHis.setAdjustment(adjustment);
-		adjustHis.setStatus(adjustment.getStatus());
-		adjustmentHistoryDao.save(adjustHis);
+		adjustmentDao.update(adjustment);  							//proses replace data adjustment
 		
-		long idOutlet = adjustment.getOutlet().getId();
-		List<AdjustmentDetail> adjustDetails = adjustment.getAdjustmentDetails();
-		for(AdjustmentDetail ad : adjustDetails) {
-			long idVariant = ad.getItemVariant().getId();
-			ItemInventory itemInventory = itemInventoryDao.searchInventoryByVariantAndOutletId(idVariant, idOutlet);
-			itemInventory.setEndingQty(ad.getActualStock());
+		AdjustmentHistory adjustHis = new AdjustmentHistory();		//membuat objectHistory baru yang kosong(null) yang kerangkanya nya sama dengan class adjustmentHistory
+		adjustHis.setAdjustment(adjustment);						//ngisi adjustHis(object baru yang kosong) dengan properti adjustment(object)
+		adjustHis.setStatus(adjustment.getStatus());				//setStatus sesuai dengan status adjusymen sekarang 
+		adjustmentHistoryDao.save(adjustHis);						//save history
+	
+		long idOutlet = adjustment.getOutlet().getId();				//ngopy id dari outlet yang ada di adjustment
+		List<AdjustmentDetail> adjustDetails = adjustment.getAdjustmentDetails(); //buat object baru yang isinya getAdjustment detail yang bentuknya list
+		
+		for(AdjustmentDetail ad : adjustDetails) {					//dataList diLOOp satu per satu
+			long idVariant = ad.getItemVariant().getId();			//ngopy id dari variant yang ada di ad
+			ItemInventory itemInventory = itemInventoryDao.searchInventoryByVariantAndOutletId(idVariant, idOutlet);  //mencari item inventory berdasarkan parameter outlet id dan variant id
+			itemInventory.setAdjustmentQty(itemInventory.getAdjustmentQty()+(ad.getActualStock()-ad.getInStock()));  //memberi nilai adjustmentQty dengan cara adjustmentQty+(actualStock-InStock)
+			itemInventory.setEndingQty(ad.getActualStock());		//setelah dapat ItemInventory kemudian di setEndingnya sesuai dengan actualStock yang di inputkan 
 		}
 
 	}

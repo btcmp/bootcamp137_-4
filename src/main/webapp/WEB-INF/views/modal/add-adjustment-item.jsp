@@ -23,7 +23,7 @@
 						<table class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
 								<th>Item</th>
-								<th>Stock</th>
+								<th>In Stock</th>
 								<th>Adj. Qty</th>
 								<th>Action</th>
 							</thead>

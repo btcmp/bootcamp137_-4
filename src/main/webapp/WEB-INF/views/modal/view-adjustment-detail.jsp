@@ -10,7 +10,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button> -->
 				<div class="form-group pull-right">
-					<select class="form-control" name="more" id="more-option">
+					<select class="form-control more-option" name="more">
 					</select>
 				</div>
 				<h4 class="modal-title" id="exampleModalLabel">Adjustment Detail</h4>

@@ -76,7 +76,7 @@ public class ItemDaoImpl implements ItemDao {
 	public List<Item> getItemByCategory(Category category) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from ItemVariant inv where inv.item.category = :category and inv.active=1";
+		String hql = "from Item i where i.category = :category and i.active=1";
 		List<Item> item = session.createQuery(hql).setParameter("category", category).list();
 		if(item.isEmpty()) {
 			System.out.println("kosong");

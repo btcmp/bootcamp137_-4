@@ -108,6 +108,7 @@
 <script>
 $(document).ready(function(){
 	$('#category-tbl').DataTable({
+		paging : true,
 		searching:false
 	});
 	
@@ -196,6 +197,7 @@ $('.edit').on('click', function(evt){
 		type : 'GET',
 		dataType : 'json',
 		success : function(category){
+			console.log(category);
 			setEditCategory(category);
 			$('#edit-category').modal();   //call modal
 		},

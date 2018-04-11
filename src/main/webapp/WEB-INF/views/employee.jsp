@@ -32,7 +32,7 @@
     <section class="content-header row">   
     <!-- FORM EMPLOYEE -->   
         <div class="col-xs-12">
-<%--         <form id="form-all-employee"> --%>
+<%--          <form id="form-all-employee">  --%>
       	<form id="form-add-employee" class="row" >
 		<div class="col-md-3">
 			<div class="form-group">
@@ -48,7 +48,7 @@
 		</div>
 		<div class="col-md-3">
 			<div class="form-group">
-				<input type="text" class="form-control" id="add-email"
+				<input type="email" class="form-control" id="add-email"
 					placeholder="Email" required>
 			</div>
 		</div>
@@ -66,20 +66,20 @@
 
 	<!-- BUTTON ASSIGN OUTLET -->	
 	<div class="row" >
-      <form id="form-add-assign-outlet" >
+      <div>
 		<div class="col-md-3">
 			<div class="form-group">
 				<button type="button" id="btn-assign-outlet"
 					class="add-outlet btn btn-primary btn-block">Assign Outlet</button>
 			</div>
 		</div>
-	</form> 
+	</div> 
 
 		
 		
 		<!-- CHECK BOX - CREATE ACCOUNT? -->
 	  <form id="form-create-account" >
- 		<div>	
+ 		<div class="col-md-3 row">	
 			<input type="checkbox" id="create-account" name="create-account" ></input> Create Account?</a><br><br>
 		</div> 		
 	  </form>
@@ -110,8 +110,8 @@
 					placeholder="Password" required>
 			</div>
 		</div>
-<%-- 		</form> <!-- end form-all -->
- --%>	</form>
+ 		<%-- </form> --%> <!-- end form-all -->
+ 	</form>
 
 	<!-- BUTTON ACTION -->	
 	<div style="float: right;">
@@ -218,7 +218,7 @@ $(function () {
 //========================================================================================
 //ADD DATA EMPLOYEE
 	 $('#btn-save-emp').on('click', function(){
-/* 		var formAllEmployee = $('#form-all-employee').parsley().validate(); */
+ 		//var formAllEmployee = $('#form-all-employee').parsley().validate(); 
 		var idUser = "${employee.user.id}";
 //=========================================
 //HAVE ACCOUNT?		 
@@ -255,6 +255,19 @@ $(function () {
 					  employeeOutlets.push(employeeOutlet);
 		});
 /* console.log(employeeOutlet); */
+  
+		var okEmp = $('#form-add-employee').parsley().validate();
+		var okOutlet = false;
+		if (employeeOutlets.length > 0) {
+			okOutlet = true
+		}
+		var okAccount = $('#create-account').is(':checked') ? true : false;
+		var okUser = false;
+		if (okAccount) {
+			okUser = $('#form-add-user').parsley().validate();			
+		}
+		 console.log("okEmp : "+okEmp+", okOutlet : "+okOutlet+", okAccount : "+okAccount+", okUser : "+okUser)
+ 
 //=========================================
 //EMPLOYEE		 
 		 var emp = {
@@ -275,8 +288,8 @@ $(function () {
 		}
 		 console.log(emp);
 		 		
-/* if (formAllEmployee == true) { */  //validasi parsley	
-			 $.ajax({
+ //if (formAllEmployee == true) {   //validasi parsley	lo"	 
+	 $.ajax({
 				url : '${pageContext.request.contextPath}/master/employee/get-all',	
 				type : 'GET',
 				success : function(data) {
@@ -300,24 +313,26 @@ $(function () {
 						alert('this name has been taken, please change!')
 					} else if (sameEmail > 0) {
 						alert('this email has been taken, please change!')
-					}else if (emp.firstName == "") {
-						alert('employee gak boleh kosong')
-					}else if (emp.user.username != "" && emp.employeeOutlets.length == 0) {
+					}else if (!okEmp) {
+						alert('perbaiki inputan employee')
+					}else if (okAccount && !okUser) {
+						alert('perbaiki inputan user')
+					}else if (okUser && !okOutlet) {
 						alert('assign outlet dulu gan ')
 					}else {  
-/*  					alert('saved');  */
- 				 			$.ajax({
+ 					alert('saved');  
+  				 			$.ajax({
 							url : '${pageContext.request.contextPath}/master/employee/save',	
 							type : 'POST',
 							contentType : 'application/json',
 							data : JSON.stringify(emp),
 							success : function() {
-								alert('save successfully!');
+								alert('Save Successfully!');
 				 				 window.location = '${pageContext.request.contextPath}/master/employee';  
 							}, error : function() {
-								alert('save failed!');
+								alert('Save Failed!');
 							}
-						});      
+						});       
 												
  					 }
 					
@@ -326,7 +341,7 @@ $(function () {
 				}
 			});
 	 
-	// } //end validasi parsley
+	 //} //end validasi parsley
 	 
 	}); 
 	
@@ -465,10 +480,10 @@ $(function () {
 							data : JSON.stringify(emp),
 							contentType : 'application/json',
 							success : function () {
-								alert('update successfuly!');
+								alert('Update Successfuly!');
 								window.location = '${pageContext.request.contextPath}/master/employee';
 							}, error : function () {
-								alert('update failed!');
+								alert('Update Failed!');
 							}
 							
 						}) 		
@@ -525,10 +540,10 @@ $(function () {
 			data : JSON.stringify(emp),
 			contentType : 'application/json',
 			success : function () {
-				alert('non-activated successfuly!');
+				alert('Delete Successfuly!');
 				window.location = '${pageContext.request.contextPath}/master/employee';
 			}, error : function () {
-				alert('non-activated failed!');
+				alert('Delete Failed!');
 			}
 			
 		})
@@ -582,6 +597,9 @@ $(function () {
 		} else {
 			$('#form-add-user').hide(1000);
 			$('#create-account').val('false');
+			$('#add-username').val('');
+			$('#add-password').val('');
+			$('#add-role').val('');
 		}
 	});
 	
