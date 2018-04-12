@@ -34,6 +34,13 @@
 						<label for="add-phone">Day Of Birth</label> <input type="date"
 							class="form-control" id="add-dob" placeholder="day of birth"
 							required="">
+							<!-- <div class="input-group date">
+								<div class="input-group-addon">
+			                    	<i class="fa fa-calendar"></i>
+			                    </div>
+			                    <input type="date" class="form-control pull-right datepicker" id="add-dob" 
+			                    placeholder="day of birth" required="">
+			                </div> -->
 					</div>
 					<div class="form-group">
 						<label for="add-address">Address</label> <input type="text"

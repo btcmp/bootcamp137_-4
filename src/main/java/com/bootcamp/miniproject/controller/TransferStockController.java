@@ -137,16 +137,8 @@ public class TransferStockController {
 	@ResponseBody
 	public List<ItemInventory> searchItem(@RequestParam(value="search", defaultValue="") String search) {
 		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
-		List<ItemInventory> itemsInventory = itemInventoryService.searchItemInventoryByItemName(search);
-		List<ItemInventory> itemInvent = new ArrayList<>();
-		if (itemsInventory != null) {
-			for(ItemInventory invent : itemsInventory) {
-				if (invent.getOutlet().getId() == outlet.getId()) {
-					itemInvent.add(invent);
-				}
-			}
-		}
-		return itemInvent;
+		List<ItemInventory> itemsInventory = itemInventoryService.searchItemInventoryByItemNameAndOutlet(outlet.getId(), search);
+		return itemsInventory;
 	}
 	
 	@RequestMapping(value = "/get-one-item/{id}", method = RequestMethod.GET)

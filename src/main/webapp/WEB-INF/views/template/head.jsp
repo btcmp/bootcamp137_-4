@@ -16,6 +16,12 @@
   <link rel="stylesheet" href="${url}/bower_components/Ionicons/css/ionicons.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="${url}/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="${url}/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="${url}/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="${url}/plugins/iCheck/all.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="${url}/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -37,6 +43,13 @@
 	<script src="${url}/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<!-- FastClick -->
 	<script src="${url}/bower_components/fastclick/lib/fastclick.js"></script>
+	<!-- date-range-picker -->
+	<script src="${url}/bower_components/moment/min/moment.min.js"></script>
+	<script src="${url}/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<!-- bootstrap datepicker -->
+	<script src="${url}/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	<!-- iCheck 1.0.1 -->
+	<script src="${url}/plugins/iCheck/icheck.min.js"></script>
 	<!-- AdminLTE App -->
 	<script src="${url}/dist/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->

@@ -118,6 +118,10 @@ $(document).ready(function(){
 		searching : false
 	});
 	
+	$('.datepicker').datepicker({
+	      autoclose: true
+	    })
+	
 	$("#sales-order-side-option").addClass('active');
 	$("#treeview-transaction").addClass('active');
 	
@@ -426,15 +430,13 @@ $(document).ready(function(){
 						a = val.id;
 					}
 				});
-				$('.btn-cancel-item').click();
-				$('#search').val("");
-				$('#item-tbl').empty();
-				$('#search-customer').val("");
-				$('#search-customer-tbl').empty();
-				$('.choose-customer').text("Choose Customer");
-				$('.choose-customer').attr("id","kosong");
-				$('#modal-charge-sales-order').modal('toggle');
-				window.location = '${pageContext.request.contextPath}/generate/sales-order/'+a;
+				$.ajax({
+					url : '${pageContext.request.contextPath}/generate/sales-order/'+a,
+					success : function() {
+						window.location= '${pageContext.request.contextPath}/transaction/sales-order';
+					}
+				})
+				
 			}, 
 			error : function(){
 				alert('get all supplier failed');
@@ -512,10 +514,6 @@ $(document).ready(function(){
 		})
 	}
 	
-	$('#export').click(function(){
-		var a = 270;
-		window.location = '${pageContext.request.contextPath}/generate/sales-order/'+a; 
-	})
 });
 </script>
 </html>
