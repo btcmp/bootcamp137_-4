@@ -119,6 +119,7 @@ $(document).ready(function(){
 	});
 	
 	$('.datepicker').datepicker({
+		format: 'yyyy-mm-dd',
 	      autoclose: true
 	    })
 	
@@ -153,6 +154,7 @@ $(document).ready(function(){
 				phone : $('#add-phone').val(),
 				email : $('#add-email').val(),
 				dob : $('#add-dob').val(),
+				dobOld : $('#add-dob-old').val(),
 				province : {
 					id : $('#add-province').val()
 				},
@@ -164,6 +166,7 @@ $(document).ready(function(){
 				},
 				active : true
 			}
+		console.log(customer);
 		if (customer.name=="" || customer.address=="" || customer.dob=="" || customer.phone=="" || customer.email=="" || customer.province.id=="" || customer.region.id=="" || customer.district.id=="") {
 			alert("fill the form completely");
 		} else {
