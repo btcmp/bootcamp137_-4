@@ -19,7 +19,7 @@
 					</div>
 					 <div class="form-group">
 						<label for="add-notes">Notes</label> <textarea type="text"
-							class="form-control" id="add-notes" rows="5" placeholder="Notes. . ." required></textarea>
+							class="form-control" id="add-notes" rows="5" placeholder="Notes. . ." required data-parsley-required-message="Notes must be filled"></textarea>
 					</div> 
 
  					<div>	

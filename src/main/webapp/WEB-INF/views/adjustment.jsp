@@ -33,13 +33,12 @@
       <!-- search form -->
       <div class="col-xs-4">
         <div class="input-group ">
-          <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button name="search" id="btn-search" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
+      <input type="text" name="daterange"  id="daterange" class="form-control daterange"/>
         </div>
       </div>
+      
+      
+      
       <div style="text-align: right;">
         <div class="col-xs-7">
         <a id="create-adjustment" class="btn btn-primary">Create</a>
@@ -419,8 +418,20 @@ $(document).ready(function(){
 		window.location='${pageContext.request.contextPath}/generate/adjustment'; 
 	});	
 	
+	//date range picker
+	    $('input[name="daterange"]').daterangepicker();
 	
-	
+	$('#daterange').change(function () {
+		var range = $('#daterange').val();
+		var parts = range.split(' - ');   							//menghapus strip beserta spasi "( - )""
+		var start = parts[0].replace('/', '-').replace('/', '-');
+		var end =  parts[1].replace('/', '-').replace('/', '-');
+		console.log(range);
+		console.log(start);
+		console.log(end);
+		window.location='${pageContext.request.contextPath}/transaction/adjustment/search-adjustment-byDateRange?start='+ start + '&end=' + end; 
+	})
+
 	
 	});
 </script>

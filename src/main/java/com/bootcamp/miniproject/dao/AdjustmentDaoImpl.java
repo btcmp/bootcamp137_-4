@@ -1,5 +1,6 @@
 package com.bootcamp.miniproject.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bootcamp.miniproject.model.Adjustment;
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 @Repository
 public class AdjustmentDaoImpl implements AdjustmentDao {
@@ -60,6 +62,20 @@ public class AdjustmentDaoImpl implements AdjustmentDao {
 		Session session = sessionFactory.getCurrentSession();
 		List<Adjustment> adjust = session.createQuery(hql).setParameter("outletId", outletId).list();
 		return adjust;
+	}
+
+	@Override
+	public List<Adjustment> searchAdjustmentByDateRange(Date start, Date end) {
+		// TODO Auto-generated method stub
+		String hql = "from Adjustment adj where adj.createdOn BETWEEN :start and :end ";
+		Session session = sessionFactory.getCurrentSession();
+		List<Adjustment> adjustments = session.createQuery(hql).setParameter("start", start).setParameter("end", end).list();
+		System.out.println("start : "+start+", end : "+end+", adj size : "+ adjustments.size());
+		if (adjustments.isEmpty()) {
+			return null;
+		} else {
+			return adjustments;
+		}
 	}
 	
 	

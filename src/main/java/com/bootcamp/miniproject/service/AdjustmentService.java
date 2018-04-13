@@ -1,5 +1,6 @@
 package com.bootcamp.miniproject.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,5 +114,10 @@ public class AdjustmentService {
 	public List<Adjustment> getAdjustmentIdByOutletId(long outletId) {
 		// TODO Auto-generated method stub
 		return adjustmentDao.getAdjustmentIdByOutletId(outletId);
+	}
+
+	public List<Adjustment> searchAdjustmentByDateRange(Date start, Date end) {
+		// TODO Auto-generated method stub
+		return adjustmentDao.searchAdjustmentByDateRange(start, end);
 	}
 }

@@ -218,7 +218,6 @@ $(function () {
 //========================================================================================
 //ADD DATA EMPLOYEE
 	 $('#btn-save-emp').on('click', function(){
- 		//var formAllEmployee = $('#form-all-employee').parsley().validate(); 
 		var idUser = "${employee.user.id}";
 //=========================================
 //HAVE ACCOUNT?		 
@@ -255,19 +254,7 @@ $(function () {
 					  employeeOutlets.push(employeeOutlet);
 		});
 /* console.log(employeeOutlet); */
-  
-		var okEmp = $('#form-add-employee').parsley().validate();
-		var okOutlet = false;
-		if (employeeOutlets.length > 0) {
-			okOutlet = true
-		}
-		var okAccount = $('#create-account').is(':checked') ? true : false;
-		var okUser = false;
-		if (okAccount) {
-			okUser = $('#form-add-user').parsley().validate();			
-		}
-		 console.log("okEmp : "+okEmp+", okOutlet : "+okOutlet+", okAccount : "+okAccount+", okUser : "+okUser)
- 
+   
 //=========================================
 //EMPLOYEE		 
 		 var emp = {
@@ -288,7 +275,20 @@ $(function () {
 		}
 		 console.log(emp);
 		 		
- //if (formAllEmployee == true) {   //validasi parsley	lo"	 
+//validasi parsley data gak boleh kosong 
+			var okEmp = $('#form-add-employee').parsley().validate();
+			var okOutlet = false;
+			if (employeeOutlets.length > 0) {
+				okOutlet = true
+			}
+			var okAccount = $('#create-account').is(':checked') ? true : false;
+			var okUser = false;
+			if (okAccount) {
+				okUser = $('#form-add-user').parsley().validate();			
+			}
+			 console.log("okEmp : "+okEmp+", okOutlet : "+okOutlet+", okAccount : "+okAccount+", okUser : "+okUser)
+
+
 	 $.ajax({
 				url : '${pageContext.request.contextPath}/master/employee/get-all',	
 				type : 'GET',
@@ -314,13 +314,13 @@ $(function () {
 					} else if (sameEmail > 0) {
 						alert('this email has been taken, please change!')
 					}else if (!okEmp) {
-						alert('perbaiki inputan employee')
+						alert('fix employee data input !')
 					}else if (okAccount && !okUser) {
-						alert('perbaiki inputan user')
+						alert('fix user data input !')
 					}else if (okUser && !okOutlet) {
-						alert('assign outlet dulu gan ')
+						alert('please assign outlet !')
 					}else {  
- 					alert('saved');  
+// 					alert('saved');  
   				 			$.ajax({
 							url : '${pageContext.request.contextPath}/master/employee/save',	
 							type : 'POST',
@@ -339,10 +339,7 @@ $(function () {
 				}, error : function() {
 					alert('get failed!');
 				}
-			});
-	 
-	 //} //end validasi parsley
-	 
+			});	 
 	}); 
 	
 	
@@ -474,19 +471,74 @@ $(function () {
 		}
 		
 		console.log(emp)
-					 	$.ajax({
-							url : '${pageContext.request.contextPath}/master/employee/update',
-							type : 'PUT',
-							data : JSON.stringify(emp),
-							contentType : 'application/json',
-							success : function () {
-								alert('Update Successfuly!');
-								window.location = '${pageContext.request.contextPath}/master/employee';
-							}, error : function () {
-								alert('Update Failed!');
+
+		//validasi parsley data gak boleh kosong 
+			var okEmpEdit = $('#form-edit-employee').parsley().validate();
+			var okOutletEdit = false;
+			if (employeeOutlets.length > 0) {
+				okOutletEdit = true
+			}
+			var okAccountEdit = $('#edit-account').is(':checked') ? true : false;
+			var okUserEdit = false;
+			if (okAccountEdit) {
+				okUserEdit = $('#form-edit-user').parsley().validate();			
+			}
+			 console.log("okEmpEdit : "+okEmpEdit+", okOutletEdit : "+okOutletEdit+", okAccountEdit : "+okAccountEdit+", okUserEdit : "+okUserEdit)		
+		
+		
+		//validasi nama dan email sama 
+			 $.ajax({
+				url : '${pageContext.request.contextPath}/master/employee/get-all',	
+				type : 'GET',
+				success : function(data) {
+					console.log(data);
+					var sameName = 0;
+					var sameEmail = 0;
+					$(data).each(function(index, data2) {
+						if (parseInt(data2.id)!==parseInt(emp.id)) {
+							if (data2.user !== null && data2.email !== null) {
+								if (data2.user.username !== null) {
+									if (emp.user.username.toLowerCase() == data2.user.username.toLowerCase()) {
+										sameName++;
+									} else if (emp.email.toLowerCase() == data2.email.toLowerCase()){
+										sameEmail++;
+									}		
+								}				
 							}
-							
-						}) 		
+						}
+					})
+					
+					if (sameName > 0) {
+						alert('this name has been taken, please change !')
+					} else if (sameEmail > 0) {
+						alert('this email has been taken, please change !')
+					}else if (!okEmpEdit) {
+						alert('fix employee data input !')
+					}else if (okAccountEdit && !okUserEdit) {
+						alert('fix user data input !')
+					}else if (okUserEdit && !okOutletEdit) {
+						alert('please assign outlet !')
+					}else {  
+ 					//alert('saved');  
+					$.ajax({
+						url : '${pageContext.request.contextPath}/master/employee/update',
+						type : 'PUT',
+						data : JSON.stringify(emp),
+						contentType : 'application/json',
+						success : function () {
+							alert('Update Successfuly!');
+							window.location = '${pageContext.request.contextPath}/master/employee';
+						}, error : function () {
+							alert('Update Failed!');
+						}
+						
+					});												
+ 					 }
+					
+				}, error : function() {
+					alert('get failed!');
+				}
+			});	 		
 												
  
 	});

@@ -1,6 +1,11 @@
 package com.bootcamp.miniproject.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
@@ -29,6 +34,7 @@ import com.bootcamp.miniproject.service.AdjustmentHistoryService;
 import com.bootcamp.miniproject.service.AdjustmentService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 @Controller 
 @RequestMapping("transaction/adjustment")
@@ -109,6 +115,19 @@ public class AdjustmentController {
 		return adjustmentHistories;
 	}
 	
+	@RequestMapping(value="/search-adjustment-byDateRange", method = RequestMethod.GET)
+	public String searchAdjustmentByDateRange(Model model, @RequestParam(value="start", defaultValue="") String startString, @RequestParam(value="end", defaultValue="")String endString) throws ParseException {
+		DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+		Date start = df.parse(startString);
+		Date end = df.parse(endString);
+		List<Adjustment> adjustments = adjustmentService.searchAdjustmentByDateRange(start, end);
+		List<Outlet> outlets = outletService.selectStatusActive();
+		List<ItemInventory> itemInventory = itemInventoryService.getAll();
+		model.addAttribute("adjustments", adjustments);
+		model.addAttribute("outlets",outlets);
+		model.addAttribute("itemInventories",itemInventory);
+		return "adjustment";
+	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.CREATED)
