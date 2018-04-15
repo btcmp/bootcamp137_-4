@@ -28,5 +28,8 @@ public class PurchaseRequestDetailService {
 	public List<Object> findPRDetailAndQty(Long outletId, Long prId) {
 		// TODO Auto-generated method stub
 		return prDetailDao.findPRDetailAndQty(outletId, prId);
+	}
+	public List<PurchaseRequestDetail> getDetailByPRId(long id) {
+		return prDetailDao.getDetailByPRId(id);
 	}	
 }

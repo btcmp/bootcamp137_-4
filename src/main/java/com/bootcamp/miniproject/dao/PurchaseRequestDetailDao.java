@@ -11,5 +11,6 @@ public interface PurchaseRequestDetailDao {
 	public void delete (PurchaseRequestDetail prDetail);
 	public List<PurchaseRequestDetail> getPRDetailByPRIdandOutletId(Long prId, Long outletId);
 	public List<Object> findPRDetailAndQty(Long outletId, Long prId);
+	public List<PurchaseRequestDetail> getDetailByPRId(long id);
 }
 //

@@ -20,7 +20,9 @@ import com.bootcamp.miniproject.model.Employee;
 import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.Outlet;
 import com.bootcamp.miniproject.model.PurchaseOrder;
+import com.bootcamp.miniproject.model.PurchaseOrderDetail;
 import com.bootcamp.miniproject.model.PurchaseRequest;
+import com.bootcamp.miniproject.model.PurchaseRequestDetail;
 import com.bootcamp.miniproject.model.SalesOrder;
 import com.bootcamp.miniproject.model.SalesOrderDetail;
 import com.bootcamp.miniproject.model.Supplier;
@@ -32,7 +34,9 @@ import com.bootcamp.miniproject.service.AdjustmentService;
 import com.bootcamp.miniproject.service.CategoryService;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
+import com.bootcamp.miniproject.service.PurchaseOrderDetailService;
 import com.bootcamp.miniproject.service.PurchaseOrderService;
+import com.bootcamp.miniproject.service.PurchaseRequestDetailService;
 import com.bootcamp.miniproject.service.PurchaseRequestService;
 import com.bootcamp.miniproject.service.SalesOrderService;
 import com.bootcamp.miniproject.service.SupplierService;
@@ -82,6 +86,11 @@ public class ExportPDFController {
 	@Autowired
 	PurchaseOrderService poService;
 	
+	@Autowired
+	PurchaseRequestDetailService prdService;
+	
+	@Autowired
+	PurchaseOrderDetailService podService;
 	@RequestMapping(value = "/supplier", method = RequestMethod.GET)
 	ModelAndView generatePdf(HttpServletRequest request,
 	HttpServletResponse response) throws Exception {
@@ -204,6 +213,15 @@ public class ExportPDFController {
 		List<PurchaseRequest> pr = prService.getAllPrByOutlet(outlet.getId());
 		return new ModelAndView("pdfViewPR", "purchaseRequest", pr);
 	}
+	@RequestMapping(value = "/purchase-request-detail/{id}", method = RequestMethod.GET)
+	ModelAndView generatePdfPurchaseRequestDetail(HttpServletRequest request, HttpServletResponse response,@PathVariable long id) throws Exception {
+		System.out.println("Calling generatePdf()...");
+		response.setHeader("Content-Disposition", "attachment; filename=\"purchase request detail.pdf\"");
+		response.setContentType("application/pdf");
+		List<PurchaseRequestDetail> prDetail = prdService.getDetailByPRId(id);
+	return new ModelAndView("pdfViewPurchaseRequestDetail","purchaseRequestDetails",prDetail);
+ 	}
+	
 	@RequestMapping(value = "/purchase-order", method = RequestMethod.GET)
 	ModelAndView generatePdfPurchaseOrder(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		System.out.println("Calling generatePdf()...");
@@ -212,6 +230,15 @@ public class ExportPDFController {
 		response.setContentType("application/pdf");
 		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
 		List<PurchaseOrder> po = poService.getAllPoByOutlet(outlet.getId());
-		return new ModelAndView("pdfViewPR", "purchaseOrder", po);
+		return new ModelAndView("pdfViewPO", "purchaseOrder", po);
 	}
+	
+	@RequestMapping(value = "/purchase-order-detail/{id}", method = RequestMethod.GET)
+	ModelAndView generatePdfPurchaseOrderDetail(HttpServletRequest request, HttpServletResponse response,@PathVariable long id) throws Exception {
+		System.out.println("Calling generatePdf()...");
+		response.setHeader("Content-Disposition", "attachment; filename=\"purchase request detail.pdf\"");
+		response.setContentType("application/pdf");
+		List<PurchaseOrderDetail> poDetail = podService.getDetailByPOId(id);
+	return new ModelAndView("pdfViewPurchaseOrderDetail","purchaseOrderDetails",poDetail);
+ 	}
 }

@@ -136,5 +136,5 @@ public class ItemController {
 	@ResponseBody
 	public List<ItemInventory> searchInventoryOutlet(@RequestParam ("search") String search, @RequestParam ("outletId") Long outletId) {
 		return inventoryService.searchInventoryByOutlet(search,outletId);
-	}
+	}	
 }

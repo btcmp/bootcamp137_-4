@@ -53,10 +53,20 @@ public class PurchaseRequestDetailDaoImpl implements PurchaseRequestDetailDao{
 	@Override
 	public List<Object> findPRDetailAndQty(Long outletId, Long prId) {
 		Session session = sessionFactory.getCurrentSession();
-		System.out.println(prId);
-		System.out.println(outletId);
 		String hql = "FROM PurchaseRequestDetail prd LEFT OUTER JOIN ItemInventory inv on prd.itemVariant.id = inv.itemVariant.id where inv.outlet.id =:outletId and prd.purchaseRequest.id =:prId";
 		List<Object> prDetail = session.createQuery(hql).setParameter("prId", prId).setParameter("outletId", outletId).list();
+		if (prDetail.isEmpty()) {
+			return null;
+		} else {
+			return prDetail;
+		}
+	}
+
+	@Override
+	public List<PurchaseRequestDetail> getDetailByPRId(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "FROM PurchaseRequestDetail prd prd.purchaseRequest.id =:prId";
+		List<PurchaseRequestDetail> prDetail = session.createQuery(hql).setParameter("prId", id).list();
 		if (prDetail.isEmpty()) {
 			return null;
 		} else {

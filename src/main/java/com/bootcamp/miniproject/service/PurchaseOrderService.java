@@ -3,6 +3,8 @@ package com.bootcamp.miniproject.service;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import com.bootcamp.miniproject.model.PurchaseOrderHistory;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.PurchaseRequestDetail;
 import com.bootcamp.miniproject.model.PurchaseRequestHistory;
+import com.bootcamp.miniproject.model.User;
 
 @Service
 @Transactional
@@ -34,6 +37,9 @@ public class PurchaseOrderService {
 	@Autowired
 	ItemInventoryDao invDao;
 	
+	@Autowired
+	HttpSession httpSession;
+	
 	public List<PurchaseOrder> getAll(){
 		return poDao.getAll();
 	}
@@ -41,14 +47,18 @@ public class PurchaseOrderService {
 	public PurchaseOrder getOne(Long id) {
 		
 		PurchaseOrder puchaseOrder = poDao.getOne(id);
-//		List<PurchaseOrderDetail> podList = podDao.getDetailByPO(puchaseOrder);
-//		List<PurchaseOrderHistory> pohList = pohDao.getByPO(puchaseOrder);
 		return puchaseOrder;
 	}
 	
 	public void update(PurchaseOrder po) {
+		User user = (User) httpSession.getAttribute("userLogin");
+		PurchaseOrder oldPo = poDao.getOne(po.getId());
 		List<PurchaseOrderDetail> poDetail = po.getPurchaseOrderDetail();
 		po.setPurchaseOrderDetail(null);
+		po.setCreatedOn(oldPo.getCreatedOn());
+		po.setModifiedOn(new Date());
+		po.setCreatedBy(oldPo.getCreatedBy());
+		po.setModifiedBy(user);
 		poDao.update(po);
 		
 		for(PurchaseOrderDetail pod : poDetail) {

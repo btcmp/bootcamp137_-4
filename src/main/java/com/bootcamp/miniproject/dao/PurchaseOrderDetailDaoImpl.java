@@ -82,5 +82,18 @@ public class PurchaseOrderDetailDaoImpl implements PurchaseOrderDetailDao{
 			return prDetail;
 		}
 	}
+
+	@Override
+	public List<PurchaseOrderDetail> getDetailByPOId(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "FROM PurchaseOrderDetail pod WHERE pod.purchaseOrder.id =:poId";
+		List<PurchaseOrderDetail> poDetail = session.createQuery(hql).setParameter("poId", id).list();
+		System.out.println(poDetail.size());
+		if (poDetail.isEmpty()) {
+			return null;
+		} else {
+			return poDetail;
+		}
+	}
 }
 //

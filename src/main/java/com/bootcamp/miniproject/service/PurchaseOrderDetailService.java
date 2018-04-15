@@ -21,6 +21,9 @@ public class PurchaseOrderDetailService {
 	public List<Object> findPODetailAndQty(Long outletId, Long poId){
 		return podDao.findPODetailAndQty(outletId, poId);
 	}
+	public List<PurchaseOrderDetail> getDetailByPOId(long id) {
+		return podDao.getDetailByPOId(id);
+	}
 
 
 }

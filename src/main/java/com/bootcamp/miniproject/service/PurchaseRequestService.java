@@ -118,8 +118,11 @@ public class PurchaseRequestService {
 
 	public void update(PurchaseRequest pr) {
 		User user = (User) httpSession.getAttribute("userLogin");
+		PurchaseRequest oldPr = prDao.getOne(pr.getId());
 		List<PurchaseRequestDetail> prDetail = pr.getPurchaseRequestDetail();
 		pr.setPurchaseRequestDetail(null);
+		pr.setCreatedBy(oldPr.getCreatedBy());
+		pr.setCreatedOn(oldPr.getCreatedOn());
 		pr.setModifiedBy(user);
 		prDao.update(pr);
 		
@@ -131,6 +134,7 @@ public class PurchaseRequestService {
 				prd.setCreatedOn(new Date());
 				prDetailDao.save(prd);
 			} else {
+				//PurchaseRequestDetail oldPrd = prDetailDao.getOne()
 				prd.setModifiedBy(user);
 				prDetailDao.update(prd);
 			}
