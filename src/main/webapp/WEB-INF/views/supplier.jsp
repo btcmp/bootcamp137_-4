@@ -385,16 +385,17 @@ $(document).ready(function(){
 				type : 'GET',
 				success : function(data){
 					var region = [];
+					var district = [];
 					var reg = "<option value=\"\">Choose Region</option>";
 					region.push(reg);
+					district.push(reg);
 					$(data).each(function(index, data2){
 					reg = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
-					console.log("data outlet baru : "+data2.id)
 					region.push(reg);
 					})
 					$('#update-region').html(region);
-					console.log("data yang mau di set : "+id2);
 					$('#update-region').val(id2);
+					$('#update-district').html(district);
 				}, error : function(){
 					alert('get failed');
 				}
