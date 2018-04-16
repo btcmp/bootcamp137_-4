@@ -375,7 +375,8 @@ $(document).ready(function(){
 	
 	$('#update-province').change(function(){
 		var id = $('#update-province').val();
-		updateProvince(id)
+		var id2 = "";
+		updateProvince(id, id2)
 	});
 	
 	function updateProvince(id,id2) {
@@ -384,18 +385,23 @@ $(document).ready(function(){
 				url : '${pageContext.request.contextPath }/additional/region/get-region?id='+id,
 				type : 'GET',
 				success : function(data){
+					
 					var region = [];
-					var district = [];
 					var reg = "<option value=\"\">Choose Region</option>";
 					region.push(reg);
-					district.push(reg);
 					$(data).each(function(index, data2){
 					reg = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
 					region.push(reg);
 					})
 					$('#update-region').html(region);
 					$('#update-region').val(id2);
-					$('#update-district').html(district);
+					if (id2=="") {
+						var district = [];
+						var dis = "<option value=\"\">Choose District</option>";
+						district.push(dis);
+						$('#update-district').html(district);
+					}
+					
 				}, error : function(){
 					alert('get failed');
 				}
