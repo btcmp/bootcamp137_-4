@@ -259,12 +259,14 @@
 		$('#edit-address').val(outlet.address);
 		$('#edit-phone').val(outlet.phone);
 		$('#edit-email').val(outlet.email);
-		$('#edit-province').val(outlet.province.id);
-		$('#edit-region').val(outlet.region.id);
-		$('#edit-district').val(outlet.district.id);
 		$('#edit-postalCode').val(outlet.postalCode);
 		$('#edit-createdOn').val(outlet.createdOn);
 		$('#edit-createdBy').val(outlet.createdBy.id);
+		
+		$('#edit-province').val(outlet.province.id);
+		updateProvince(outlet.province.id, outlet.region.id);    // (1) updateProvince di eksekusi saat set Update
+		updateRegion(outlet.region.id, outlet.district.id);
+		
 	}
 
 	
@@ -339,29 +341,20 @@
 				}, error : function() {
 					alert('get all outlet failed');
 				}
-			});
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			});	
 		}
 	
 	});
 	
 	
 	//edit-data province, region, district
-	$('#edit-province').change(function(){
+	$('#edit-province').change(function(){          
 		var id = $('#edit-province').val();
+		var id2 = "";
+		updateProvince(id, id2)         // (2) updateProvince di eksekusi saat ganti provinsi
+	});
+	
+	function updateProvince(id, id2) {
 		if (id!=="") {
 			$.ajax({
 				url : '${pageContext.request.contextPath }/additional/region/get-region?id='+id,
@@ -375,15 +368,29 @@
 					region.push(reg);
 					})
 					$('#edit-region').html(region);
+					$('#edit-region').val(id2);
+					
+					if (id2=="") {
+						var district = [];
+						var dis = "<option value=\"\">Choose District</option>";
+						district.push(dis);
+						$('#edit-district').html(district);
+					}
 				}, error : function(){
 					alert('get failed');
 				}
 			})
 		}
-	});
+
+	}
+	
 	
 	$('#edit-region').change(function(){
 		var id = $('#edit-region').val();
+		updateRegion(id); 
+	});
+	
+	function updateRegion(id, id2) {
 		if (id!=="") {
 			$.ajax({
 				url : '${pageContext.request.contextPath }/additional/district/get-district?id='+id,
@@ -397,12 +404,17 @@
 					district.push(dis);
 					})
 					$('#edit-district').html(district);
+					$('#edit-district').val(id2);
+					
+					
 				}, error : function(){
 					alert('get failed');
 				}
 			})
 		}
-	});
+	}
+	
+	
 	//delete
 /* 	$('.delete').on('click', function(){
 		var id = $(this).attr('id');
