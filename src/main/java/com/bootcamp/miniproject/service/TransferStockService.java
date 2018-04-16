@@ -1,5 +1,6 @@
 package com.bootcamp.miniproject.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -127,11 +128,13 @@ public class TransferStockService {
 			ItemInventory invent = TSDetail.getItemInventory();
 			invent.setEndingQty(invent.getEndingQty()-TSDetail.getTransferQty());
 			invent.setTransferStockQty(invent.getTransferStockQty()+TSDetail.getTransferQty());
+			invent.setModifiedOn(new Date());
 			
 			ItemInventory iv = itemInventoryDao.searchInventoryByVariantAndOutletId(variantId, idToOutlet);
 			if (iv != null) {
 				iv.setEndingQty(iv.getEndingQty()+TSDetail.getTransferQty());
 				iv.setAdjustmentQty(iv.getAdjustmentQty()+TSDetail.getTransferQty());
+				iv.setModifiedOn(new Date());
 			} else {
 				ItemInventory ivNew = new ItemInventory();
 				ivNew.setAlertAtQty(1);

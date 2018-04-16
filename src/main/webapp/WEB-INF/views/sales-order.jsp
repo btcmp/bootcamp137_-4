@@ -120,8 +120,8 @@ $(document).ready(function(){
 	
 	$('.datepicker').datepicker({
 		format: 'yyyy-mm-dd',
-	      autoclose: true
-	    })
+		autoclose: true
+	})
 	
 	$("#sales-order-side-option").addClass('active');
 	$("#treeview-transaction").addClass('active');
@@ -154,7 +154,6 @@ $(document).ready(function(){
 				phone : $('#add-phone').val(),
 				email : $('#add-email').val(),
 				dob : $('#add-dob').val(),
-				dobOld : $('#add-dob-old').val(),
 				province : {
 					id : $('#add-province').val()
 				},

@@ -339,10 +339,14 @@ $(document).ready(function(){
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
 		var inStock = parseInt($('#inStock'+id).text());
+		var transQtyString = $('.add-transfer-stock-qty'+id).val();
 		var transQty = parseInt($('.add-transfer-stock-qty'+id).val());
 		if (transQty>inStock) {
 			alert("not enough stock");
-		} else if (transQty<1) {
+		} else if(transQtyString == ""){
+			alert("transfer qty can't be empty");
+		}
+		else if (transQty<1) {
 			alert("at least 1");
 		}else {
 			added.push(id);
