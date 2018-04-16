@@ -464,11 +464,11 @@
 			contentType : 'application/json',
 			
 			success : function(data){
-				alert('non-active successfully!')
+				alert('delete successfully!')
 				window.location = '${pageContext.request.contextPath}/master/outlet'; 
 			},
 			error : function () {
-				alert('non-active failed')
+				alert('delete failed')
 			}
 		
 		});

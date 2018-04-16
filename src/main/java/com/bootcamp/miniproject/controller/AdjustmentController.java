@@ -3,6 +3,7 @@ package com.bootcamp.miniproject.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -120,7 +121,14 @@ public class AdjustmentController {
 		DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 		Date start = df.parse(startString);
 		Date end = df.parse(endString);
-		List<Adjustment> adjustments = adjustmentService.searchAdjustmentByDateRange(start, end);
+		
+		//ditambahin 1 hari agar bisa membaca search hari ini
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(end);
+		cal.add(Calendar.DATE, +1);
+		Date endInc = cal.getTime();
+		
+		List<Adjustment> adjustments = adjustmentService.searchAdjustmentByDateRange(start, endInc);
 		List<Outlet> outlets = outletService.selectStatusActive();
 		List<ItemInventory> itemInventory = itemInventoryService.getAll();
 		model.addAttribute("adjustments", adjustments);

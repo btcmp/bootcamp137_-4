@@ -65,12 +65,12 @@ public class AdjustmentDaoImpl implements AdjustmentDao {
 	}
 
 	@Override
-	public List<Adjustment> searchAdjustmentByDateRange(Date start, Date end) {
+	public List<Adjustment> searchAdjustmentByDateRange(Date start, Date endInc) {
 		// TODO Auto-generated method stub
-		String hql = "from Adjustment adj where adj.createdOn BETWEEN :start and :end ";
+		String hql = "from Adjustment adj where adj.createdOn BETWEEN :start and :endInc ";
 		Session session = sessionFactory.getCurrentSession();
-		List<Adjustment> adjustments = session.createQuery(hql).setParameter("start", start).setParameter("end", end).list();
-		System.out.println("start : "+start+", end : "+end+", adj size : "+ adjustments.size());
+		List<Adjustment> adjustments = session.createQuery(hql).setParameter("start", start).setParameter("endInc", endInc).list();
+		System.out.println("start : "+start+", endInc : "+endInc+", adj size : "+ adjustments.size());
 		if (adjustments.isEmpty()) {
 			return null;
 		} else {

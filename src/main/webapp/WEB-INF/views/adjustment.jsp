@@ -333,30 +333,36 @@ $(document).ready(function(){
 	$('body').on('click', 'button.btn-add-item', function(){
 		var id = $(this).attr('id');
 		var inStock = parseInt($('#inStock'+id).text());
+		var actualStockString = $('.add-adjustment-qty'+id).val();
 		var actualStock = parseInt($('.add-adjustment-qty'+id).val());
-	 if (actualStock < 0) {
-			alert("can't minus");
-		}else {
- 			added.push(id);
-			addedQty.push(actualStock);
-			$('#td-qty'+id).html(actualStock);
-			$(this).hide();
-			$('.btn-added-item'+id).show();
-			document.getElementById("btn-save").disabled = false;
-			$.ajax({
-				type : 'GET',
-				url : '${pageContext.request.contextPath}/transaction/adjustment/get-one-item/'+id,
-				dataType: 'json',
-				success : function(data){
-					$('#add-adjustment-tbl').append('<tr id="tr-adjustment'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>'
-							+ data.endingQty +'</td><td>'+ actualStock +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
-							+ data.id +' btn-cancel-item btn btn-danger">Cancel</button></td></tr>');
-				},
-				error : function(){
-					alert('get one item inventory failed');
-				}
-			})
-		}
+
+
+			 if (actualStock < 0) {
+					alert("can't minus");
+				}else if (actualStockString == "") {
+					alert("can't be empty!")
+				} else
+					{
+		 			added.push(id);
+					addedQty.push(actualStock);
+					$('#td-qty'+id).html(actualStock);
+					$(this).hide();
+					$('.btn-added-item'+id).show();
+					document.getElementById("btn-save").disabled = false;
+					$.ajax({
+						type : 'GET',
+						url : '${pageContext.request.contextPath}/transaction/adjustment/get-one-item/'+id,
+						dataType: 'json',
+						success : function(data){
+							$('#add-adjustment-tbl').append('<tr id="tr-adjustment'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td>'
+									+ data.endingQty +'</td><td>'+ actualStock +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
+									+ data.id +' btn-cancel-item btn btn-danger">Cancel</button></td></tr>');
+						},
+						error : function(){
+							alert('get one item inventory failed');
+						}
+					})
+				}			
 	})
 
 //button cancel item-variant
