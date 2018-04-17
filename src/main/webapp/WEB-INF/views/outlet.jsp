@@ -367,8 +367,8 @@
 					reg = "<option value=\""+data2.id+"\">"+data2.name+"</option>";
 					region.push(reg);
 					})
-					$('#edit-region').html(region);
-					$('#edit-region').val(id2);
+					$('#edit-region').html(region);    //menampilkan region yang berisi select option ke browser
+					$('#edit-region').val(id2);        //ngasih nilai pada form region (berdasarkan id2)
 					
 					if (id2=="") {
 						var district = [];
@@ -413,81 +413,7 @@
 			})
 		}
 	}
-	
-	
-	//delete
-/* 	$('.delete').on('click', function(){
-		var id = $(this).attr('id');
-		$('#delete-id').val(id);
-		$('#delete-outlet').modal();
-	})
-	
-	$('#btn-delete').on('click', function(){
-		var id = $('#delete-id').val()
-		$.ajax({
-			url : '${pageContext.request.contextPath}/master/outlet/delete/'+id,
-			type : 'DELETE',
-			success : function () {
-				alert('delete successfully!');
-				window.location = '${pageContext.request.contextPath}/master/outlet';
-			}, error : function () {
-				alert('delete failed !');
-			}
-		})
-	}) */
-	
-	
-	//Delete di Table. Data pada Database masih dan Mengubah Status Active-nya menjadi 1 (0 = active. 1 = tidak active);
-	$('#btn-delete').on('click', function(){
-		var idUser = "${employee.user.id}";
-		var outlet = {
-			id : $('#edit-id').val(),
-			name : $('#edit-name').val(),
-			address : $('#edit-address').val(),
-			phone : $('#edit-phone').val(),
-			email : $('#edit-email').val(),
-			province : {
-				id : $('#edit-province').val()
-			},
-			region : {
-				id : $('#edit-region').val()
-			},
-			district : {
-				id : $('#edit-district').val()
-			},
-			postalCode : $('#edit-postalCode').val(),
-			createdOn : $('#edit-createdOn').val(),
-			createdBy : {
-				id : $('#edit-createdBy').val(),
-			},
-			modifiedBy : {
-				id : idUser
-			},
-			active : 0
 			
-		}
-		
-	console.log(outlet);
-		
-	$.ajax({
-			url : '${pageContext.request.contextPath}/master/outlet/update',
-			type : 'PUT',
-			data : JSON.stringify(outlet),
-			contentType : 'application/json',
-			
-			success : function(data){
-				alert('delete successfully!')
-				window.location = '${pageContext.request.contextPath}/master/outlet'; 
-			},
-			error : function () {
-				alert('delete failed')
-			}
-		
-		});
-		
-	});
-	
-	
 	//reset form
 		$('#btn-reset').on('click', function(){
 			$('#entry-id').val('');

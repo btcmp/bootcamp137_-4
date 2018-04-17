@@ -341,6 +341,8 @@ $(document).ready(function(){
 					alert("can't minus");
 				}else if (actualStockString == "") {
 					alert("can't be empty!")
+				} else if (actualStock == inStock) {
+					alert("adjusment.qty can't be same with InStock")
 				} else
 					{
 		 			added.push(id);
