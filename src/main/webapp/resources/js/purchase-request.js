@@ -1,11 +1,23 @@
 $(document).ready(function(){
 	var alamatUrl = window.location.href;
+//	var tbi = $('#table-view-pr').DataTable({
+//		'searching' : false,
+//		'paging' : true, 
+//		'info' : false
+//	});
+	
 	$("#purchase-request-side-option").addClass('active');
 	$("#treeview-transaction").addClass('active');
 	var listVariant = [];
 	var added = [];
 	var addedQty = [];
 	showPRByOutlet();
+	
+	$('#btn-export').click(function(){
+		console.log('clicked');
+		window.location = '/miniproject/generate/purchase-request';
+	});
+	
 	$('#create').click(function(){
 		//$('#btn-add-item').attr('state','create');
 		$(this).attr('state','create');
@@ -38,7 +50,6 @@ $(document).ready(function(){
 		    },
 		    type : 'GET',
 		    success : function(data){
-		    	console.log(data);
 		    	$.each(data, (key, data) =>{
 					$('#table-view-pr-body').append('<tr> <td>'+getDateFormat(data.createdOn)+'</td>'+
 							'<td>'+data.prNo+'</td>'+
@@ -64,7 +75,6 @@ $(document).ready(function(){
 		    },
 		    type : 'GET',
 		    success : function(data){
-		    	console.log(data);
 		    	$.each(data, (key, data) =>{
 					$('#table-view-pr-body').append('<tr> <td>'+getDateFormat(data.createdOn)+'</td>'+
 							'<td>'+data.prNo+'</td>'+
@@ -183,7 +193,7 @@ $(document).ready(function(){
 	$('#btn-pr-save').click(function(e){
 		var state = $(this).attr('state');
 		status = 'Created';
-		console.log('clicked '+state);
+		//console.log('clicked '+state);
 		if (state == 'create'){
 			
 			save(e, status);
@@ -191,7 +201,7 @@ $(document).ready(function(){
 			PrNo = $('#btn-pr-save').attr('pr-no');
 			prId = parseInt($('#btn-pr-save').attr('pr-id'));
 			
-			console.log('di button save'+PrNo);
+			//console.log('di button save'+PrNo);
 			update(e, status, PrNo, prId);
 			
 		}
@@ -251,12 +261,12 @@ $(document).ready(function(){
 			data : JSON.stringify(pr),
 			contentType : 'application/json',
 			success : function(data){
-				console.log("berhasil save");
+				//console.log("berhasil save");
 				purchaseRequestDetail =[];
 				resetModalAddPr();
 				showPRByOutlet();
 			}, error : function(data){
-				console.log("gagal");
+				//console.log("gagal");
 				purchaseRequestDetail =[];
 				resetModalAddPr();
 				showPRByOutlet();
@@ -288,7 +298,7 @@ $(document).ready(function(){
 	getPurchaseRequestById = (id) => {
 		var dataTemp;
 		function myCallback(response){
-			console.log("berhasil");
+			//console.log("berhasil");
 			dataTemp = response;
 			outletId = $('#select-outlet-main').val();
 			tanggal = getDateFormat(dataTemp.readyTime);
@@ -297,7 +307,7 @@ $(document).ready(function(){
 			$('#add-pr-date').val(tanggal);
 			$('#view-pr-detail-notes').val(dataTemp.notes);
 			$('#view-prd-num').html(dataTemp.prNo);
-			$('#view-prd-created').html('Belum Integrasi dengan user');
+			$('#view-prd-created').html(dataTemp.createdBy.username);
 			$('#view-prd-time').html(tanggal);
 			$('#view-prd-status').html(dataTemp.status);
 			let option = [];
@@ -427,7 +437,7 @@ $(document).ready(function(){
 		//dateToday();
 		var row = $(this).closest("tr");
 		var PrNo = row.find('td').eq(1).text();
-		console.log('di button edit : '+ PrNo);
+		//console.log('di button edit : '+ PrNo);
 		$(this).attr('state','update');
 		var id = $(this).attr('id');
 		
@@ -437,13 +447,13 @@ $(document).ready(function(){
 		$('#btn-pr-save').attr('pr-no',PrNo);
 		$('#btn-pr-save').attr('pr-id', id)
 		$('#btn-pr-save').attr('state','update');
-		console.log('mode: ' +$(this).attr('state'));
+		//console.log('mode: ' +$(this).attr('state'));
 		
 	});
 	$('#table-view-pr').on('click','.btn-detail-pr',function(e){
 		resetTable();
 		var id = $(this).attr('id');
-		console.log(id);
+		//console.log(id);
 		dataku = getPurchaseRequestById(id);
 		
 		$('#modal-pr-detail').modal({backdrop: 'static', keyboard: false});
@@ -466,13 +476,13 @@ $(document).ready(function(){
 	}
 	
 	$('#btn-close-modal-add-pr').click(function(){
-		console.log('di button ini')
+		//console.log('di button ini')
 		resetModalAddPr();
 	});
 	
 	
 	function resetTable(){
-		console.log('mereset table')
+		//console.log('mereset table')
 		$('#table-pr-detail-body').empty();
 		$('#table-add-pr-body').empty();
 		$('#table-pr-history').empty();
@@ -486,7 +496,7 @@ $(document).ready(function(){
 		purchaseRequestDetail =[];
 		
 		$('#table-add-pr-body > tr').each(function(index, data){
-			console.log(($(data).attr('prd-id')) == null)
+			//console.log(($(data).attr('prd-id')) == null)
 			if (($(data).attr('prd-id')) == null){
 				var prd = {
 						itemVariant : {
@@ -512,7 +522,7 @@ $(document).ready(function(){
 		matriks = $('#add-pr-date').val().split('-');
 		// yyyy-MM-dd
 		readyTime = matriks[0]+'-'+matriks[1]+'-'+matriks[2];
-		var pr = {
+		prUpdate = {
 			id : prId,
 			prNo : getPrNo,
 			readyTime : readyTime,
@@ -523,20 +533,20 @@ $(document).ready(function(){
 			},
 			purchaseRequestDetail: purchaseRequestDetail
 		}
-		console.log(pr);
+		console.log(prUpdate);
 		$.ajax({
 			type : "PUT",
 			url : alamatUrl+'/update',
-			data : JSON.stringify(pr),
+			data : JSON.stringify(prUpdate),
 			contentType : 'application/json',
 			success : function(data){
 				purchaseRequestDetail = [];
-//				console.log("berhasil save");
+				console.log("berhasil save");
 				resetModalAddPr();
 				showPRByOutlet();
 				//alert('Success');
 			}, error : function(data){
-//				console.log("gagal");
+				console.log("gagal");
 				resetModalAddPr();
 				showPRByOutlet();
 				purchaseRequestDetail = [];
@@ -621,4 +631,31 @@ $(document).ready(function(){
 		}
 	});
 	//======================== End of Select Toggle For Search By Status ========================//
+	
+	$('#search').on('input', function(e){
+		var keyword = $(this).val();
+		outletId = $('#select-outlet-main').val();
+		$.ajax({
+			dataType : "json",
+		    url : alamatUrl+'/search-global?outletId='+outletId+'&search='+keyword,
+			headers : {
+		    	'Accept' : 'application/json',
+		        'Content-Type' : 'application/json'
+		    },
+		    type : 'GET',
+		    success : function(data){
+		    	$("#table-view-pr-body").empty();
+		    	$.each(data, (key, data) =>{
+		    		$('#table-view-pr-body').append('<tr> <td>'+getDateFormat(data.createdOn)+'</td>'+
+							'<td>'+data.prNo+'</td>'+
+							'<td>'+data.notes+'</td>'+
+							'<td>'+data.status+'</td>'+
+							'<td><a id='+data.id+' class="btn-update-pr btn btn-primary">Edit</a>'+
+							'<a id='+data.id+' class="btn-detail-pr btn btn-success">View</a></td>'
+					)
+				});
+		    }
+		});
+	});
+	
 });

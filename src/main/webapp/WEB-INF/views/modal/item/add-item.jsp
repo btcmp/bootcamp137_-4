@@ -15,10 +15,10 @@
       	<form class="form-all">
 			<div class="form-group" id = "add-item-id">
 				<label for="add-item-name">Item Name</label>
-				<input type="text" class="form-control" id="add-item-name" placeholder="Item name">
+				<input type="text" class="form-control" id="add-item-name" placeholder="Item name" required = "">
 				<p></p>
 				<label for="add-category">Category</label>
-				<select class="form-control" name="add-category" id="add-category">
+				<select class="form-control" name="add-category" id="add-category" required = "">
 					<c:forEach var="category" items="${categories }">
 						<option value="${category.id }">${category.name }</option>
 					</c:forEach>
@@ -61,19 +61,19 @@
         <h4 class="modal-title">Add Item Variant</h4>
       </div>
       <div class="modal-body">
-      		<form class="form-all">
+      		<form class="form-all" data-parsley-validate="">
 			<div class="form-group">
 				<label for="add-variant-name">Variant Name</label>
-				<input type="text" class="form-control" id="add-variant-name" placeholder="Item Name"> <p></p>
+				<input type="text" class="form-control" id="add-variant-name" placeholder="Item Name" required = ""> <p></p>
 				<label for="add-unit-price">Unit Price</label>
-				<input type="number" min="0" class="form-control" value= "0" id="add-unit-price" placeholder="Unit Price"> <p></p>
+				<input type="number" min="0" class="form-control" value= "0" id="add-unit-price" placeholder="Unit Price" required = ""> <p></p>
 				<label for="add-sku">SKU</label>
-				<input type="text" class="form-control" id="add-sku" placeholder="SKU"> <p></p>
+				<input type="text" class="form-control" id="add-sku" placeholder="SKU" required = ""> <p></p>
 				<hr>
 				<label for="add-beginning-stock">Beginning Stock</label>
-				<input type="number" min="0" class="form-control" id="add-beginning-stock" placeholder="Beginning Stock"> <p></p>
+				<input type="number" min="0" class="form-control" id="add-beginning-stock" placeholder="Beginning Stock" required = ""> <p></p>
 				<label for="add-alert-at">Alert At</label>
-				<input type="number" min="0" class="form-control" id="add-alert-at" placeholder="Alert At">
+				<input type="number" min="0" class="form-control" id="add-alert-at" placeholder="Alert At" required = "">
 				
 			</div>
 		</form>

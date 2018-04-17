@@ -49,23 +49,49 @@ public class PurchaseOrderService {
 		PurchaseOrder puchaseOrder = poDao.getOne(id);
 		return puchaseOrder;
 	}
-	
+		
 	public void update(PurchaseOrder po) {
 		User user = (User) httpSession.getAttribute("userLogin");
+		PurchaseOrder tempPo = new PurchaseOrder();
+		tempPo.setId(po.getId());
+		tempPo.setNotes(po.getNotes());
+		tempPo.setPoNo(po.getPoNo());
+		tempPo.setGrandTotal(po.getGrandTotal());
+		tempPo.setStatus(po.getStatus());
+		tempPo.setSupplier(po.getSupplier());
+		tempPo.setOutlet(po.getOutlet());
+		tempPo.setModifiedBy(user);
+		tempPo.setModifiedOn(new Date());
 		PurchaseOrder oldPo = poDao.getOne(po.getId());
-		List<PurchaseOrderDetail> poDetail = po.getPurchaseOrderDetail();
-		po.setPurchaseOrderDetail(null);
-		po.setCreatedOn(oldPo.getCreatedOn());
-		po.setModifiedOn(new Date());
-		po.setCreatedBy(oldPo.getCreatedBy());
-		po.setModifiedBy(user);
-		poDao.update(po);
+		tempPo.setCreatedBy(oldPo.getCreatedBy());
+		tempPo.setCreatedOn(oldPo.getCreatedOn());
+		tempPo.setPurchaseRequest(oldPo.getPurchaseRequest());
+//		
 		
+//		po.setPurchaseOrderDetail(null);
+//		
+//		po.setPurchaseRequest(oldPo.getPurchaseRequest());
+//		po.setCreatedOn(oldPo.getCreatedOn());
+//		po.setCreatedBy(oldPo.getCreatedBy());
+//		
+//		po.setModifiedBy(user);
+//		
+		poDao.update(tempPo);
+//		
+		List<PurchaseOrderDetail> poDetail = po.getPurchaseOrderDetail();
 		for(PurchaseOrderDetail pod : poDetail) {
-			pod.setPurchaseOrder(po);
+			pod.setPurchaseOrder(tempPo);
 			if (pod.getId() == null) {
+				pod.setCreatedBy(user);
+				pod.setModifiedBy(user);
+				pod.setCreatedOn(new Date());
 				podDao.save(pod);
 			} else {
+				PurchaseOrderDetail oldPod = podDao.getOne(pod.getId());
+				pod.setCreatedBy(oldPod.getCreatedBy());
+				pod.setModifiedBy(user);
+				pod.setCreatedOn(oldPod.getCreatedOn());
+				pod.setModifiedOn(new Date());
 				podDao.update(pod);
 			}
 		}
@@ -79,7 +105,8 @@ public class PurchaseOrderService {
 			PurchaseOrderHistory poh = new PurchaseOrderHistory();
 			poh.setPurchaseOrder(po);
 			poh.setStatus(po.getStatus());
-			poh.setCreatedOn(po.getCreatedOn());
+			poh.setCreatedOn(new Date());
+			poh.setCreatedBy(user);
 			pohDao.save(poh);
 		}
 	}
@@ -99,9 +126,12 @@ public class PurchaseOrderService {
 	}
 
 	public void approve(long id) {
+		User user = (User) httpSession.getAttribute("userLogin");
+		
 		poDao.approve(id);
 		PurchaseOrder po = poDao.getOne(id);
 		PurchaseOrderHistory poh = new PurchaseOrderHistory();
+		poh.setCreatedBy(user);
 		poh.setCreatedOn(new Date());
 		poh.setPurchaseOrder(po);
 		poh.setStatus(po.getStatus());
@@ -109,23 +139,35 @@ public class PurchaseOrderService {
 	}
 
 	public void reject(long id) {
+		User user = (User) httpSession.getAttribute("userLogin");
+		
 		poDao.reject(id);
 		PurchaseOrder po = poDao.getOne(id);
 		PurchaseOrderHistory poh = new PurchaseOrderHistory();
+		poh.setCreatedBy(user);
 		poh.setCreatedOn(new Date());
 		poh.setPurchaseOrder(po);
 		poh.setStatus(po.getStatus());
 		pohDao.save(poh);
 	}
 	public void process(long id) {
+		User user = (User) httpSession.getAttribute("userLogin");
+		
 		poDao.process(id);
 		PurchaseOrder po = poDao.getOne(id);
 		PurchaseOrderHistory poh = new PurchaseOrderHistory();
+		poh.setCreatedBy(user);
 		poh.setCreatedOn(new Date());
 		poh.setPurchaseOrder(po);
 		poh.setStatus(po.getStatus());
 		pohDao.save(poh);
 	}
-	
 
+	public List<PurchaseOrder> getPOByStatus(Long outletId, String status) {
+		return poDao.getPOByStatus(outletId, status);
+	}
+	
+	public List<PurchaseOrder> searchPO(long outletId, String search){
+		return poDao.searchPO(outletId, search);
+	}
 }

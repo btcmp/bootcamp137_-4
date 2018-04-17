@@ -30,7 +30,12 @@ $(document).ready(function(){
 	// ============================================//
 	$('#select-outlet-main').on('change', function() {
 		$('#select-outlet').val($('#select-outlet-main').val());
-		showPRByOutlet();
+		showPOByOutlet();
+	});
+	
+	$('#btn-export').click(function(){
+		console.log('clicked');
+		window.location = '/miniproject/generate/purchase-order';
 	});
 	
 	// ============ Get PO by Outlet ===========//
@@ -350,7 +355,7 @@ $(document).ready(function(){
 			
 		});
 		$('#modal-edit-po').modal('hide');
-		//showPRByOutlet();
+		//showPOByOutlet();
 //		HideItemForm();
 	};
 	//======================== End of Update ========================//
@@ -359,8 +364,9 @@ $(document).ready(function(){
 	$('#select-search-by-status').change(function(){
 		var status = $(this).val();
 		if(status == 'All'){
-			showPRByOutlet();
-		}else{
+			$('#table-view-po-body').empty();
+			showPOByOutlet();
+		} else {
 			outletId = $('#select-outlet-main').val();
 			//outletId = '${outlet.id }';
 			url = alamatUrl+'/search-status?outletId='+outletId+'&status='+status;
@@ -371,8 +377,8 @@ $(document).ready(function(){
 	//======================== Search By Status Function ========================//
 	function search(url){
 		outletId = $('#select-outlet-main').val();
-		$('#table-add-pr-body').empty();
-		$('#table-view-pr-body').empty();
+		$('#table-add-po-body').empty();
+		$('#table-view-po-body').empty();
 		$.ajax({
 			dataType : "json",
 		    url : url,
@@ -403,4 +409,32 @@ $(document).ready(function(){
 	}
 	//======================== End of Search By Status Function ========================//
 
+	
+	$('#search').on('input', function(e){
+		var keyword = $(this).val();
+		outletId = $('#select-outlet-main').val();
+		$.ajax({
+			dataType : "json",
+		    url : alamatUrl+'/search-global?outletId='+outletId+'&search='+keyword,
+			headers : {
+		    	'Accept' : 'application/json',
+		        'Content-Type' : 'application/json'
+		    },
+		    type : 'GET',
+		    success : function(data){
+		    	$("#table-view-po-body").empty();
+		    	$.each(data, (key, data) =>{
+		    		$('#table-view-po-body').append('<tr> <td>'+getDateFormat(data.createdOn)+'</td>'+
+							'<td>'+namaSupplier+'</td>'+
+							'<td>'+data.poNo+'</td>'+
+							
+							'<td>'+data.grandTotal+'</td>'+
+							'<td>'+data.status+'</td>'+
+							'<td><a id='+data.id+' class="btn-update-po btn btn-primary">Edit</a>'+
+							'<a id='+data.id+' class="btn-detail-po btn btn-success">View</a></td>'
+					)
+				});
+		    }
+		});
+	});
 });

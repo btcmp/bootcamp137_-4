@@ -119,11 +119,14 @@ public class PurchaseRequestService {
 	public void update(PurchaseRequest pr) {
 		User user = (User) httpSession.getAttribute("userLogin");
 		PurchaseRequest oldPr = prDao.getOne(pr.getId());
+		
 		List<PurchaseRequestDetail> prDetail = pr.getPurchaseRequestDetail();
 		pr.setPurchaseRequestDetail(null);
+		
 		pr.setCreatedBy(oldPr.getCreatedBy());
 		pr.setCreatedOn(oldPr.getCreatedOn());
 		pr.setModifiedBy(user);
+		
 		prDao.update(pr);
 		
 		for(PurchaseRequestDetail prd : prDetail) {
@@ -135,6 +138,9 @@ public class PurchaseRequestService {
 				prDetailDao.save(prd);
 			} else {
 				//PurchaseRequestDetail oldPrd = prDetailDao.getOne()
+				PurchaseRequestDetail oldPrDetail = prDetailDao.getOne(prd.getId());
+				prd.setCreatedBy(oldPrDetail.getCreatedBy());
+				prd.setCreatedOn(oldPrDetail.getCreatedOn());
 				prd.setModifiedBy(user);
 				prDetailDao.update(prd);
 			}
@@ -186,7 +192,7 @@ public class PurchaseRequestService {
 
 	public void createPo(long id) {
 		User user = (User) httpSession.getAttribute("userLogin");
-		
+		PurchaseRequest oldPr = prDao.getOne(id);
 		// Update Status Pr
 		prDao.createPo(id);
 		PurchaseRequest pr = prDao.getOne(id);
@@ -196,7 +202,7 @@ public class PurchaseRequestService {
 		PurchaseRequestHistory prHist = new PurchaseRequestHistory();
 		prHist.setCreatedOn(new Date());
 		prHist.setPurchaseRequest(pr);
-		prHist.setStatus(pr.getStatus());
+		prHist.setStatus("PO Created");
 		prHist.setCreatedBy(user);
 		prHistoryDao.save(prHist);
 		
@@ -284,4 +290,7 @@ public class PurchaseRequestService {
 		return prDao.searchPR(search);
 	}
 	
+	public List<PurchaseRequest> searchPR(long outletId, String search){
+		return prDao.searchPR(outletId, search);
+	}
 }

@@ -121,7 +121,7 @@
 				<br>
 				<div class="col-xs-3"> PR Number   :</div> <div id="view-prd-num" class="col-xs-9"> </div><br>
 				<div class="col-xs-3"> Created by   :</div> <div id="view-prd-created" class="col-xs-9"> </div><br>
-				<div class="col-xs-3"> Item Ready Item   :</div> <div id="view-prd-time" class="col-xs-9"> </div><br>
+				<div class="col-xs-3"> Item Ready Date  :</div> <div id="view-prd-time" class="col-xs-9"> </div><br>
 				<div class="col-xs-3"> PR Status   :</div> <div id="view-prd-status" class="col-xs-9"> </div><br>
 				
 				<div class="col-xs-12">

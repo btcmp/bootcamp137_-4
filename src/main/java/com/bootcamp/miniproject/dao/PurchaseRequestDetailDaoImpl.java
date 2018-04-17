@@ -25,6 +25,7 @@ public class PurchaseRequestDetailDaoImpl implements PurchaseRequestDetailDao{
 	@Override
 	public void update(PurchaseRequestDetail prDetail) {
 		Session session = sessionFactory.getCurrentSession();
+		session.clear();	
 		session.update(prDetail);
 		session.flush();
 	}
@@ -68,6 +69,17 @@ public class PurchaseRequestDetailDaoImpl implements PurchaseRequestDetailDao{
 		String hql = "FROM PurchaseRequestDetail prd prd.purchaseRequest.id =:prId";
 		List<PurchaseRequestDetail> prDetail = session.createQuery(hql).setParameter("prId", id).list();
 		if (prDetail.isEmpty()) {
+			return null;
+		} else {
+			return prDetail;
+		}
+	}
+
+	@Override
+	public PurchaseRequestDetail getOne(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		PurchaseRequestDetail prDetail = session.get(PurchaseRequestDetail.class, id);
+		if (prDetail.equals(null)) {
 			return null;
 		} else {
 			return prDetail;

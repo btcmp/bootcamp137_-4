@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.bootcamp.miniproject.model.PurchaseOrder;
 import com.bootcamp.miniproject.model.PurchaseOrderDetail;
+import com.bootcamp.miniproject.model.PurchaseRequest;
 import com.bootcamp.miniproject.model.PurchaseRequestDetail;
 
 @Repository
@@ -25,7 +26,9 @@ public class PurchaseOrderDetailDaoImpl implements PurchaseOrderDetailDao{
 
 	public void update(PurchaseOrderDetail poDetail) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(poDetail);
+		session.clear();
+		session.merge(poDetail);
+		//session.update(poDetail);
 		session.flush();
 	}
 

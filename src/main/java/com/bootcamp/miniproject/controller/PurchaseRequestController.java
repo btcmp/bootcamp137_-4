@@ -81,10 +81,12 @@ public class PurchaseRequestController {
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
 	@ResponseBody
 	public void update(@RequestBody PurchaseRequest pr) {
+		System.out.println("hi ini di controller bag. update");
 		prService.update(pr);
 	}
 	
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public void delete(@PathVariable long id) {
 		PurchaseRequest pr = prService.getOne(id);
@@ -145,5 +147,11 @@ public class PurchaseRequestController {
 	@ResponseBody
 	public List<PurchaseRequestHistory> getPRHistoryByPr(@PathVariable Long prId){
 		return  prHistoryService.getPRHistoryByPr(prId);
+	}
+	
+	@RequestMapping("/search-global")
+	@ResponseBody
+	public List<PurchaseRequest> searcj(@RequestParam(value="outletId", defaultValue="") Long outletId, @RequestParam(value="search", defaultValue="") String search){
+		return prService.searchPR(outletId, search);
 	}
 }

@@ -34,4 +34,8 @@ public interface PurchaseOrderDao {
 
 	public void process(long id);
 
+	public List<PurchaseOrder> getPOByStatus(Long outletId, String status);
+
+	List<PurchaseOrder> searchPO(Long outletId, String search);
+
 }

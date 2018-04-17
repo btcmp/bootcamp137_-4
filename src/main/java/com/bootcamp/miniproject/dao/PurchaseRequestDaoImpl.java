@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.PurchaseRequest;
 
 @Repository
@@ -64,6 +65,7 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 	@Override
 	public void update(PurchaseRequest pr) {
 		Session session = sessionFactory.getCurrentSession();
+		session.clear();
 		session.update(pr);
 		session.flush();
 	}
@@ -125,5 +127,17 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao{
 			return 0;
 		}
 		return prList.size();
+	}
+	
+	@Override
+	public List<PurchaseRequest> searchPR(Long outletId, String search) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseRequest pr where pr.outlet.id =:outletId and (lower(pr.prNo) like :keyword or lower(pr.notes) like :keyword or lower(pr.status) like :keyword)";
+		List<PurchaseRequest> pr = session.createQuery(hql).setParameter("outletId", outletId).setParameter("keyword", "%"+search.toLowerCase()+"%").list();
+		if (pr.isEmpty()) {
+			return null;
+		} else {
+			return pr;
+		}
 	}
 }

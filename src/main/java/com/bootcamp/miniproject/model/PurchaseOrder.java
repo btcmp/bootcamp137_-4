@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
@@ -38,8 +39,10 @@ public class PurchaseOrder {
 	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseOrder", cascade=CascadeType.ALL, orphanRemoval=true)
 	List<PurchaseOrderHistory> purchaseOrderHistory;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JsonIgnore
+	@OneToOne
+	@JoinColumn
+	@JsonBackReference
+	//@JsonIgnore
 	private PurchaseRequest purchaseRequest;
 		
 	@NotNull

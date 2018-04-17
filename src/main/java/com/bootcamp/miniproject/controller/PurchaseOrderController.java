@@ -18,7 +18,6 @@ import com.bootcamp.miniproject.model.ItemInventory;
 import com.bootcamp.miniproject.model.PurchaseOrder;
 import com.bootcamp.miniproject.model.PurchaseOrderDetail;
 import com.bootcamp.miniproject.model.PurchaseOrderHistory;
-import com.bootcamp.miniproject.model.PurchaseRequestHistory;
 import com.bootcamp.miniproject.service.ItemInventoryService;
 import com.bootcamp.miniproject.service.OutletService;
 import com.bootcamp.miniproject.service.PurchaseOrderDetailService;
@@ -122,5 +121,17 @@ public class PurchaseOrderController {
 	@ResponseBody
 	public List<PurchaseOrderHistory> getPRHistoryByPr(@PathVariable Long poId){
 		return  poHistoryService.getPOHistoryByPo(poId);
+	}
+	
+	@RequestMapping("/search-status")
+	@ResponseBody
+	public List<PurchaseOrder> getByStatus(@RequestParam(value="outletId", defaultValue="") Long outletId, @RequestParam(value="status", defaultValue="") String status){
+		return poService.getPOByStatus(outletId, status);
+	}
+	
+	@RequestMapping("/search-global")
+	@ResponseBody
+	public List<PurchaseOrder> searcj(@RequestParam(value="outletId", defaultValue="") Long outletId, @RequestParam(value="search", defaultValue="") String search){
+		return poService.searchPO(outletId, search);
 	}
 }

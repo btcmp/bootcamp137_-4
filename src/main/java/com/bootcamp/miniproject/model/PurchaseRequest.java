@@ -21,6 +21,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "mp_t_purchase_request")
@@ -32,7 +33,7 @@ public class PurchaseRequest {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private Long id;
+	private long id;
 	
 	@ManyToOne
 	private Outlet outlet;
@@ -51,7 +52,6 @@ public class PurchaseRequest {
 	
 	@ManyToOne
 	@JoinColumn(name="created_by")
-	@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -59,7 +59,6 @@ public class PurchaseRequest {
 	private Date createdOn;
 	@ManyToOne
 	@JoinColumn(name="modified_by")
-	@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -72,15 +71,16 @@ public class PurchaseRequest {
 	@OneToMany (fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL)
 	private List<PurchaseRequestHistory> purchaseRequestHistory;
 	
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToOne(fetch=FetchType.LAZY, mappedBy="purchaseRequest", cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private PurchaseOrder purchaseOrder;
 	
 	
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

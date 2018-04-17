@@ -44,7 +44,14 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 	public PurchaseOrder getOne(long id) {
 		Session session = sessionFactory.getCurrentSession();
 		session.clear();
-		return session.get(PurchaseOrder.class, id);
+		PurchaseOrder po = session.get(PurchaseOrder.class, id);
+		session.clear();
+		return po;
+//		if (po == null) {
+//			return null;
+//		} else {
+//			return po;
+//		}
 	}
 
 	public void changeStatus(String status, long id) {
@@ -117,6 +124,7 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 		String hql = "FROM PurchaseOrder pr WHERE pr.outlet.id =:outletId";
 		Query query = session.createQuery(hql).setParameter("outletId", outletId);
 		List<PurchaseOrder> po = query.list();
+		session.flush();
 		if (po.isEmpty()) {
 			return null;
 		} else {
@@ -129,5 +137,29 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "update PurchaseOrder set status='Processed' where id = :id";
 		session.createQuery(hql).setParameter("id", id).executeUpdate();
+	}
+
+	@Override
+	public List<PurchaseOrder> getPOByStatus(Long outletId, String status) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseOrder po where po.status = :status AND po.outlet.id =:outletId";
+		List<PurchaseOrder> pos = session.createQuery(hql).setParameter("outletId", outletId).setParameter("status", status).list();
+		if(pos.isEmpty()) {
+			return null;
+		}else {
+			return pos;
+		}
+	}
+	
+	@Override
+	public List<PurchaseOrder> searchPO(Long outletId, String search) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseOrder po where po.outlet.id =:outletId and (lower(po.poNo) like :keyword or lower(po.notes) like :keyword or lower(po.status) like :keyword or lower(po.supplier.name) like :keyword)";
+		List<PurchaseOrder> po = session.createQuery(hql).setParameter("outletId", outletId).setParameter("keyword", "%"+search.toLowerCase()+"%").list();
+		if (po.isEmpty()) {
+			return null;
+		} else {
+			return po;
+		}
 	}
 }
