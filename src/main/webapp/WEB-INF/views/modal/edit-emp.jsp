@@ -19,11 +19,11 @@
 					<input type="hidden" id="edit-createdBy-emp">
 					<div class="form-group">
 						<label for="edit-firstName">First Name</label> <input type="text"
-							class="form-control" id="edit-firstName" placeholder="First Name" required>
+							class="form-control" id="edit-firstName" placeholder="First Name" required data-parsley-minlength="3">
 					</div>
 					<div class="form-group">
 						<label for="edit-lastName">Last Name</label> <input type="text"
-							class="form-control" id="edit-lastName" placeholder="Last Name" required>
+							class="form-control" id="edit-lastName" placeholder="Last Name" required data-parsley-minlength="3">
 					</div>
 					<div class="form-group">
 						<label for="edit-email">Email</label> <input type="email"
@@ -71,13 +71,13 @@
 		<div class="col-md-4">
 			<div class="form-group">
 				<input type="text" class="form-control" id="edit-username"
-					placeholder="Username" required>
+					placeholder="Username" required data-parsley-minlength="3">
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">
 				<input type="password" class="form-control" id="edit-password"
-					placeholder="Password" required>
+					placeholder="Password" required data-parsley-minlength="4">
 			</div>
 		</div>
 	</form>

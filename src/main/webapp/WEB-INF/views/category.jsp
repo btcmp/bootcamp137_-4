@@ -165,17 +165,17 @@ $('#btn-save').on('click', function(){
 			contentType : 'application/json',
 			data : JSON.stringify(category),
 			success : function(data) {
-				alert('save successfully');
+				alert('Save Successfully');
 				window.location = '${pageContext.request.contextPath}/master/category';
 			}, error : function() {
-				alert ('saving failed');
+				alert ('Saving Failed');
 			}
 		});
  		
 				 }
 					
 				}, error : function() {
-					alert('save failed!');
+					alert('Save Failed!');
 				}
 			});
 		
@@ -202,7 +202,7 @@ $('.edit').on('click', function(evt){
 			$('#edit-category').modal();   //call modal
 		},
 		error : function(){
-			alert('failed getting data update');
+			alert('Failed getting data update!');
 		}
 		
 	});
@@ -264,17 +264,17 @@ $('#btn-update').on('click', function(){
 						contentType : 'application/json',
 						
 						success : function(data){
-							alert('update successfully!')
+							alert('Update Successfully!')
 							window.location = '${pageContext.request.contextPath}/master/category';
 						},
 						error : function () {
-							alert('update failed')
+							alert('Update Failed')
 						}
 					
 					});
  			 }
 			}, error : function() {
-				alert('save failed!');
+				alert('Save Failed!');
 			}
 		});
 	}
@@ -320,11 +320,11 @@ console.log(category)
 		contentType : 'application/json',
 		
 		success : function(data){
-			alert('delete successfully!')
+			alert('Delete Successfully!')
 			window.location = '${pageContext.request.contextPath}/master/category';
 		},
 		error : function () {
-			alert('delete failed')
+			alert('Delete Failed')
 		}
 	
 	});

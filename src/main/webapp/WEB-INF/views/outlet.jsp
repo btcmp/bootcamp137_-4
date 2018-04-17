@@ -176,15 +176,15 @@
 								contentType : 'application/json',
 								data : JSON.stringify(out),
 								success : function() {
-									alert('save successfully');
+									alert('Save Successfully');
 									window.location = '${pageContext.request.contextPath}/master/outlet';
 								}, error : function() {
-									alert('save failed!');
+									alert('Save Failed!');
 								}
 							});
  	 				}
 				}, error : function(){
-					alert('get all outlet failed');
+					alert('get all outlet Failed');
 				}
 			})  
 		} //end validasi parsley 
@@ -208,7 +208,7 @@
 					})
 					$('#entry-region').html(region);
 				}, error : function(){
-					alert('get failed');
+					alert('get Failed');
 				}
 			})
 		}
@@ -230,7 +230,7 @@
 					})
 					$('#entry-district').html(district);
 				}, error : function(){
-					alert('get failed');
+					alert('get Failed');
 				}
 			})
 		}
@@ -247,7 +247,7 @@
 				setEditOutlet(outlet);
 				$('#edit-outlet').modal();  //call modal
 			}, error : function () {
-				alert('failed getting data!');
+				alert('Failed getting data!');
 			}
 		});
 	});
@@ -330,16 +330,16 @@
 							data : JSON.stringify(outlet),
 							contentType : 'application/json',
 							success : function () {
-								alert('update successfully');
+								alert('Update Successfully');
 								window.location='${pageContext.request.contextPath}/master/outlet';
 							}, error : function() {
-								alert('updated failed')
+								alert('Updated Failed')
 							}
 						});
 						
 		 			 }
 				}, error : function() {
-					alert('get all outlet failed');
+					alert('get all outlet Failed');
 				}
 			});	
 		}
@@ -377,7 +377,7 @@
 						$('#edit-district').html(district);
 					}
 				}, error : function(){
-					alert('get failed');
+					alert('get Failed');
 				}
 			})
 		}
@@ -408,7 +408,7 @@
 					
 					
 				}, error : function(){
-					alert('get failed');
+					alert('get Failed');
 				}
 			})
 		}

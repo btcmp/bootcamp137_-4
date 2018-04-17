@@ -15,7 +15,7 @@
 				<form id="form-add-category">
 					<div class="form-group">
 						<label for="save-con">Category Name</label> 
-						<input type="text" class="form-control" id="entry-category" placeholder="Category Name" required/>
+						<input type="text" class="form-control" id="entry-category" placeholder="Category Name" required data-parsley-minlength="4"/>
 					</div>
 				</form>
 			</div>

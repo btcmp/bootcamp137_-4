@@ -24,6 +24,10 @@
   <link rel="stylesheet" href="${url}/plugins/iCheck/all.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="${url}/dist/css/AdminLTE.min.css">
+
+  <!-- Parsley Message style -->
+  <link rel="stylesheet" href="${url}/dist/css/parsley-message.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="${url}/dist/css/skins/_all-skins.min.css">

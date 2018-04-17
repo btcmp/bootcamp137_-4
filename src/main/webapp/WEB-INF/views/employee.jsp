@@ -37,13 +37,13 @@
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="text" class="form-control"
-					id="add-firstName" placeholder="First Name" required="">
+					id="add-firstName" placeholder="First Name" required data-parsley-minlength="3">
 			</div>
 		</div>
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="text" class="form-control"
-					id="add-lastName" placeholder="Last Name" required>
+					id="add-lastName" placeholder="Last Name" required data-parsley-minlength="3">
 			</div>
 		</div>
 		<div class="col-md-3">
@@ -101,13 +101,13 @@
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="text" class="form-control" id="add-username"
-					placeholder="Username" required>
+					placeholder="Username" required data-parsley-minlength="3">
 			</div>
 		</div> 
 		<div class="col-md-3">
 			<div class="form-group">
 				<input type="password" class="form-control" id="add-password"
-					placeholder="Password" required>
+					placeholder="Password" required data-parsley-minlength="4">
 			</div>
 		</div>
  		<%-- </form> --%> <!-- end form-all -->
@@ -671,5 +671,6 @@ $('#edit-account').on('click',function(){
 	
 }); /* end */
 </script>
-
 </html>
+
+

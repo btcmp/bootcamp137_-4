@@ -17,11 +17,11 @@
 				<form id="form-add-outlet" class="form-all">
 					<div class="form-group">
 						<label for="entry-name">Outlet Name</label> <input type="text"
-							class="form-control" id="entry-name" placeholder="Outlet Name" required>
+							class="form-control" id="entry-name" placeholder="Outlet Name" required data-parsley-minlength="4">
 					</div>
 					<div class="form-group">
 						<label for="entry-address">Address</label> <input type="text"
-							class="form-control" id="entry-address" placeholder="Address" required>
+							class="form-control" id="entry-address" placeholder="Address" required data-parsley-minlength="4">
 					</div>
 					<div class="form-group">
 						<label for="entry-phone">Phone</label> <input type="number"
@@ -56,10 +56,6 @@
 						<label for="entry-postalCode">Postal Code</label> 
 						<input type="text" class="form-control" id="entry-postalCode" placeholder="Postal Code" required data-parsley-maxlength="6">
 					</div>
-<!-- 					<div class="checkbox">
-						<label id="entry-active"><input id="active" type="checkbox"
-							value="true">Active</label>
-					</div> -->
 				</form>
 			</div>
 			<div class="modal-footer">

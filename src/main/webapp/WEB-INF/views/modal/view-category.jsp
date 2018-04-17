@@ -19,7 +19,7 @@
 					<input type="hidden"  id="edit-createdBy"/>					
 					<div class="form-group" id="form-categoryName">
 						<label for="edit-name">Category Name</label> 
-						<input type="text" class="form-control" id="edit-name"  placeholder="Category Name" required/>
+						<input type="text" class="form-control" id="edit-name"  placeholder="Category Name" required data-parsley-minlength="4"/>
 					</div>
 				</form>
 

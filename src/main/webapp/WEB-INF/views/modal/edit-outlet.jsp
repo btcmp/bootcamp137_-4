@@ -18,11 +18,11 @@
 					<input type="hidden" id="edit-createdBy">
 					<div class="form-group">
 						<label for="edit-name">Outlet Name</label> <input type="text"
-							class="form-control" id="edit-name" placeholder="Oulet Name" required>
+							class="form-control" id="edit-name" placeholder="Oulet Name" required data-parsley-minlength="4">
 					</div>
 					<div class="form-group">
 						<label for="edit-address">Address</label> <input type="text"
-							class="form-control" id="edit-address" placeholder="Address" required>
+							class="form-control" id="edit-address" placeholder="Address" required data-parsley-minlength="4">
 					</div>
 					<div class="form-group">
 						<label for="edit-phone">Phone</label> <input type="number"
@@ -63,10 +63,6 @@
 						<label for="edit-postalCode">Postal Code</label> <input type="text"
 							class="form-control" id="edit-postalCode" placeholder="Postal Code" required data-parsley-maxlength="6">
 					</div>
-<!-- 					<div class="checkbox">
-						<label for="edit-active"><input id="edit-active" type="checkbox"
-							value="true">Active</label>
-					</div> -->
 				</form>
 			</div>
 			<div class="modal-footer">
