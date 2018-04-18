@@ -27,8 +27,17 @@
 </div>
 <script>
 $('#charge-cash').on('input',function(){
-	var charge = $(this).val().match(/\d/g).join('');
-	var chargeRp = 'Rp.'+charge.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+	var charge = $(this).val().match(/\d/g);
+	if (charge!==null) {
+		if (charge[0]==0) {
+			chargeRp = 'Rp.';
+		} else {
+			charge = charge.join('');
+			var chargeRp = 'Rp.'+charge.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+		}
+	} else {
+		chargeRp = 'Rp.';
+	}
 	$(this).val(chargeRp);
 })
 </script>

@@ -456,18 +456,25 @@ $(document).ready(function(){
 	})
 	
 	$('#charge-done').click(function(){
-		var cash = parseInt($('#charge-cash').val().match(/\d/g).join(''));
-		var total = parseInt($('.tr-total-item').attr('id'));
-		cashRp = 'Rp.'+cash.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-		changeRp = 'Rp.'+(cash-total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-		if (cash<total) {
-			alert("bayarnya kurang coy!!!");
+		var cash = $('#charge-cash').val().match(/\d/g);
+		console.log(cash);
+		if (cash==null) {
+			alert("cannot be empty!");
 		} else {
-			$('#receipt-change').val(changeRp);
-			$('#receipt-cash').text("Out of "+cashRp);
-			var emailCust = $('#email-customer').val();
-			$('#receipt-email').val(emailCust);
-			done();
+			cash = cash.join('');
+			cashInt = parseInt(cash);
+			var total = parseInt($('.tr-total-item').attr('id'));
+			cashRp = 'Rp.'+cash.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+			changeRp = 'Rp.'+(cash-total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+			if (cashInt<total) {
+				alert("bayarnya kurang coy!!!");
+			} else {
+				$('#receipt-change').val(changeRp);
+				$('#receipt-cash').text("Out of "+cashRp);
+				var emailCust = $('#email-customer').val();
+				$('#receipt-email').val(emailCust);
+				done();
+			}
 		}
 	})
 	
