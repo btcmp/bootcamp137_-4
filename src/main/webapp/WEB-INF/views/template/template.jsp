@@ -87,7 +87,7 @@ $(document).ready(function(){
         </div>
         <div class="pull-left info">
           <p class="name">Alexander Pierce</p>
-          <a href="#" class="role"><i class="fa fa-circle text-success"></i> Online</a>
+          <a class="role"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
       <!-- /.search form -->
@@ -110,7 +110,7 @@ $(document).ready(function(){
         </li>
         <li id="treeview-transaction" class="treeview">
           <a href="#" style="background-color: #5b160d;">
-            <i class="fa fa-table"></i> <span>Transaction</span>
+            <i class="fa fa-tasks"></i> <span>Transaction</span>
             <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>

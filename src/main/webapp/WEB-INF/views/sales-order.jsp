@@ -114,7 +114,7 @@
 $(document).ready(function(){
 	//setup datatables barang table
 	$('#salesOrder-tabel').DataTable({
-		paging : true,
+		paging : false,
 		searching : false
 	});
 	
@@ -233,16 +233,17 @@ $(document).ready(function(){
 				success : function(data){
 					$('#item-tbl').empty();
 					$.each(data, function(key, val) {
+						var price = 'Rp.'+val.itemVariant.price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 						if(added.indexOf(val.id.toString()) == -1) {
-							$('#item-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>Rp.'
-									+ val.itemVariant.price +'</td><td id="td-qty'+ val.id +'"><input type="number" id="'+ val.id +'" class="add-item-qty add-item-qty'+ val.id +'" value="1" /></td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
+							$('#item-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
+									+ price +'</td><td id="td-qty'+ val.id +'"><input type="number" id="'+ val.id +'" class="add-item-qty add-item-qty'+ val.id +'" value="1" /></td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
 									+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
 									+ val.id +' btn-added-item btn">Added</button><input type="hidden" id="endingQty'+ val.id +'" value="'+ val.endingQty +'"/></td></tr>');
 							$('.btn-added-item'+val.id).hide();
 						} else {
 							var a = added.indexOf(val.id.toString());
-							$('#item-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>Rp.'
-									+ val.itemVariant.price +'</td><td id="td-qty'+ val.id +'">'+addedQty[a]+'</td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
+							$('#item-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>'
+									+ price +'</td><td id="td-qty'+ val.id +'">'+addedQty[a]+'</td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
 									+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
 									+ val.id +' btn-added-item btn">Added</button><input type="hidden" id="endingQty'+ val.id +'" value="'+ val.endingQty +'"/></td></tr>');
 							$('.btn-add-item'+val.id).hide();
@@ -280,17 +281,20 @@ $(document).ready(function(){
 					if (added.length=="1") {
 						$('#salesOrder-tbl-body').empty();
 					}
-					$('#salesOrder-tbl-body').append('<tr id="tr-salesOrder'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td id="'+ data.id +'">Rp.'
-							+ data.itemVariant.price +'</td><td>'+ transQty +'</td><td>Rp.'+ data.itemVariant.price*transQty +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
+					var price = 'Rp.'+data.itemVariant.price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+					var subTotal = 'Rp.'+(data.itemVariant.price*transQty).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+					$('#salesOrder-tbl-body').append('<tr id="tr-salesOrder'+ data.id +'"><td id="'+ data.itemVariant.id +'">'+ data.itemVariant.item.name +'-'+ data.itemVariant.name +'</td><td id="'+ data.id +'">'
+							+ price +'</td><td>'+ transQty +'</td><td>'+ subTotal +'</td><td><button type="button" id="'+ data.id +'" class="btn-cancel-item'
 							+ data.id +' btn-cancel-item btn btn-primary">Cancel</button></td></tr>');
 					$('#salesOrder-tbl-foot').empty();
 					var total = 0;
 					$('#salesOrder-tbl-body > tr').each(function(index, data){
-						var price = $(data).find('td').eq(3).text().split("Rp.")[1];
+						var price = $(data).find('td').eq(3).text().match(/\d/g).join('');
 						total = total + parseInt(price);
 					})
-					$('#salesOrder-tbl-foot').append('<tr id="tr-total-item"><th colspan="3">TOTAL</th><th colspan="2">Rp. '+ total +'</th></tr>');
-					$('#charge').text("Charge Rp."+total)
+					totalRp = 'Rp.'+total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+					$('#salesOrder-tbl-foot').append('<tr class="tr-total-item" id="'+ total +'"><th colspan="3">TOTAL</th><th colspan="2">'+ totalRp +'</th></tr>');
+					$('#charge').text("Charge "+totalRp);
 				},
 				error : function(){
 					alert('get one item inventory failed');
@@ -316,11 +320,12 @@ $(document).ready(function(){
 		$('#salesOrder-tbl-foot').empty();
 		var total = 0;
 		$('#salesOrder-tbl-body > tr').each(function(index, data){
-			var price = $(data).find('td').eq(3).text().split("Rp.")[1];
+			var price = $(data).find('td').eq(3).text().match(/\d/g).join('');
 			total = total + parseInt(price);
 		})
-		$('#salesOrder-tbl-foot').append('<tr id="tr-total-item"><th colspan="3">TOTAL</th><th colspan="2">Rp. '+ total +'</th></tr>');
-		$('#charge').text("Charge Rp."+total)
+		totalRp = 'Rp.'+total.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+		$('#salesOrder-tbl-foot').append('<tr class"tr-total-item" id="'+ total +'"><th colspan="3">TOTAL</th><th colspan="2">Rp. '+ totalRp +'</th></tr>');
+		$('#charge').text("Charge "+totalRp)
 	})
 	
 	$('#clear').click(function(){
@@ -328,7 +333,7 @@ $(document).ready(function(){
 		added = [];
 		addedQty = [];
 		$('#salesOrder-tbl-foot').empty();
-		$('#salesOrder-tbl-foot').append('<tr id="tr-total-item"><th colspan="3">TOTAL</th><th colspan="2">Rp. '+ 0 +'</th></tr>');
+		$('#salesOrder-tbl-foot').append('<tr class="tr-total-item"><th colspan="3">TOTAL</th><th colspan="2">Rp. '+ 0 +'</th></tr>');
 		$('#charge').text("Charge");
 		document.getElementById("charge").disabled = true;
 		var word = $('#search').val();
@@ -451,13 +456,15 @@ $(document).ready(function(){
 	})
 	
 	$('#charge-done').click(function(){
-		var cash = parseInt($('#charge-cash').val());
-		var total = parseInt($('#charge').text().split("Rp.")[1]);
+		var cash = parseInt($('#charge-cash').val().match(/\d/g).join(''));
+		var total = parseInt($('.tr-total-item').attr('id'));
+		cashRp = 'Rp.'+cash.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+		changeRp = 'Rp.'+(cash-total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 		if (cash<total) {
 			alert("bayarnya kurang coy!!!");
 		} else {
-			$('#receipt-cash').text("Out of Rp."+cash);
-			$('#receipt-change').val("Rp."+(cash-total));
+			$('#receipt-change').val(changeRp);
+			$('#receipt-cash').text("Out of "+cashRp);
 			var emailCust = $('#email-customer').val();
 			$('#receipt-email').val(emailCust);
 			done();
@@ -476,8 +483,8 @@ $(document).ready(function(){
 						id : $(data).find('td').eq(1).attr('id')
 					},
 					qty : $(data).find('td').eq(2).text(),
-					unitPrice : $(data).find('td').eq(1).text().split("Rp.")[1],
-					subTotal : $(data).find('td').eq(3).text().split("Rp.")[1],
+					unitPrice : $(data).find('td').eq(1).text().match(/\d/g).join(''),
+					subTotal : $(data).find('td').eq(3).text().match(/\d/g).join(''),
 					createdBy : {
 						id : userId
 					},
@@ -492,7 +499,7 @@ $(document).ready(function(){
 				customer : {
 					id : $('.choose-customer').attr('id')
 				},
-				grandTotal : $('#charge').text().split("Rp.")[1],
+				grandTotal : $('.tr-total-item').attr('id'),
 				salesOrderDetail : salesOrderDetail,
 				createdBy : {
 					id : userId
