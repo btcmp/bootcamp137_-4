@@ -565,7 +565,7 @@ $(document).ready(function(){
 		var id = $(this).attr('pr-id');
 		console.log('pr-id : '+id);
 		if(action == 'print'){
-			window.print();
+			window.location = '/miniproject/generate/purchase-request-detail/'+id;
 		}else{
 			$.ajax({
 				type : 'GET',

@@ -19,7 +19,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 
@@ -64,7 +63,6 @@ public class PurchaseOrder {
 	private float grandTotal;
 	@ManyToOne
 	@JoinColumn(name="created_by")
-	@JsonIgnore
 	private User createdBy;
 	
 	@Temporal(TemporalType.DATE)
@@ -72,7 +70,6 @@ public class PurchaseOrder {
 	private Date createdOn;
 	@ManyToOne
 	@JoinColumn(name="modified_by")
-	@JsonIgnore
 	private User modifiedBy;
 	
 	@Temporal(TemporalType.DATE)

@@ -85,11 +85,12 @@
       	<form class="form-all">
 			<div class="form-group" id = "view-po-detail-id">
 				<div id="detail-supplier-name" class="col-xs-12">Hi</div>
-				<div id="detail-supplier-phone" class="col-xs-6"></div><div id="detail-supplier-email" class="col-xs-6"></div>
+				<div id="detail-supplier-phone" class="col-xs-12"></div>
+				<div id="detail-supplier-email" class="col-xs-12"></div>
 				<div id="detail-supplier-address" class="col-xs-12"></div>
-				<div id="detail-supplier-region" class="col-xs-4"></div>
-				<div id="detail-supplier-province" class="col-xs-4"></div>
-				<div id="detail-supplier-postalCode" class="col-xs-4"></div>
+				<div id="detail-supplier-region" class="col-xs-12"></div>
+				<div id="detail-supplier-province" class="col-xs-12"></div>
+				<div id="detail-supplier-postalCode" class="col-xs-12"></div>
 				<br>
 				<div class="col-xs-12">
 					<label for="add-po-notes">Notes</label><br>
@@ -111,8 +112,7 @@
 			<label for="po-history">Status History</label>
 			<div class="container">
 				
-				<table id="table-po-history" class="table table-bordered">
-				
+				<table id="table-po-history" class="table col-xl-12">
 				</table>
 				
 			</div>

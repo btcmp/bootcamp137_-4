@@ -139,7 +139,7 @@ $(document).ready(function(){
 		var id = $(this).attr('po-id');
 		console.log('po-id : '+id);
 		if(action == 'print'){
-			window.print();
+			window.location = '/miniproject/generate/purchase-order-detail/'+id;
 		}else{
 			$.ajax({
 				type : 'GET',
@@ -184,13 +184,14 @@ $(document).ready(function(){
 				$('#detail-supplier-name').html(dataTemp.supplier.name);
 				$('#detail-supplier-phone').html(dataTemp.supplier.phone);
 				$('#detail-supplier-address').html(dataTemp.supplier.address);
-				$('#detail-supplier-region').html();
-				$('#detail-supplier-province').html();
-				$('#detail-supplier-postalCode').html();
+				$('#detail-supplier-region').html(dataTemp.supplier.region);
+				$('#detail-supplier-province').html(dataTemp.supplier.province);
+				$('#detail-supplier-postalCode').html(dataTemp.supplier.postalCode);
 			}
 			
+			$('#view-po-detail-notes').val(dataTemp.notes);
 			$('#view-pod-num').html(dataTemp.poNo);
-			$('#view-pod-created').html('Belum Integrasi dengan user');
+			$('#view-pod-created').html(dataTemp.createdBy.username);
 			$('#view-pod-time').html(tanggal);
 			$('#view-pod-status').html(dataTemp.status);
 			let option = [];

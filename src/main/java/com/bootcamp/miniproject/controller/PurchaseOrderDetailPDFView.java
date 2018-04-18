@@ -31,7 +31,7 @@ public class PurchaseOrderDetailPDFView extends AbstractPdfView{
 				   HTMLWorker htmlWorker = new HTMLWorker(doc);
 				   String str = "<html><head></head><body>"+
 						"<br/>" +
-				        "<h1 style='text-align: center;'>Transfer Stock Detail</h1>" +
+				        "<h1 style='text-align: center;'>Purchase Order Detail</h1>" +
 				        "<br/>" +
 				        "<p>Date : "+String.valueOf(pod.getPurchaseOrder().getPurchaseRequest().getReadyTime())+ "</p>" +
 				        "<p>Supplier : "+pod.getPurchaseOrder().getSupplier().getName()+ "</p>" +

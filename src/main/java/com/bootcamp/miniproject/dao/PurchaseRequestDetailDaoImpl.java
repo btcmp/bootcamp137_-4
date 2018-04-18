@@ -66,7 +66,7 @@ public class PurchaseRequestDetailDaoImpl implements PurchaseRequestDetailDao{
 	@Override
 	public List<PurchaseRequestDetail> getDetailByPRId(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "FROM PurchaseRequestDetail prd prd.purchaseRequest.id =:prId";
+		String hql = "FROM PurchaseRequestDetail prd where prd.purchaseRequest.id =:prId";
 		List<PurchaseRequestDetail> prDetail = session.createQuery(hql).setParameter("prId", id).list();
 		if (prDetail.isEmpty()) {
 			return null;

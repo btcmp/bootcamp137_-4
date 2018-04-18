@@ -32,7 +32,7 @@ public class PurchaseRequestDetailPDFView extends AbstractPdfView {
 				   HTMLWorker htmlWorker = new HTMLWorker(doc);
 				   String str = "<html><head></head><body>"+
 						"<br/>" +
-				        "<h1 style='text-align: center;'>Transfer Stock Detail</h1>" +
+				        "<h1 style='text-align: center;'>Purchase Request Detail</h1>" +
 				        "<br/>" +
 				        "<p>Date : "+String.valueOf(prd.getPurchaseRequest().getReadyTime())+ "</p>" +
 				        "<p>From : "+prd.getPurchaseRequest().getOutlet().getName()+ "</p>" +

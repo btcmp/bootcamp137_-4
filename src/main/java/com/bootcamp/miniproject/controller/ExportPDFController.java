@@ -195,28 +195,26 @@ public class ExportPDFController {
 	@RequestMapping(value = "/item", method = RequestMethod.GET)
 	ModelAndView generatePdfItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("Calling generatePdf()...");
-		//user data
 		response.setHeader("Content-Disposition", "attachment; filename=\"item.pdf\"");
 		response.setContentType("application/pdf");
 		java.util.List<ItemInventory> inv = inventoryService.getAll();
-		//System.out.println(inv.size());
 	return new ModelAndView("pdfViewItem","inventories",inv);
 	}
 	
 	@RequestMapping(value = "/purchase-request", method = RequestMethod.GET)
 	ModelAndView generatePdfPurchaseRequest(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		System.out.println("Calling generatePdf()...");
-		//user data
-		response.setHeader("Content-Disposition", "attachment; filename=\"purchase request.pdf\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"purchase_request.pdf\"");
 		response.setContentType("application/pdf");
 		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		System.out.println(outlet.getName());
 		List<PurchaseRequest> pr = prService.getAllPrByOutlet(outlet.getId());
-		return new ModelAndView("pdfViewPR", "purchaseRequest", pr);
+		return new ModelAndView("pdfViewPurchaseRequest", "purchaseRequest", pr);
 	}
 	@RequestMapping(value = "/purchase-request-detail/{id}", method = RequestMethod.GET)
 	ModelAndView generatePdfPurchaseRequestDetail(HttpServletRequest request, HttpServletResponse response,@PathVariable long id) throws Exception {
 		System.out.println("Calling generatePdf()...");
-		response.setHeader("Content-Disposition", "attachment; filename=\"purchase request detail.pdf\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"purchase_request_detail.pdf\"");
 		response.setContentType("application/pdf");
 		List<PurchaseRequestDetail> prDetail = prdService.getDetailByPRId(id);
 	return new ModelAndView("pdfViewPurchaseRequestDetail","purchaseRequestDetails",prDetail);
@@ -226,17 +224,17 @@ public class ExportPDFController {
 	ModelAndView generatePdfPurchaseOrder(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		System.out.println("Calling generatePdf()...");
 		//user data
-		response.setHeader("Content-Disposition", "attachment; filename=\"purchase request.pdf\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"purchase_order.pdf\"");
 		response.setContentType("application/pdf");
 		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
 		List<PurchaseOrder> po = poService.getAllPoByOutlet(outlet.getId());
-		return new ModelAndView("pdfViewPO", "purchaseOrder", po);
+		return new ModelAndView("pdfViewPurchaseOrder", "purchaseOrder", po);
 	}
 	
 	@RequestMapping(value = "/purchase-order-detail/{id}", method = RequestMethod.GET)
 	ModelAndView generatePdfPurchaseOrderDetail(HttpServletRequest request, HttpServletResponse response,@PathVariable long id) throws Exception {
 		System.out.println("Calling generatePdf()...");
-		response.setHeader("Content-Disposition", "attachment; filename=\"purchase request detail.pdf\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"purchase_order_detail.pdf\"");
 		response.setContentType("application/pdf");
 		List<PurchaseOrderDetail> poDetail = podService.getDetailByPOId(id);
 	return new ModelAndView("pdfViewPurchaseOrderDetail","purchaseOrderDetails",poDetail);

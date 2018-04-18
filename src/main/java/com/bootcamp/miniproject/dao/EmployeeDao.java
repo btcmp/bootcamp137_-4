@@ -3,6 +3,7 @@ package com.bootcamp.miniproject.dao;
 import java.util.List;
 
 import com.bootcamp.miniproject.model.Employee;
+import com.bootcamp.miniproject.model.User;
 
 public interface EmployeeDao {
 
