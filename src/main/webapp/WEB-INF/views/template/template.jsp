@@ -7,12 +7,16 @@ $(document).ready(function(){
 	var firstName = "${employee.firstName}";
 	var lastName = "${employee.lastName}";
 	var roleName = "${employee.user.role.name}";
+	var gender = "${employee.title}";
 	roleName = roleName.slice(5);
 	roleName = roleName.replace("_", " ");
 	var outlet = "${outlet.name}";
 	$('.name').text(firstName+" "+lastName);
 	$('.name-role').text(firstName+" "+lastName+" - "+roleName);
 	$('.role').text(roleName+"-"+outlet);
+	if (gender=="Mrs.") {
+		$('.profile-img').attr('src','${url}/dist/img/female-profile-image.jpg');
+	}
 })
 </script>
 <!-- comment -->
@@ -40,13 +44,13 @@ $(document).ready(function(){
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="${url}/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="${url}/dist/img/male-profile-image.jpg" class="user-image profile-img" alt="User Image">
               <span class="hidden-xs name">Alexander Pierce</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header" style="background-color: #dd4b39;">
-                <img src="${url}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="${url}/dist/img/male-profile-image.jpg" class="img-circle profile-img" alt="User Image">
 
                 <p class="name-role">
                   Alexander Pierce - Web Developer
@@ -79,7 +83,7 @@ $(document).ready(function(){
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="${url}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="${url}/dist/img/male-profile-image.jpg" class="img-circle profile-img" alt="User Image">
         </div>
         <div class="pull-left info">
           <p class="name">Alexander Pierce</p>
