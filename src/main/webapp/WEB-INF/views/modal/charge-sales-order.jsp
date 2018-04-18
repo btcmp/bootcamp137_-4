@@ -14,14 +14,21 @@
 			<div class="modal-body">
 				<form class="form-all">
 					<div class="form-group">
-						<label for="charge-cash">Cash</label> <input type="number"
-							class="form-control" id="charge-cash" value="0">
+						<label for="charge-cash">Cash</label> <input type="text"
+							class="form-control" id="charge-cash" value="Rp." >
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" id="charge-done" class="btn btn-primary">Done</button>
+				<button type="button" id="charge-done" class="btn btn-primary"><i class="fa fa-credit-card"></i> Submit Payment</button>
 			</div>
 		</div>
 	</div>
 </div>
+<script>
+$('#charge-cash').on('input',function(){
+	var charge = $(this).val().match(/\d/g).join('');
+	var chargeRp = 'Rp.'+charge.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+	$(this).val(chargeRp);
+})
+</script>
