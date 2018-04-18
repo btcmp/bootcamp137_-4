@@ -22,9 +22,9 @@
 			<section class="content-header">
 				<h2 style="text-align: center;">Sales Order</h2>
 				<ol class="breadcrumb">
-					<li><a href="${pageContext.request.contextPath}/master"><i
-							class="fa fa-dashboard"></i> Master</a></li>
-					<li class="active">Transfer-stock</li>
+					<li><a href="${pageContext.request.contextPath}/main-menu"><i
+							class="fa fa-dashboard"></i> Main-menu</a></li>
+					<li class="active">Sales-order</li>
 				</ol>
 			</section>
 
@@ -235,7 +235,7 @@ $(document).ready(function(){
 					$.each(data, function(key, val) {
 						if(added.indexOf(val.id.toString()) == -1) {
 							$('#item-tbl').append('<tr><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td><td>Rp.'
-									+ val.itemVariant.price +'</td><td id="td-qty'+ val.id +'"><input type="number" class="add-item-qty'+ val.id +'" value="1" /></td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
+									+ val.itemVariant.price +'</td><td id="td-qty'+ val.id +'"><input type="number" id="'+ val.id +'" class="add-item-qty add-item-qty'+ val.id +'" value="1" /></td><td><button type="button" id="'+ val.id +'" class="btn-add-item'
 									+ val.id +' btn-add-item btn btn-primary">Add</button><button type="button" id="'+ val.id +'" class="btn-added-item'
 									+ val.id +' btn-added-item btn">Added</button><input type="hidden" id="endingQty'+ val.id +'" value="'+ val.endingQty +'"/></td></tr>');
 							$('.btn-added-item'+val.id).hide();
@@ -515,6 +515,15 @@ $(document).ready(function(){
 			
 		})
 	}
+	
+	$('body').on('input', 'input.add-item-qty', function(){
+		var id = $(this).attr('id');
+		var inStock = parseInt($('#endingQty'+id).val());
+		var qty = parseInt($('.add-item-qty'+id).val());
+		if (qty>inStock) {
+			$('.add-item-qty'+id).val(inStock);
+		}
+	})
 	
 });
 </script>

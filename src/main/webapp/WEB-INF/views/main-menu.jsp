@@ -21,16 +21,16 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h2 style="text-align: center;">Main Menu</h2>
-				<ol class="breadcrumb">
+				<%-- <ol class="breadcrumb">
 					<li><a href="${pageContext.request.contextPath}/master"><i
 							class="fa fa-dashboard"></i> Master</a></li>
 					<li class="active">Transfer-stock</li>
-				</ol>
+				</ol> --%>
 			</section>
 
 			<!-- Main content -->
 			<section class="content" style="background-color:;">
-				<div class="row">
+				<div class="row welcome">
 					<div class="col-xs-12">
 						<!-- /.box -->
 						<div class="box">
@@ -48,6 +48,70 @@
 					<!-- /.col -->
 				</div>
 				<!-- /.row -->
+				<!-- Small boxes (Stat box) -->
+			      <div class="row dashboard">
+			        <div class="col-lg-3 col-xs-6">
+			          <!-- small box -->
+			          <div class="small-box bg-aqua">
+			            <div class="inner">
+			              <h3>${jmlAdj }<sup style="font-size: 20px">New</sup></h3>
+			
+			              <p>Adjustment</p>
+			            </div>
+			            <div class="icon">
+			              <i class="ion ion-archive"></i>
+			            </div>
+			            <a href="${pageContext.request.contextPath}/transaction/adjustment" class="small-box-footer">Go to Adjustment <i class="fa fa-arrow-circle-right"></i></a>
+			          </div>
+			        </div>
+			        <!-- ./col -->
+			        <div class="col-lg-3 col-xs-6">
+			          <!-- small box -->
+			          <div class="small-box bg-green">
+			            <div class="inner">
+			              <h3>${jmlTs }<sup style="font-size: 20px">New</sup></h3>
+			
+			              <p>Transfer Stock</p>
+			            </div>
+			            <div class="icon">
+			              <i class="ion ion-share"></i>
+			            </div>
+			            <a href="${pageContext.request.contextPath}/transaction/transfer-stock" class="small-box-footer">Go to Transfer Stock <i class="fa fa-arrow-circle-right"></i></a>
+			          </div>
+			        </div>
+			        <!-- ./col -->
+			        <div class="col-lg-3 col-xs-6">
+			          <!-- small box -->
+			          <div class="small-box bg-yellow">
+			            <div class="inner">
+			              <h3>${jmlPr }<sup style="font-size: 20px">New</sup></h3>
+			
+			              <p>Purchase Request</p>
+			            </div>
+			            <div class="icon">
+			              <i class="ion ion-clipboard"></i>
+			            </div>
+			            <a href="${pageContext.request.contextPath}/transaction/purchase-request" class="small-box-footer">Go to Purchase Request <i class="fa fa-arrow-circle-right"></i></a>
+			          </div>
+			        </div>
+			        <!-- ./col -->
+			        <div class="col-lg-3 col-xs-6">
+			          <!-- small box -->
+			          <div class="small-box bg-red">
+			            <div class="inner">
+			              <h3>${jmlPo }<sup style="font-size: 20px">New</sup></h3>
+			
+			              <p>Purchase Order</p>
+			            </div>
+			            <div class="icon">
+			              <i class="ion ion-android-cart"></i>
+			            </div>
+			            <a href="${pageContext.request.contextPath}/transaction/purchase-order" class="small-box-footer">Go to Purchase Order <i class="fa fa-arrow-circle-right"></i></a>
+			          </div>
+			        </div>
+			        <!-- ./col -->
+			      </div>
+			      <!-- /.row -->
 			</section>
 			<!-- /.content -->
 		</div>
@@ -62,7 +126,10 @@
 </body>
 <script>
 $(document).ready(function(){
-	
+	var userRole = "${userLogin.role.name}";
+	if (userRole!=="ROLE_ADMIN") {
+		$('.dashboard').hide();
+	}
 });
 </script>
 </html>

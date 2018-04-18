@@ -24,7 +24,7 @@
         Master Supplier
       </h2>
       <ol class="breadcrumb">
-        <li><a href="${pageContext.request.contextPath}/master"><i class="fa fa-dashboard"></i> Master</a></li>
+        <li><a href="${pageContext.request.contextPath}/main-menu"><i class="fa fa-dashboard"></i> Main-menu</a></li>
         <li class="active">Supplier</li>
       </ol>
     </section>
@@ -157,12 +157,12 @@ $(document).ready(function(){
 				$('#update-email').val(data.email);
 				$('#update-created-on').val(data.createdOn);
 				$('#update-created-by').val(data.createdBy.id);
-				var active = data.active;
+				/* var active = data.active;
 				if (active==true) {
 					$('#update-active').prop('checked', true);
 				} else {
 					$('#update-active').prop('checked', false);
-				}
+				} */
 				$('#update-province').val(data.province.id);
 				updateProvince(data.province.id,data.region.id);
 				updateRegion(data.region.id,data.district.id);
