@@ -24,7 +24,7 @@
         Master Employee
       </h2>
       <ol class="breadcrumb">
-        <li><a href="${pageContext.request.contextPath}/master"><i class="fa fa-dashboard"></i> Master</a></li>
+        <li><a href="${pageContext.request.contextPath}/main-menu"><i class="fa fa-dashboard"></i> Main-menu</a></li>
         <li class="active">Employee</li>
       </ol>
     </section>
@@ -146,7 +146,7 @@
 								<tbody>
 								<tr>
 									<td>
-										<a>${emp.firstName } ${emp.lastName }</a>
+										<a style="color: black">${emp.firstName } ${emp.lastName }</a>
 									</td>
 									<td>${emp.email }</td>
 									<%-- <td>${emp.haveAccount }</td> --%>
@@ -443,7 +443,7 @@ $(function () {
 				 },
 				createdOn : $('#edit-createdOn-user').val(),
 				createdBy : {
-					id : idUser
+					id :  $('#edit-createdBy-user').val()  
 				},
 				modifiedBy : {						
 					id : idUser
@@ -459,7 +459,7 @@ $(function () {
 			email : $('#edit-email').val(), 
 			createdOn : $('#edit-createdOn-emp').val(),
 			createdBy : {
-				id : idUser
+				id : $('#edit-createdBy-user').val()  
 			},
 			modifiedBy : {
 				id : idUser

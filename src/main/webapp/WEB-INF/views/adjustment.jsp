@@ -24,7 +24,7 @@
         Adjustment
       </h2>
       <ol class="breadcrumb">
-        <li><a href="${pageContext.request.contextPath}/master"><i class="fa fa-dashboard"></i>Transaction</a></li>
+        <li><a href="${pageContext.request.contextPath}/main-menu"><i class="fa fa-dashboard"></i>Main-menu</a></li>
         <li class="active">Adjustment</li>
       </ol>
     </section>

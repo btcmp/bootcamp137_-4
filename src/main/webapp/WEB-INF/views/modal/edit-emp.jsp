@@ -61,7 +61,7 @@
 					<input type="hidden" id="edit-createdOn-user">
 					<input type="hidden" id="edit-createdBy-user">
 				<select name="edit-role" id="edit-role" class="form-control custom-select custom-select-md" placeholder="Role" required>
-					<option selected>Role</option>
+					<option value="">Role</option>
 					<c:forEach var="role" items="${roles }">
 						<option value="${role.id }">${role.name }</option>
 					</c:forEach>
