@@ -405,11 +405,14 @@ $(function () {
     		$('#edit-createdBy-user').val(emp.user.createdBy.id);  
      	
      	}
+     	
+     	$.each($('#list-edit-outlet > tr > td > input[type="checkbox"]'), function(){
+     		$(this).prop('checked', false);
+     	});
     	
       	$.each(emp.employeeOutlets, function(index, empOutlet){
     		$.each($('#list-edit-outlet > tr > td > input[type="checkbox"]'), function(){
     			if($(this).attr('id') == empOutlet.outlet.id){
-    				
     				$(this).prop('checked', true);
     			}
     		});
@@ -421,6 +424,9 @@ $(function () {
  	$('#btn-edit-emp').on('click', function(){
  		var idUser = "${employee.user.id}";		
 		var haveAccounts  = $('#edit-account').is(':checked') ? true : false;
+		if ($('#edit-createdBy-user').val() == "") {
+			$('#edit-createdBy-user').val(idUser);
+		}
 		
 	  var employeeOutlets = [];
 		 $('#list-edit-outlet input:checked').each(function() {
@@ -459,7 +465,7 @@ $(function () {
 			email : $('#edit-email').val(), 
 			createdOn : $('#edit-createdOn-emp').val(),
 			createdBy : {
-				id : $('#edit-createdBy-user').val()  
+				id : $('#edit-createdBy-emp').val()  
 			},
 			modifiedBy : {
 				id : idUser
@@ -470,7 +476,7 @@ $(function () {
 			active : 1
 		}
 		
-		console.log(emp)
+		console.log(emp);
 
 		//validasi parsley data gak boleh kosong 
 			var okEmpEdit = $('#form-edit-employee').parsley().validate();
@@ -483,7 +489,7 @@ $(function () {
 			if (okAccountEdit) {
 				okUserEdit = $('#form-edit-user').parsley().validate();			
 			}
-			 console.log("okEmpEdit : "+okEmpEdit+", okOutletEdit : "+okOutletEdit+", okAccountEdit : "+okAccountEdit+", okUserEdit : "+okUserEdit)		
+			 //console.log("okEmpEdit : "+okEmpEdit+", okOutletEdit : "+okOutletEdit+", okAccountEdit : "+okAccountEdit+", okUserEdit : "+okUserEdit)		
 		
 		
 		//validasi nama dan email sama 
@@ -491,7 +497,6 @@ $(function () {
 				url : '${pageContext.request.contextPath}/master/employee/get-all',	
 				type : 'GET',
 				success : function(data) {
-					console.log(data);
 					var sameName = 0;
 					var sameEmail = 0;
 					$(data).each(function(index, data2) {
@@ -532,7 +537,7 @@ $(function () {
 							alert('Update Failed!');
 						}
 						
-					});												
+					});								
  					 }
 					
 				}, error : function() {
