@@ -23,7 +23,7 @@
         Master Item
       </h2>
       <ol class="breadcrumb">
-        <li><a href="${pageContext.request.contextPath}/master"><i class="fa fa-dashboard"></i> Master</a></li>
+        <li><a href="${pageContext.request.contextPath}/mainmenu"><i class="fa fa-dashboard"></i> Main Menu</a></li>
         <li class="active">Item</li>
       </ol>
     </section>

@@ -22,7 +22,7 @@
         Purchase Request
       </h2>
       <ol class="breadcrumb">
-        <li><a href="${pageContext.request.contextPath}/transaction"><i class="fa fa-dashboard"></i> Transaction</a></li>
+        <li><a href="${pageContext.request.contextPath}/mainmenu"><i class="fa fa-dashboard"></i> Main Menu</a></li>
         <li class="active">Purchase Request</li>
       </ol>
     </section>

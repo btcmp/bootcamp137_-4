@@ -75,6 +75,11 @@ $(document).ready(function(){
 	$('#create').click(function(){
 		$('#btn-add-item').attr('state','create');
 		//console.log('disini');
+		if ($('#table-body-variant tr').length > 0){
+			$('#btn-add-item').prop('disabled',false);
+		} else{
+			$('#btn-add-item').prop('disabled',true);
+		}
 		resetItemForm();
 		resetVariantForm();
 		
@@ -83,20 +88,27 @@ $(document).ready(function(){
 	
 	
 	$('#btn-clear').click(function(){
+		$('#btn-add-item').prop('disabled',true);
 		listVariant = [];
 	});
+	
+	//formAddItem = $('#form-add-item').parsley().validate();
 	$('#btn-add-item').click(function(e){
+		formAddItem = $('#form-add-item').parsley().validate();
 		var state = $(this).attr('state');
-		if (state == 'create'){
-			console.log('membuat');
-			save(e);
-		} else{
-			console.log('edit');
-			update(e);
+		if (formAddItem){
+			if (state == 'create'){
+				console.log('membuat');
+				save(e);
+			} else{
+				console.log('edit');
+				update(e);
+			}
+			
+			enableVariantProperty();
+			listVariant = [];
 		}
 		
-		enableVariantProperty();
-		listVariant = [];
 	});
 	
 	$('#btn-add-variant').click(function(e){
@@ -112,9 +124,12 @@ $(document).ready(function(){
 		enableVariantProperty();
 		HideVariantForm();
 	});
+	
 	$('#btn-save-variant').click(function(e){
+		formAddVariant = $('#form-add-variant').parsley().validate();
 		var state= $(this).attr('state');
-		if (state == 'create'){
+		if (formAddVariant){
+			if (state == 'create'){
 			variant = {
 					name : $('#add-variant-name').val(),
 					price: parseInt($('#add-unit-price').val()),
@@ -144,11 +159,13 @@ $(document).ready(function(){
 			}
     		listVariant[index] = variant;
 		}
-		
+		$('#btn-add-item').prop('disabled',false);
 		createVariantTable(listVariant);
 		enableVariantProperty();
 		resetVariantForm();
 		HideVariantForm();
+
+		}
 	});
 	
 	
@@ -295,6 +312,12 @@ $(document).ready(function(){
 	$('#table-item').on('click','.update-item',function(e){
 		var id = $(this).attr('id');
 		getInventoryByItemId(id);
+		$('#btn-add-item').prop('disabled',false);
+//		if ($('#table-body-variant tr').length > 0){
+//			$('#btn-add-item').prop('disabled',false);
+//		} else{
+//			$('#btn-add-item').prop('disabled',true);
+//		}
 		//console.log('item id : '+id);
 		$('#modal-addItem').modal();
 		$('#btn-add-item').attr('state','update');

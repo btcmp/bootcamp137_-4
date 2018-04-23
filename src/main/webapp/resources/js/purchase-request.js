@@ -26,6 +26,8 @@ $(document).ready(function(){
 			$('#btn-pr-submit').prop('disabled', true);
 		}
 		
+		
+		
 		$('#modal-add-pr').modal({backdrop: 'static', keyboard: false});
 		$('#btn-pr-save').prop('disabled',true);
 		
@@ -193,25 +195,28 @@ $(document).ready(function(){
 	$('#btn-pr-save').click(function(e){
 		var state = $(this).attr('state');
 		status = 'Created';
-		//console.log('clicked '+state);
-		if (state == 'create'){
-			
-			save(e, status);
-		} else{
-			PrNo = $('#btn-pr-save').attr('pr-no');
-			prId = parseInt($('#btn-pr-save').attr('pr-id'));
-			
-			//console.log('di button save'+PrNo);
-			update(e, status, PrNo, prId);
-			
+		formAddPr = $('#form-add-pr').parsley().validate();
+		if (formAddPr){
+			if (state == 'create'){
+				save(e, status);
+			} else{
+				PrNo = $('#btn-pr-save').attr('pr-no');
+				prId = parseInt($('#btn-pr-save').attr('pr-id'));
+				update(e, status, PrNo, prId);
+			}
 		}
+		
 	});
 	$('#btn-pr-submit').click(function(e){
 		//var state = $(this).attr('state');
 		PrNo = $('#btn-pr-save').attr('pr-no');
 		prId = parseInt($('#btn-pr-save').attr('pr-id'));
 		status = 'Submitted';
-		update(e, status, PrNo, prId);
+		formAddPr = $('#form-add-pr').parsley().validate();
+		if (formAddPr){
+			update(e, status, PrNo, prId);
+		}
+		
 		
 	});
 

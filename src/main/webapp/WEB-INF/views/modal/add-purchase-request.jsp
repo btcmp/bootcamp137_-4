@@ -19,14 +19,14 @@
 				<option value="${outlet.id }">${outlet.name }</option>
 			</select>
 			
-      	<form class="form-all">
+      	<form class="form-all" id="form-add-pr" data-parsley-validate="">
 			<div class="form-group" id = "add-pr-id">
 				<br>
 				<label for="add-pr-date">Item Ready Target Date</label>
-				<input type="date" class="form-control" id="add-pr-date" placeholder="Date">
+				<input type="date" class="form-control" id="add-pr-date" placeholder="Date" required>
 				<p></p>
 				<label for="add-pr-notes">PR Notes</label><br>
-				<textarea rows="4" id="add-pr-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
+				<textarea rows="4" id="add-pr-notes" placeholder=" Notes . . . " style="min-width: 100%" required data-parsley-minlength="4"></textarea>
 				<p></p>
 			</div>
 		</form>

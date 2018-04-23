@@ -114,15 +114,19 @@ $(document).ready(function(){
 	$('#btn-po-save').click(function(e){
 		var state = $(this).attr('state');
 		status = 'Created';
-		console.log('clicked '+state);
-		if (state == 'create'){
-			save(e, status);
-		} else{
-			poNo = $('#btn-po-save').attr('po-no');
-			poId = parseInt($('#btn-po-save').attr('po-id'));
-			console.log('di button save'+poNo);
-			update(e, status, poNo, poId);
+		
+		formEditPo = $('#form-edit-po').parsley().validate();
+		if (formEditPo){
+			if (state == 'create'){
+				save(e, status);
+			} else{
+				poNo = $('#btn-po-save').attr('po-no');
+				poId = parseInt($('#btn-po-save').attr('po-id'));
+				console.log('di button save'+poNo);
+				update(e, status, poNo, poId);
+			}
 		}
+		
 	});
 	$('#btn-po-submit').click(function(e){
 		//var state = $(this).attr('state');

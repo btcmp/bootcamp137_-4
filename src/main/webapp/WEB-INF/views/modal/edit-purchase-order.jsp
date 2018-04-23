@@ -17,18 +17,18 @@
 				
 			</select>
 			
-      	<form class="form-all">
+      	<form class="form-all" id="form-edit-po">
 			<div class="form-group" id = "edit-po-id">
                 <br>
                 <label for="select-supplier">Select Supplier</label>
-                <select class="selectpicker" name="select-supplier" id="select-supplier">
+                <select class="selectpicker" name="select-supplier" id="select-supplier" required>
                     <c:forEach var="supplier" items="${suppliers }">
                         <option value="${supplier.id }">${supplier.name }</option>
                     </c:forEach>
                 </select>
 				<p></p>
 				<label for="edit-po-notes">PO Notes</label><br>
-				<textarea rows="4" id="edit-po-notes" placeholder=" Notes . . . " style="min-width: 100%"></textarea>
+				<textarea rows="4" id="edit-po-notes" placeholder=" Notes . . . " style="min-width: 100%" required data-parsley-minlength="4"></textarea>
 				<p></p>
 			</div>
 		</form>
